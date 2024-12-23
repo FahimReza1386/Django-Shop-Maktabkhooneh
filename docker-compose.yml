@@ -13,21 +13,26 @@ services:
       - POSTGRES_PASSWORD=postgres
     
     restart: always
+    expose:
+      - 5432
 
   
   backend:
-    container_name: backend
+    container_name: Maktab-Shop
     build: 
       context: .
       dockerfile: ./dockerfiles/dev/django/Dockerfile
 
     volumes:
-      - ./core:/user/src/app
-
+      - ./core:/usr/src/app
+    working_dir: /usr/src/app
+    command: python manage.py runserver 0.0.0.0:8000
     environment:
       - DEBUG=True
 
     restart: always
+    ports:
+      - 8000:8000
     depends_on:
       - db
 
@@ -45,4 +50,4 @@ services:
 
 
 volumes:
-  smtp4dev:
+  smtp4dev-data:
