@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   db:
-    container_name: db
+    container_name: db  
     image: postgres:15-alpine
     volumes:
       - ./postgres/data:/var/lib/postgressql/data
@@ -12,15 +12,16 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     
-    restart: always
     expose:
       - 5432
+
+    restart: always
 
   
   backend:
     container_name: Maktab-Shop
     build: 
-      context: .
+      context: .  
       dockerfile: ./dockerfiles/dev/django/Dockerfile
 
     volumes:
@@ -29,6 +30,9 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     environment:
       - DEBUG=True
+    
+    env_file:
+      - ./envs/dev/django/.env
 
     restart: always
     ports:
