@@ -155,3 +155,4 @@ EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD" , default="")
 # Django Accounts Config
 
 AUTH_USER_MODEL = "accounts.User"
+LOGIN_REDIRECT_URL = "/"
