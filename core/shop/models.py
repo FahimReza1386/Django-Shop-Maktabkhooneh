@@ -28,6 +28,9 @@ class ProductModel(models.Model):
     created_date= models.DateTimeField(auto_now_add=True)
     updated_date= models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering=["-created_date"]
+
 
 class ProductImageModel(models.Model):
     product= models.ForeignKey(ProductModel, on_delete=models.CASCADE)
