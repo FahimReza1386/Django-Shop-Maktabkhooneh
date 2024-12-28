@@ -3,4 +3,7 @@ from . import views
 
 app_name="shop"
 
-urlpatterns =[]
+urlpatterns =[
+    path("product/grid/" , views.ShopProductGrid.as_view(), name="product-grid"),   
+    # path("product/list/" , views.ShopProductGrid.as_view(), name="product-list"),   
+]
