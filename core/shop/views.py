@@ -7,7 +7,7 @@ from django.views.generic import (
 from .models import ProductModel, ProductStatusType
 
 # Create your views here.
-class ShopProductGrid(ListView):
+class ShopProductGridView(ListView):
     template_name = "Shop/product-grid.html"
     model = ProductModel
     querysets=ProductModel.objects.filter(status=ProductStatusType.publish.value)
@@ -17,3 +17,8 @@ class ShopProductGrid(ListView):
         context = super().get_context_data(**kwargs)
         context['total_items'] = self.get_queryset().count()
         return context
+
+
+class ShopProductDetailView(DetailView):
+    template_name = "Shop/product-detail.html"
+    queryset = ProductModel.objects.filter(status=ProductStatusType.publish.value)

@@ -454,7 +454,7 @@ Product grid Page
                   </div>
 
                   <h4 class="card-title">
-                    <a class="text-dark" href="/product-overview.html">{{ object.title }}</a>
+                    <a class="text-dark" href="{% url 'shop:product-detail' slug=object.slug %}">{{ object.title }}</a>
                   </h4>
                   <p class="card-text text-dark">{{ object.get_price_after_sale|intcomma }}</p>
                 </div>
@@ -500,9 +500,9 @@ Product grid Page
               {% for i in page_obj.paginator.page_range %}
               {% if i == page_obj.number %}
                 <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>
-              {% else %}
+              {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
                 <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-              {% endif %}
+              {% endif %} 
             {% endfor %}
             {% if page_obj.has_previous %}
             <li class="page-item">
