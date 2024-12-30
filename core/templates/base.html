@@ -76,7 +76,7 @@
               <!-- End Dropdown -->
               
               <li class="nav-item">
-                <a class="nav-link " href="/product-overview.html">صفحه محصولات</a>
+                <a class="nav-link " href="{% url 'shop:product-grid' %}">صفحه محصولات</a>
               </li>
   
               <li class="nav-item">
@@ -157,7 +157,7 @@
                   <span class="cart-item-count ">3</span>
                 </button>
                 <!-- End Shopping Cart -->
-                {% if request.user.is_authenticated %}
+                {% if request.User.is_authenticated %}
                 <button class="btn btn-ghost-secondary btn-icon" id="dropdownMenuLink"
                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="avatar avatar-sm avatar-circle">
@@ -611,4 +611,4 @@
 
   </body>
 
-  </html>
+</html>
