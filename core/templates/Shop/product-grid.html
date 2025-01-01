@@ -115,6 +115,7 @@ Product grid Page
                         </div>
                     </div>
                 </div>
+
                 <div class="d-grid">
                     <button type="submit" class="btn btn-outline-primary btn-transition mb-3">اعمال
                         فیلتر</button>
@@ -132,49 +133,54 @@ Product grid Page
 
         <div class="col-lg-9">
           <div class="row align-items-center mb-5">
-            <div class="col-sm mb-3 mb-sm-0">
-              <h6 class="mb-0">{{ total_items }} محصول</h6>
-            </div>
-
-            <div class="col-sm-auto">
-              <div class="d-sm-flex justify-content-sm-end align-items-center">
-                <!-- Select -->
-                <div class="mb-2 mb-sm-0 me-sm-2">
-                  <select class="form-select form-select-sm">
-                    <option value="Relevance" selected>ارتباط</option>
-                    <option value="mostRecent">اخیرا</option>
-                  </select>
-                </div>
-                <!-- End Select -->
-
-                <!-- Select -->
-                <div class="mb-2 mb-sm-0 me-sm-2">
-                  <select class="form-select form-select-sm">
-                    <option value="alphabeticalOrderSelect1" selected>A-to-Z</option>
-                    <option value="alphabeticalOrderSelect2">Z-to-A</option>
-                  </select>
-                </div>
-                <!-- End Select -->
-
-                <!-- Nav -->
-                <ul class="nav nav-segment">
-                  <li class="nav-item">
-                    <a class="nav-link active" href="/products-grid.html">
-                      <i class="bi-grid-fill"></i>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/products-list.html">
-                      <i class="bi-list"></i>
-                    </a>
-                  </li>
-                </ul>
-                <!-- End Nav -->
+              <div class="col-sm mb-3 mb-sm-0">
+                  <h6 class="mb-0">{{total_items}} محصول</h6>
               </div>
-            </div>
+
+              <div class="col-sm-auto">
+                  <div class="d-sm-flex justify-content-sm-end align-items-center">
+                      <!-- Select -->
+                      <div class="mb-2 mb-sm-0 me-sm-2">
+                          <select class="form-select form-select-sm" id="order-by-filter">
+                              <option value="" selected>مرتب سازی</option>
+                              <option value="-created_date">جدیدترین</option>
+                              <option value="created_date">قدیمی ترین</option>
+                              <option value="-price">بیشترین قیمت</option>
+                              <option value="price">کمترین قیمت</option>
+                          </select>
+                      </div>
+                      <!-- End Select -->
+                      <!-- Select -->
+                      <div class="mb-2 mb-sm-0 me-sm-2">
+                          <select class="form-select form-select-sm" id="page-size-filter">
+                              <option value="" selected>تعداد در صفحه</option>
+                              <option value="12">12</option>
+                              <option value="15">15</option>
+                              <option value="18">18</option>
+                              <option value="21">21</option>
+                              <option value="24">24</option>
+                          </select>
+                      </div>
+                      <!-- End Select -->
+
+                      <!-- Nav -->
+                      <ul class="nav nav-segment">
+                          <li class="nav-item">
+                              <a class="nav-link active" href="{% url 'shop:product-grid' %}">
+                                  <i class="bi-grid-fill"></i>
+                              </a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="#">
+                                  <i class="bi-list"></i>
+                              </a>
+                          </li>
+                      </ul>
+                      <!-- End Nav -->
+                  </div>
+              </div>
           </div>
-          <!-- End Row -->
-          
+          <!-- End Row -->        
           <div class="row row-cols-sm-2 row-cols-md-3 mb-10">
             <!-- End Col -->
 
@@ -247,11 +253,11 @@ Product grid Page
             <ul class="pagination justify-content-center">
               {% if page_obj.has_next %}
               <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+              <button class="page-link" onclick="ChangePage(`{{ page_obj.next_page_number }}`)" aria-label="Next">
                   <span aria-hidden="true">
                     <i class="bi-chevron-double-left small"></i>
                   </span>
-                </a>
+                </button>
               </li>
             {% endif %} 
 
@@ -259,16 +265,16 @@ Product grid Page
               {% if i == page_obj.number %}
                 <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>
               {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
-                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                <li class="page-item"><button class="page-link" onclick="ChangePage(`{{ i }}`)">{{ i }}</button></li>
               {% endif %} 
             {% endfor %}
             {% if page_obj.has_previous %}
             <li class="page-item">
-              <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+              <button class="page-link" onclick="ChangePage(`{{ page_obj.previous_page_number }}`)" aria-label="Previous">
                 <span aria-hidden="true">
                   <i class="bi-chevron-double-right small"></i>
                 </span>
-              </a>
+              </button>
             </li>
           {% endif %}
             
@@ -298,6 +304,45 @@ Product grid Page
 
 
 {% block extra_js %}
+
+<script>
+
+    $(document).ready(function () {
+        let current_url_params = new URLSearchParams(window.location.search)
+        $("#page-size-filter").val(current_url_params.get("page_size") || "")
+        $("#order-by-filter").val(current_url_params.get("order_by") || "")
+        $("#search-query-filter").val(current_url_params.get("q") || "")
+        $("#min-price-filter").val(current_url_params.get("min_price") || "")
+        $("#max-price-filter").val(current_url_params.get("max_price") || "")
+        $("#category-id-filter").val(current_url_params.get("category_id") || "")
+
+    });
+    $('#page-size-filter').change(function () {
+        let current_url_params = new URLSearchParams(window.location.search)
+        var selectedOption = $(this).val();
+        current_url_params.set("page_size", selectedOption)
+        let new_url = window.location.pathname + "?" + current_url_params.toString()
+        window.location.href = new_url
+    });
+    $('#order-by-filter').change(function () {
+        let current_url_params = new URLSearchParams(window.location.search)
+        var selectedOption = $(this).val();
+        current_url_params.set("order_by", selectedOption)
+        let new_url = window.location.pathname + "?" + current_url_params.toString()
+        window.location.href = new_url
+    });
+
+</script>
+
+<script>
+  function ChangePage(page_number){
+    let current_url_params = new URLSearchParams(window.location.search)
+    current_url_params.set("page", page_number)
+    let new_url = window.location.pathname + "?" + current_url_params.toString()
+    window.location.href = new_url
+  }
+</script>
+
 {% endblock extra_js %}
 
 
