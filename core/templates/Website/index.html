@@ -408,7 +408,8 @@
             </div>
             <!-- End Heading -->
 
-            <form method="{% url 'website:add_user_to_newlatter' %}">
+            <form method="post" action="{% url 'website:add_user_to_newlatter' %}">
+              {% csrf_token %}
               <!-- Input Card -->
               <div class="input-card input-card-pill input-card-sm border mb-3">
                 <div class="input-card-form">

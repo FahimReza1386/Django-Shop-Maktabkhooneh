@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, CreateView, UpdateView
 from website.models import Contact, NewsletterSubscriber
+from django.contrib import messages
 # Create your views here.
 
 
@@ -28,6 +29,15 @@ class SendContact(CreateView):
 
 class AddUserToNewLatter(CreateView):
     model=NewsletterSubscriber
-    fields=['email']
+    fields=["email"]
     success_url="/"
     template_name="Website/index.html"
+
+
+    def form_valid(self, form):
+        
+        if form.instance.email == self.request.user.email:
+            return super().form_valid(form)
+        else:
+            messages.error(self.request, "سلام ! متاسفانه این ایمیل با ایمیل شما برابر نیست ..")
+            return redirect("/")

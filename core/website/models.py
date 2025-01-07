@@ -19,16 +19,16 @@ class Contact(models.Model):
     
 
     def __str__(self):
-        return self.first_name
+        return f"{self.first_name}"
     
 
 class NewsletterSubscriber(models.Model):
-    email=models.EmailField(max_length=200, unique=True)
+    email=models.EmailField(max_length=200,unique=True)
     subscribed_date=models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering=["-subscribed_date"]
 
     def __str__(self):
-        return self.email
+        return f"{self.email}"
     

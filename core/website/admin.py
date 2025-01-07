@@ -9,10 +9,9 @@ class CustomContact(admin.ModelAdmin):
     searching_fields=("first_name", "last_name", "subject", "phone_number", "description",)
     ordering=("is_checked",)
 
-class CustomNewLatter(admin.ModelAdmin):
+class CustomNewsletterSubscriber(admin.ModelAdmin):
     model= NewsletterSubscriber
-    list_display=("email",)
-    ordering=("email",),
+
 
 admin.site.register(Contact, CustomContact)
-admin.site.register(NewsletterSubscriber, CustomNewLatter)
+admin.site.register(NewsletterSubscriber, CustomNewsletterSubscriber)
