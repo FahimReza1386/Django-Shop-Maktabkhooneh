@@ -1,6 +1,5 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from website.models import Contact
+from website.models import Contact, NewsletterSubscriber
 # Register your models here.
 
 class CustomContact(admin.ModelAdmin):
@@ -10,6 +9,10 @@ class CustomContact(admin.ModelAdmin):
     searching_fields=("first_name", "last_name", "subject", "phone_number", "description",)
     ordering=("is_checked",)
 
-
+class CustomNewLatter(admin.ModelAdmin):
+    model= NewsletterSubscriber
+    list_display=("email",)
+    ordering=("email",),
 
 admin.site.register(Contact, CustomContact)
+admin.site.register(NewsletterSubscriber, CustomNewLatter)

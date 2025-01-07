@@ -408,15 +408,15 @@
             </div>
             <!-- End Heading -->
 
-            <form>
+            <form method="{% url 'website:add_user_to_newlatter' %}">
               <!-- Input Card -->
               <div class="input-card input-card-pill input-card-sm border mb-3">
                 <div class="input-card-form">
                   <label for="subscribeForm" class="form-label visually-hidden">ایمیل را وارد کنید</label>
                   <input type="text" class="form-control form-control-lg" id="subscribeForm"
-                    placeholder="ایمیل خود را وارد نمایید" aria-label="ایمیل خود را وارد کنید">
+                    placeholder="ایمیل خود را وارد نمایید" aria-label="ایمیل خود را وارد کنید" name="email">
                 </div>
-                <button type="button" class="btn btn-primary btn-lg rounded-pill">ثبت نام</button>
+                <button type="submit" class="btn btn-primary btn-lg rounded-pill">ثبت نام</button>
               </div>
               <!-- End Input Card -->
             </form>

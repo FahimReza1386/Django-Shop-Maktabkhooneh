@@ -8,4 +8,5 @@ urlpatterns = [
     path("about/", views.AboutView.as_view(), name="about"),
     path("contact/", views.ContactView.as_view(), name="contact"),
     path("send_contact/", views.SendContact.as_view(), name="send_contact"),
+    path("add_user_to_newlatter/", views.AddUserToNewLatter.as_view(), name="add_user_to_newlatter"),
 ]

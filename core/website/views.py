@@ -1,8 +1,6 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView, CreateView
-from website.models import Contact
-from django.views import View
-from accounts.models import User
+from django.views.generic import TemplateView, CreateView, UpdateView
+from website.models import Contact, NewsletterSubscriber
 # Create your views here.
 
 
@@ -26,3 +24,10 @@ class SendContact(CreateView):
     def form_valid(self, form):
         form.instance.email = self.request.user
         return super().form_valid(form)
+
+
+class AddUserToNewLatter(CreateView):
+    model=NewsletterSubscriber
+    fields=['email']
+    success_url="/"
+    template_name="Website/index.html"
