@@ -151,12 +151,12 @@
                 </button>
                 <!-- End Search -->
   
-                <!-- Shopping Cart -->
-                <button type="button" class="btn btn-ghost-secondary btn-icon" type="button" data-bs-toggle="offcanvas"
-                  data-bs-target="#offcanvasNavbarShoppingCart" aria-controls="offcanvasNavbarShoppingCart">
+               <!-- data-bs-toggle="offcanvas"
+                  data-bs-target="#offcanvasNavbarShoppingCart" aria-controls="offcanvasNavbarShoppingCart" -->
+                <a href="{% url 'cart:session-cart-summary' %}" class="btn btn-ghost-secondary btn-icon" >
                   <i class="bi-basket"></i>
-                  <span class="cart-item-count ">3</span>
-                </button>
+                  <span class="cart-item-count" id="total-cart-item-count">{{ cart.get_total_quantity  }}</span>
+                </a>
                 <!-- End Shopping Cart -->
                 {% if request.user.is_authenticated %}
                     <button class="btn btn-ghost-secondary btn-icon" id="dropdownMenuLink"
@@ -601,6 +601,28 @@
           )
         })
       })()
+    </script>
+    <script>
+      function addCartItem(product_id){
+        $.ajax({
+            type: "POST",
+            url: "{% url 'cart:session-add-product' %}",
+            data: {
+              csrfmiddlewaretoken:'{{ csrf_token }}',
+              product_id:product_id,
+              
+            },
+            success: function(response){
+                $("#total-cart-item-count").html(response.total_quantity)
+                console.log(response)
+            },
+            error: function (err,errmsg,xhr) {
+              console.log(err)
+            }
+        });
+    
+    
+    }
     </script>
     
     {% block extra_js %}

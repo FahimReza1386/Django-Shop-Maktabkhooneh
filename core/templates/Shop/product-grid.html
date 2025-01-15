@@ -342,27 +342,7 @@ Product grid Page
     window.location.href = new_url
   }
 </script>
-<script>
-  function addCartItem(product_id){
-    $.ajax({
-        type: "POST",
-        url: "{% url 'cart:session-add-product' %}",
-        data: {
-          csrfmiddlewaretoken:'{{ csrf_token }}',
-          product_id:product_id,
-          
-        },
-        success: function(resultData){
-            alert("تبریک ! محصول انتخابی با موفقیت به سبد خرید شما اضافه شد.")
-        },
-        error: function (err,errmsg,xhr) {
-          console.log(err)
-        }
-    });
 
-
-}
-</script>
 
 {% endblock extra_js %}
 
