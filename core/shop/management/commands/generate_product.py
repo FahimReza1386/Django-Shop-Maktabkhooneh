@@ -2,8 +2,7 @@ from faker import Faker
 from django.utils.text import slugify
 from django.core.management.base import BaseCommand
 from shop.models import ProductModel, ProductCategoryModel, ProductStatusType
-from accounts.models import User, UserType
-from decimal import Decimal
+from accounts.models import User
 from PIL import Image
 from django.core.files.base import ContentFile
 from io import BytesIO
