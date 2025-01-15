@@ -10,7 +10,7 @@ class CartSession:
         self.session["cart"] = self._cart
         
 
-    def add_products(self, product_id):
+    def add_product(self, product_id):
         for item in self._cart["items"]:
             if product_id == item["product_id"]:
                 item["quantity"] += 1
@@ -32,8 +32,8 @@ class CartSession:
         }
         self.save()
 
-    def get_cart_items(self):
-        return self._cart["items"]
+    def get_cart_dict(self):
+        return self._cart
 
     
     def save(self):
