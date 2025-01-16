@@ -212,7 +212,7 @@ Product grid Page
                   <h4 class="card-title">
                     <a class="text-dark" href="{% url 'shop:product-detail' slug=object.slug %}">{{ object.title }}</a>
                   </h4>
-                  <p class="card-text text-dark">{{ object.get_price_after_sale|intcomma }}</p>
+                  <p class="card-text text-dark">{{ object.get_price_after_sale|intcomma }} تومان</p>
                 </div>
 
                 <div class="card-footer pt-0">

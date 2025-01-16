@@ -23,44 +23,42 @@
         <div class="col-lg-8 mb-7 mb-lg-0">
           <div class="d-flex justify-content-between align-items-end border-bottom pb-3 mb-7">
             <h1 class="h3 mb-0">سبد خرید</h1>
-            <span>2 مورد</span>
+            <span>{{ total_quantity }} مورد</span>
           </div>
 
           <form>
             <!-- List Group -->
             <ul class="list-group list-group-flush list-group-no-gutters mb-5">
-              {% for item in cart.get_cart_dict.items %}
+              {% for item in cart_items %}
               <!-- Item -->
               <li class="list-group-item">
                 <div class="d-flex">
                   <div class="flex-shrink-0">
-                    <img class="avatar avatar-xl avatar-4x3" src="{{ item.image.url }}" alt="Image Description">
+                    <img class="avatar avatar-xl avatar-4x3" src="{{ item.product_obj.image.url }}" alt="Image Description">
                   </div>
 
                   <div class="flex-grow-1 ms-3">
                     <div class="row">
                       <div class="col-sm-7 mb-3 mb-sm-0">
-                        <h5><a class="text-dark" href="#">{{ item.title }}</a></h5>
+                        <h5><a class="text-dark m-3" href="#">{{ item.product_obj.title }}</a></h5>
 
                         <div class="d-block d-sm-none">
-                            {% if item.is_discounted %}
-                                <del class="mb-1">{{ item.price }}</del>
-                                <h5 class="mb-1">{{ item.get_price_after_sale }}</h5>
-                            {% else %}
-                                <h5 class="mb-1">{{ item.price }}</h5>
-                            {% endif %}
+                          
+                            <h5 class="mb-1">{{ item.total_price|intcomma }}</h5>
+
                         </div>
 
-                        <div class="d-grid gap-1">
+                        <div class="d-grid gap-1 m-3">
                           <div class="text-body">
                             <span class="small">دسته بندی:</span>
-                            <span class="fw-semibold small">کیف</span>
+                            {% for category in item.product_obj.category.all %}
+                          <a class="link-sm link-secondary" href="#">{{ category.title }}</a>
+                            {% if not forloop.last %}    
+                            ,
+                            {% endif %}
+                          {% endfor %}
                           </div>
 
-                          <div class="text-body">
-                            <span class="small">رنگ:</span>
-                            <span class="fw-semibold small">خاکستری</span>
-                          </div>
                         </div>
                       </div>
                       <!-- End Col -->
@@ -70,17 +68,12 @@
                           <div class="col-auto">
                             <!-- Select -->
                             <select class="form-select form-select-sm mb-3">
-                              <option value="quantity1">1</option>
-                              <option value="quantity2">2</option>
-                              <option value="quantity3">3</option>
-                              <option value="quantity4">4</option>
-                              <option value="quantity5">5</option>
-                              <option value="quantity6">6</option>
-                              <option value="quantity7">7</option>
-                              <option value="quantity8">8</option>
-                              <option value="quantity9">9</option>
-                              <option value="quantity10">10</option>
-                            </select>
+                              {% with ''|center:5 as range %}
+                                 {% for _ in range %} 
+                                  <option value="quantity1">{{ forloop.counter }}</option>
+                                 {% endfor %}
+                              {% endwith %}
+                            </select> 
                             <!-- End Select -->
                           </div>
 
@@ -102,14 +95,9 @@
                       <!-- End Col -->
 
                       <div class="col-4 col-sm-2 d-none d-sm-inline-block text-right">
-                        <span class="h5 d-block mb-1">$29.99</span>
-                        {% if item.is_discounted %}
-                                <del class="mb-1">{{ item.price }}</del>
-                                <span class="h5 d-block mb-1">{{ item.get_price_after_sale }}</span>
-                            {% else %}
-                                <span class="h5 d-block mb-1">{{ item.price }}</span>
+                      
+                      <h5 class="mb-1">{{ item.total_price|intcomma }} تومان</h5>
 
-                        {% endif %}
                       </div>
                       <!-- End Col -->
                     </div>
@@ -155,7 +143,7 @@
 
                     <dl class="row">
                       <dt class="col-sm-6">جمع</dt>
-                      <dd class="col-sm-12 text-sm-end mb-0">350000 تومان</dd>
+                      <dd class="col-sm-12 text-sm-end mb-0">{{ total_payment_price|intcomma }} تومان</dd>
                     </dl>
                     <!-- End Row -->
                   </div>
