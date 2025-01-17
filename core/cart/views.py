@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView, View, UpdateView
+from django.views.generic import TemplateView, View, UpdateView, DeleteView
 from .cart import CartSession
 from django.http import JsonResponse
 # Create your views here.
 
 
-class SessionAddProduct(View):
+class SessionAddProductView(View):
 
     def post(self, request, *args, **kwargs):
         cart = CartSession(request.session)
@@ -15,7 +15,7 @@ class SessionAddProduct(View):
         return JsonResponse({"cart":cart.get_cart_dict(), "total_quantity":cart.get_total_quantity()})
 
 
-class SessionCartSummary(TemplateView):
+class SessionCartSummaryView(TemplateView):
     template_name = "Cart/cart-summary.html"
 
     def get_context_data(self, **kwargs):
@@ -30,7 +30,7 @@ class SessionCartSummary(TemplateView):
 
     
 
-class SessionUpdateProductQty(UpdateView):
+class SessionUpdateProductQtyView(UpdateView):
     
     def post(self, request, *args, **kwargs):
         cart = CartSession(request.session)
@@ -41,3 +41,24 @@ class SessionUpdateProductQty(UpdateView):
 
         return JsonResponse({"cart":cart.get_cart_dict(), "total_quantity":cart.get_total_quantity()})
 
+
+class SessionDeleteProductView(DeleteView):
+   
+    def post(self, request, *args, **kwargs):
+        cart = CartSession(request.session)
+        product_id = request.POST.get("product_id")
+        if product_id:
+            cart.delete_product(product_id)
+
+        return JsonResponse({"cart":cart.get_cart_dict(), "total_quantity":cart.get_total_quantity()})
+ 
+
+
+class SessionDeleteAllCartView(DeleteView):
+
+    def post(self, request, *args, **kwargs):
+        cart = CartSession(request.session)
+        cart.clear()
+
+        return JsonResponse({"cart":cart.get_cart_dict(), "total_quantity":cart.get_total_quantity()})
+ 
