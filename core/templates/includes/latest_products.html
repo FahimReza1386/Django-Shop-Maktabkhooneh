@@ -39,7 +39,7 @@
                 <h4 class="card-title">
                   <a class="text-dark" href="{% url 'shop:product-detail' slug=latest_product.slug %}">{{ latest_product.title }}</a>
                 </h4>
-                <p class="card-text text-dark">{{ latest_product.get_price_after_sale|intcomma }}</p>
+                <p class="card-text text-dark">{{ latest_product.get_price_after_sale|intcomma }} تومان</p>
               </div>
 
               <div class="card-footer pt-0">
@@ -56,7 +56,7 @@
                 </a>
                 <!-- End Rating -->
 
-                <button type="button" class="btn btn-outline-primary btn-sm btn-transition rounded-pill">افزودن به سبد خرید</button>
+                <button type="button" onclick="addCartItem('{{ latest_product.id }}')" class="btn btn-outline-primary btn-sm btn-transition rounded-pill">افزودن به سبد خرید</button>
               </div>
 
             </div>

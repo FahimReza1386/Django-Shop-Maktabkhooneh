@@ -212,7 +212,7 @@ Product grid Page
                   <h4 class="card-title">
                     <a class="text-dark" href="{% url 'shop:product-detail' slug=object.slug %}">{{ object.title }}</a>
                   </h4>
-                  <p class="card-text text-dark">{{ object.get_price_after_sale|intcomma }}</p>
+                  <p class="card-text text-dark">{{ object.get_price_after_sale|intcomma }} تومان</p>
                 </div>
 
                 <div class="card-footer pt-0">
@@ -229,10 +229,10 @@ Product grid Page
                   </a>
                   <!-- End Rating -->
 
-                  <button type="button" class="btn btn-outline-primary btn-sm btn-transition rounded-pill">افزودن به سبد خرید</button>
+                  <button type="button" class="btn btn-outline-primary btn-sm btn-transition rounded-pill" onclick="addCartItem('{{ object.id }}')">افزودن به سبد خرید</button>
                 </div>
 
-              </div>
+              </div>  
              
             </div>
             {% empty %}
@@ -342,6 +342,7 @@ Product grid Page
     window.location.href = new_url
   }
 </script>
+
 
 {% endblock extra_js %}
 
