@@ -60,6 +60,13 @@
                           </div>
 
                         </div>
+                        <div class="d-grid gap-1 m-3">
+                          <div class="text-body">
+                            <span class="small">قیمت هر واحد‌:</span>
+                              <a class="link-sm link-secondary" href="#">{{ item.product_obj.get_price_after_sale|intcomma }}</a>
+                          </div>
+
+                        </div>
                       </div>
                       <!-- End Col -->
 
@@ -67,10 +74,10 @@
                         <div class="row">
                           <div class="col-auto">
                             <!-- Select -->
-                            <select class="form-select form-select-sm mb-3">
-                              {% with ''|center:5 as range %}
+                            <select class="form-select form-select-sm mb-3" onchange="ChangeProductQuantity('{{ item.product_id }}', this.value)">
+                              {% with ''|center:10 as range %}
                                  {% for _ in range %} 
-                                  <option value="quantity1">{{ forloop.counter }}</option>
+                                  <option value="{{ forloop.counter }}" {% if forloop.counter == item.quantity %} selected  {% endif %} >{{ forloop.counter }}</option>
                                  {% endfor %}
                               {% endwith %}
                             </select> 
@@ -189,6 +196,28 @@
 
 
 {% block extra_js %}
+
+    <script>
+          function ChangeProductQuantity(product_id, qty){
+            $.ajax({
+              type: "POST",
+              url: "{% url 'cart:session-update-product-qty' %}",
+              data: {
+                csrfmiddlewaretoken:'{{ csrf_token }}',
+                product_id:product_id,
+                quantity:qty,
+                
+              },
+              success: function(response){
+                  window.location.reload()
+              },
+              error: function (err,errmsg,xhr) {
+                console.log(err)
+              }
+            })
+          }
+    </script>
+
 {% endblock %}
 
 

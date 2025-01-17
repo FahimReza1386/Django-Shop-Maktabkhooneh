@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView, View
+from django.views.generic import TemplateView, View, UpdateView
 from .cart import CartSession
 from django.http import JsonResponse
 # Create your views here.
@@ -29,3 +29,15 @@ class SessionCartSummary(TemplateView):
         return context
 
     
+
+class SessionUpdateProductQty(UpdateView):
+    
+    def post(self, request, *args, **kwargs):
+        cart = CartSession(request.session)
+        product_id = request.POST.get("product_id")
+        quantity = request.POST.get("quantity")
+        if product_id and quantity:
+            cart.update_product_qty(product_id, quantity)
+
+        return JsonResponse({"cart":cart.get_cart_dict(), "total_quantity":cart.get_total_quantity()})
+
