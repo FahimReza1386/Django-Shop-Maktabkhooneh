@@ -77,23 +77,21 @@ class User(AbstractBaseUser,PermissionsMixin):
         return self.email
 
 
+class Gender(models.IntegerChoices):
+    male = 1 , _("male")
+    female = 2 , _("female")
+    other = 3 , _("other")
 
-class AbstractProfile(models.Model):
-   
+
+class Profile(models.Model):
+    user = models.OneToOneField("User", on_delete=models.CASCADE)
     first_name = models.CharField(max_length=22)
     last_name = models.CharField(max_length=22)
     phone_number = models.CharField(max_length=12, validators=[validate_iranian_phone_number])
+    gender = models.IntegerField(choices=Gender.choices, default=Gender.other.value)
   
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        abstract = True
-
-class Profile(AbstractProfile):
-    user = models.OneToOneField("User", on_delete=models.CASCADE)
-
-
 
 
 @receiver(post_save, sender=User)
