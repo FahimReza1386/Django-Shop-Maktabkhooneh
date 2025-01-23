@@ -36,8 +36,9 @@
                 <h4 class="card-header-title">ویرایش تصویر</h4>
             </div>
             <div class="card-body">
-                <form action="" class="mt-2">
-                    <!-- Form -->
+                <form action="{% url 'dashboard:dash_admin:profile-image-edit' %}" method="post" class="mt-2" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <!-- Form --> 
                     <div class="row mb-4">
                         <label class="col-sm-3 col-form-label form-label mt-4">عکس پروفایل :</label>
 
@@ -49,10 +50,10 @@
                                     <img id="avatarImg" class="avatar-img" src="{{ request.user.user_profile.image.url}}"
                                         alt="Image Description">
                                 </label>
-
+                                
                                 <div class="d-grid d-sm-flex gap-2 me-4">
-                                    <div class="form-attachment-btn btn btn-primary btn-sm">آپلود عکس
-                                        <input type="file" class="js-file-attach form-attachment-btn-label"
+                                    <div class="form-attachment-btn btn btn-white btn-sm">آپلود عکس
+                                        <input type="file" name="image" class="js-file-attach form-attachment-btn-label"
                                             id="avatarUploader" data-hs-file-attach-options='{
                                       "textTarget": "#avatarImg",
                                       "mode": "image",
@@ -62,6 +63,7 @@
                                             [".png", ".jpeg" , ".jpg" ] }'>
                                     </div>
                                     <!-- End Avatar -->
+                                    <button type="submit" class="btn btn-primary btn-sm">بروزرسانی</button>
 
                                     <button type="button" class="js-file-attach-reset-img btn btn-white btn-sm">حذف
                                         کردن</button>
