@@ -78,17 +78,25 @@ class User(AbstractBaseUser,PermissionsMixin):
 
 
 
-class Profile(models.Model):
-    user = models.OneToOneField("User", on_delete=models.CASCADE)
+class AbstractProfile(models.Model):
+   
     first_name = models.CharField(max_length=22)
     last_name = models.CharField(max_length=22)
     phone_number = models.CharField(max_length=12, validators=[validate_iranian_phone_number])
+  
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+class Profile(AbstractProfile):
+    user = models.OneToOneField("User", on_delete=models.CASCADE)
+
 
 
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
-    if created and instance.type == UserType.customer.value:  
+    if created:  
         Profile.objects.create(user=instance, pk=instance.pk)
