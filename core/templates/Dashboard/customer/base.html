@@ -1,352 +1,462 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
 <head>
-    <!-- Required Meta Tags Always Come First -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Required Meta Tags Always Come First -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <!-- Title -->
-    <title>{% block title %} {% endblock title %}</title>
+  <!-- Title -->
+  <title>داشبورد ادمین</title>
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="/favicon.ico">
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" />
 
-    <!-- Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 
-    <!-- CSS Implementing Plugins -->
-    <link rel="stylesheet" href="{% static 'css/vendor.min.css' %}">
-    <link rel="stylesheet" href="{% static 'vendor/bootstrap-icons/font/bootstrap-icons.css' %}">
+  <!-- CSS Implementing Plugins -->
+  <link rel="stylesheet" href="{% static 'css/vendor.min.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap-icons/font/bootstrap-icons.css' %}"/>
 
-    <!-- CSS Front Template -->
-    <link rel="stylesheet" href="{% static 'css/theme.min.css' %}">
-    <link rel="stylesheet" href="{% static 'vendor/toastify/toastify.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    {% block extra_css %} {% endblock extra_css %}
+  <!-- CSS Front Template -->
+  <link rel="stylesheet" href="{% static 'css/theme.min.css' %}"/>
 
-    {% block extra_css_no_compress %} {% endblock extra_css_no_compress %}
+   <!-- CSS Front Toastify -->
+   <link rel="stylesheet" href="{% static 'vendor/toastify/toastify.css' %}">
+
+  {% block extra_css %}{% endblock %}
+  {% block extra_css_no_compress %}{% endblock %}
 </head>
 
-
 <body>
-    <!-- ========== HEADER ========== -->
-    <header id="header" class="navbar navbar-expand-lg navbar-end navbar-absolute-top navbar-light navbar-show-hide"
-        data-hs-header-options='{
-        "fixMoment": 500,
-        "fixEffect": "slide"
-      }'>
-        <div class="container">
-            <nav class="js-mega-menu navbar-nav-wrap">
-                <!-- Default Logo -->
-                <a class="navbar-brand" href="{% url 'website:index' %}" aria-label="Front">
-                    <img class="navbar-brand-logo" src="{% static 'svg/logos/logo.svg' %}" alt="Logo">
-                </a>
-                <!-- End Default Logo -->
 
-                <!-- Toggler -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-default">
-                        <i class="bi-list"></i>
-                    </span>
-                    <span class="navbar-toggler-toggled">
-                        <i class="bi-x"></i>
+  <body>
+    <!-- ========== HEADER ========== -->
+    <header id="header" class="navbar navbar-expand-lg navbar-end navbar-light">
+      <div class="container">
+        <nav class="js-mega-menu navbar-nav-wrap">
+          <!-- Default Logo -->
+          <a class="navbar-brand" href="/" aria-label="Front">
+            <img class="navbar-brand-logo" src="{% static 'svg/logos/logo.svg' %}" alt="Logo">
+          </a>
+          <!-- End Default Logo -->
+  
+          <!-- Toggler -->
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-default">
+              <i class="bi-list"></i>
+            </span>
+            <span class="navbar-toggler-toggled">
+              <i class="bi-x"></i>
+            </span>
+          </button>
+          <!-- End Toggler -->
+  
+          <!-- Collapse -->
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.view_name == 'website:index' %} active {% endif %}" href="{% url 'website:index' %}" >صفحه اصلی</a>
+              </li>
+              
+              <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.view_name == 'website:product-grid' %} active {% endif %}" href="{% url 'shop:product-grid' %}">صفحه محصولات</a>
+              </li>
+  
+              <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.view_name == 'website:about' %} active {% endif %}" href="{% url 'website:about' %}">درباره ما</a>
+              </li>
+  
+              <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.view_name == 'website:contact' %} active {% endif %}" href="{% url 'website:contact' %}">ارتباط با ما</a>
+              </li>
+  
+              <!-- Pages -->
+              <li class="hs-has-mega-menu nav-item" data-hs-mega-menu-item-options='{
+                    "desktop": {
+                      "position": "right",
+                      "maxWidth": "27rem"
+                    }
+                  }'>
+                <a id="pagesMegaMenu" class="hs-mega-menu-invoker nav-link dropdown-toggle " aria-current="page" href="#"
+                  role="button" data-bs-toggle="dropdown" aria-expanded="false">صفحات</a>
+  
+                <!-- Mega Menu -->
+                <div class="hs-mega-menu dropdown-menu" aria-labelledby="pagesMegaMenu" style="min-width: 27rem;">
+                  <div class="navbar-dropdown-menu-inner">
+                    <span class="dropdown-header">عناصر</span>
+  
+                    <div class="row">
+                      <div class="col-sm mb-3 mb-sm-0">
+                        <a class="dropdown-item " href="/categories.html">دسته بندی ها</a>
+                        <a class="dropdown-item " href="/categories-sidebar.html">نوار کناری دسته ها</a>
+                        <a class="dropdown-item " href="/empty-cart.html">سبد خالی</a>
+                      </div>
+                      <!-- End Col -->
+  
+                      <div class="col-sm">
+                        <a class="dropdown-item " href="/cart.html">سبد خرید</a>
+                        <a class="dropdown-item " href="/checkout.html">بررسی</a>
+                        <a class="dropdown-item " href="/order-completed.html">سفارش تکمیل شد</a>
+                      </div>
+                      <!-- End Col -->
+                    </div>
+                    <!-- End Row -->
+                  </div>
+  
+                  <!-- Mega Menu Banner -->
+                  <div class="navbar-dropdown-menu-shop-banner">
+                    <div class="d-flex">
+                      <div class="flex-shrink-0">
+                        <img class="navbar-dropdown-menu-shop-banner-img" src="{% static 'img/mockups/img4.png' %}"
+                          alt="Image Description">
+                      </div>
+  
+                      <div class="flex-grow-1 p-4">
+                        <span class="h4 d-block text-primary">برنده تی شرت</span>
+                        <p>یکی از تی شرت های برند Front ما را برنده شوید.</p>
+                        <a class="btn btn-sm btn-soft-primary btn-transition" href="/index.html">بیشتر بدانید <i
+                            class="bi-chevron-left small"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- End Mega Menu Banner -->
+                </div>
+                <!-- End Mega Menu -->
+              </li>
+              <!-- End Pages -->
+  
+              <li class="nav-item">
+                <!-- Search -->
+                 
+                <button class="btn btn-ghost-secondary btn-icon" type="button" data-bs-toggle="offcanvas"
+                  data-bs-target="#offcanvasNavbarSearch" aria-controls="offcanvasNavbarSearch">
+                  <i class="bi-search"></i>
+                </button>
+                <!-- End Search -->
+  
+               <!-- data-bs-toggle="offcanvas"
+                  data-bs-target="#offcanvasNavbarShoppingCart" aria-controls="offcanvasNavbarShoppingCart" -->
+                <a href="{% url 'cart:session-cart-summary' %}" class="btn btn-ghost-secondary btn-icon" >
+                  <i class="bi-basket"></i>
+                  <span class="cart-item-count" id="total-cart-item-count">{{ cart.get_total_quantity  }}</span>
+                </a>
+                <!-- End Shopping Cart -->
+                {% if request.user.is_authenticated %}
+                    <button class="btn btn-ghost-secondary btn-icon" id="dropdownMenuLink"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="avatar avatar-sm avatar-circle">
+                        <img class="avatar-img" src="{{ request.user.user_profile.image.url }}"
+                            alt="Image Description">
                     </span>
                 </button>
-                <!-- End Toggler -->
-
-                <!-- Collapse -->
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link  {% if request.resolver_match.view_name  == 'website:index' %} active {% endif %}"
-                                href="{% url 'website:index' %}">صفحه اصلی</a>
-                        </li>
-
-
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.resolver_match.view_name  == 'shop:product-grid' %} active {% endif %}"
-                                href="{% url 'shop:product-grid' %}">لیست محصولات</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.resolver_match.view_name  == 'website:about' %} active {% endif %}"
-                                href="{% url 'website:about' %}">درباره ما</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.resolver_match.view_name  == 'website:contact' %} active {% endif %}"
-                                href="{% url 'website:contact' %}">ارتباط با ما</a>
-                        </li>
-
-
-
-                        <li class="nav-item">
-                            <!-- Search -->
-                            <button class="btn btn-ghost-secondary btn-icon" type="button" data-bs-toggle="offcanvas"
-                                data-bs-target="#offcanvasNavbarSearch" aria-controls="offcanvasNavbarSearch">
-                                <i class="bi-search"></i>
-                            </button>
-
-                            <!-- End Search -->
-
-                        
-                            <a href="{% url 'cart:session-cart-summary' %}" class="btn btn-ghost-secondary btn-icon">
-                                <i class="bi-basket"></i>
-                                <span class="cart-item-count"
-                                    id="total-cart-item-count">{{cart.get_total_quantity}}</span>
-                            </a>
-                            <!-- End Shopping Cart -->
-                            {% if request.user.is_authenticated %}
-
-                            <button class="btn btn-ghost-secondary btn-icon" id="dropdownMenuLink"
-                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="avatar avatar-sm avatar-circle">
-                                    <img class="avatar-img" src="{{ request.user.user_profile.image.url }}"
-                                        alt="Image Description">
-                                </span>
-                            </button>
-
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="{% url 'dashboard:home' %}">پروفایل</a>
-                                <a class="dropdown-item" href="{% url 'accounts:logout' %}">خروج</a>
-                            </div>
-
-                            {% else %}
-                            <a class="btn btn-primary btn-transition" href="{% url 'accounts:login' %}">ورود</a>
-                            {% endif %}
-                        </li>
-                    </ul>
-                </div>
-                <!-- End Collapse -->
-            </nav>
-        </div>
+  
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                      <a class="dropdown-item" href="{% url 'dashboard:home' %}">پروفایل</a>
+                      <a class="dropdown-item" href="{% url 'accounts:logout' %}">خروج</a>
+                  </div>
+  
+                {% else %}
+                <a class="btn btn-primary btn-transition" href="{% url 'accounts:login' %}">ورود</a>
+                {% endif %}
+              </li>
+            </ul>
+          </div>
+          <!-- End Collapse -->
+        </nav>
+      </div>
     </header>
+  
+ 
 
-    <!-- ========== END HEADER ========== -->
+<!-- ========== END HEADER ========== -->
 
+  
     <!-- ========== MAIN CONTENT ========== -->
-    <main id="content" role="main" class="bg-light content-space-2">
-        <!-- Breadcrumb -->
-        <div class="navbar-dark bg-dark" style="background-image: url({% static '/svg/components/wave-pattern-light.svg' %});">
-            <div class="container content-space-1 content-space-b-lg-3">
-                <div class="row align-items-center">
-                    <div class="col">
-                        <div class="d-none d-lg-block">
-                            <h1 class="h2 text-white">داشبورد</h1>
-                        </div>
+    <main id="content" role="main" class="bg-light">
+      {% block header %}{% endblock %}
+      <!-- Breadcrumb -->
+      <div class="navbar-dark bg-dark" style="background-image: url({% static 'svg/components/wave-pattern-light.svg' %});">
+        <div class="container content-space-1 content-space-b-lg-3">
+          <div class="row align-items-center">
+            <div class="col">
+              <div class="d-none d-lg-block">
+                <h1 class="h2 text-white">داشبورد</h1>
+              </div>
+             
+  
+              <!-- Breadcrumb -->
+              <!-- Breadcrumb -->
+              {% block breadcrumb %}
 
-                        <!-- Breadcrumb -->
-                        {% block breadcrumb %}
-
-                        {% endblock %}
-                        <!-- End Breadcrumb -->
-                    </div>
-                    <!-- End Col -->
-
-                    <div class="col-auto">
-                        <div class="d-none d-lg-block">
-                            <a class="btn btn-soft-light btn-sm" href="{% url 'accounts:logout' %}">خروج</a>
-                        </div>
-                        <!-- Responsive Toggle Button -->
-                        <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#sidebarNav" aria-controls="sidebarNav" aria-expanded="false"
-                            aria-label="Toggle navigation">
-                            <span class="navbar-toggler-default">
-                                <i class="bi-list"></i>
-                            </span>
-                            <span class="navbar-toggler-toggled">
-                                <i class="bi-x"></i>
-                            </span>
-                        </button>
-                        <!-- End Responsive Toggle Button -->
-                    </div>
-                    <!-- End Col -->
-                </div>
-                <!-- End Row -->
+              {% endblock %}
+              <!-- End Breadcrumb -->
+              <!-- End Breadcrumb -->
             </div>
-        </div>
-        <!-- End Breadcrumb -->
-        <!-- Content Section -->
-        <div class="container content-space-1 content-space-t-lg-0 content-space-b-lg-2 mt-lg-n10">
-            <div class="row">
-                <div class="col-lg-3">
-                    {% include 'Dashboard/customer/sidebar.html' %}
-                </div>
-                <!-- End Col -->
-
-                <div class="col-lg-9">
-                    {% block content %}
-                    {% endblock %}
-
-                </div>
-                <!-- End Col -->
+            <!-- End Col -->
+  
+            <div class="col-auto">
+              <div class="d-none d-lg-block">
+                <a class="btn btn-soft-light btn-sm" href="{% url 'accounts:logout' %}">خروج</a>
             </div>
-            <!-- End Row -->
+              <!-- Responsive Toggle Button -->
+              <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+                data-bs-target="#sidebarNav" aria-controls="sidebarNav" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-default">
+                  <i class="bi-list"></i>
+                </span>
+                <span class="navbar-toggler-toggled">
+                  <i class="bi-x"></i>
+                </span>
+              </button>
+              <!-- End Responsive Toggle Button -->
+            </div>
+            <!-- End Col -->
+          </div>
+          <!-- End Row -->
         </div>
-        <!-- End Content Section -->
+      </div>
+      <!-- End Breadcrumb -->
+
+  
+      <!-- Content Section -->
+      <div class="container content-space-1 content-space-t-lg-0 content-space-b-lg-2 mt-lg-n10">
+        <div class="row">
+          <div class="col-lg-3">
+
+             {% include 'Dashboard/customer/sidebar.html' %}
+          </div>
+          <!-- End Col -->
+  
+          <div class="col-lg-9">
+            {% block content %}{% endblock %}
+          </div>
+          <!-- End Col -->
+        </div>
+        <!-- End Row -->
+      </div>
+      <!-- End Content Section -->
     </main>
+    <!-- ========== END MAIN CONTENT ========== -->
+  
+  <!-- ========== FOOTER ========== -->
+  <footer class="bg-dark">
+    <div class="container pb-1 pb-lg-5">
+      <div class="row content-space-t-2">
+        <div class="col-lg-3 mb-7 mb-lg-0">
+          <!-- Logo -->
+          <div class="mb-5">
+            <a class="navbar-brand" href="./index.html" aria-label="Space">
+              <img class="navbar-brand-logo" src="{% static 'svg/logos/logo-white.svg' %}" alt="Image Description" />
+            </a>
+          </div>
+          <!-- End Logo -->
 
-
-    <!-- ========== FOOTER ========== -->
-    <footer class="border-top">
-        <div class="container">
-            <div class="row justify-content-lg-between content-space-t-2 content-space-b-lg-2">
-                <div class="col-lg-3 mb-5">
-                    <div class="d-flex align-items-start flex-column h-100">
-                        <!-- Logo -->
-                        <a class="w-100 mb-3 mb-lg-auto" href="{% url 'website:index' %}" aria-label="Front">
-                            <img class="brand" src="{% static 'svg/logos/logo.svg' %}" alt="Logo">
-                        </a>
-                        <!-- End Logo -->
-
-                        <p class="text-muted small mb-0">&copy; Maryam Farajian 2023 Front RTL</p>
-                    </div>
-                </div>
-
-                <div class="col-6 col-md-4 col-lg-3 ms-lg-auto mb-5 mb-lg-0">
-                    <h5>حساب</h5>
-
-                    <!-- List -->
-                    <ul class="list-unstyled list-py-1">
-                        <li><a class="link-sm text-secondary" href="#">سفارش دادن</a></li>
-                        <li><a class="link-sm text-secondary" href="#">گزینه های حمل و نقل</a></li>
-                        <li><a class="link-sm text-secondary" href="#">پیگیری یک بسته</a></li>
-                        <li><a class="link-sm text-secondary" href="#">در دسترس بودن کشور</a></li>
-                    </ul>
-                    <!-- End List -->
-                </div>
-                <!-- End Col -->
-
-                <div class="col-6 col-md-4 col-lg-3 mb-5 mb-lg-0">
-                    <h5>شرکت</h5>
-
-                    <!-- List -->
-                    <ul class="list-unstyled list-py-1">
-                        <li><a class="link-sm text-secondary" href="#">تامین مالی</a></li>
-                        <li><a class="link-sm text-secondary" href="#">بازیافت</a></li>
-                        <li><a class="link-sm text-secondary" href="#">سیاست بازگشت</a></li>
-                    </ul>
-                    <!-- End List -->
-                </div>
-                <!-- End Col -->
-
-                <div class="col-md-4 col-lg-2 mb-5 mb-lg-0">
-                    <h5 class="mb-3">منابع</h5>
-
-                    <!-- List -->
-                    <ul class="list-unstyled list-py-1">
-                        <li><a class="link-sm link-secondary" href="#"><i class="bi-question-circle-fill me-1"></i>
-                                کمک</a></li>
-                        <li><a class="link-sm link-secondary" href="#"><i class="bi-person-circle me-1"></i> حساب
-                                شما</a></li>
-                    </ul>
-                    <!-- End List -->
-
-                    <!-- Button Group -->
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-white btn-sm dropdown-toggle" id="footerSelectLanguage"
-                            data-bs-toggle="dropdown" aria-expanded="false" data-bs-dropdown-animation>
-                            <span class="d-flex align-items-center">
-                                <img class="avatar avatar-xss avatar-circle ms-2"
-                                    src="{% static 'vendor/flag-icon-css/flags/1x1/us.svg' %}" alt="Image description"
-                                    width="16" />
-                                <span>انگلیسی (US)</span>
-                            </span>
-                        </button>
-
-                        <div class="dropdown-menu" aria-labelledby="footerSelectLanguage">
-                            <a class="dropdown-item d-flex align-items-center active" href="#">
-                                <img class="avatar avatar-xss avatar-circle ms-2"
-                                    src="{% static 'vendor/flag-icon-css/flags/1x1/us.svg' %}" alt="Image description"
-                                    width="16" />
-                                <span>انگلیسی</span>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <img class="avatar avatar-xss avatar-circle ms-2"
-                                    src="{% static 'vendor/flag-icon-css/flags/1x1/de.svg' %}" alt="Image description"
-                                    width="16" />
-                                <span>آلمانی</span>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <img class="avatar avatar-xss avatar-circle ms-2"
-                                    src="{% static 'vendor/flag-icon-css/flags/1x1/es.svg' %}" alt="Image description"
-                                    width="16" />
-                                <span>اسپانیایی</span>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <img class="avatar avatar-xss avatar-circle ms-2"
-                                    src="{% static 'vendor/flag-icon-css/flags/1x1/cn.svg' %}" alt="Image description"
-                                    width="16" />
-                                <span>چینی</span>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- End Button Group -->
-                </div>
-                <!-- End Col -->
-            </div>
-            <!-- End Row -->
-
-            <hr class="my-0">
-
-            <div class="row align-items-sm-center content-space-1">
-                <div class="col-sm mb-4 mb-sm-0">
-                    <!-- Socials -->
-                    <ul class="list-inline mb-0">
-                        <li class="list-inline-item">
-                            <a class="btn btn-soft-secondary btn-xs btn-icon" href="#">
-                                <i class="bi-facebook"></i>
-                            </a>
-                        </li>
-
-                        <li class="list-inline-item">
-                            <a class="btn btn-soft-secondary btn-xs btn-icon" href="#">
-                                <i class="bi-google"></i>
-                            </a>
-                        </li>
-
-                        <li class="list-inline-item">
-                            <a class="btn btn-soft-secondary btn-xs btn-icon" href="#">
-                                <i class="bi-twitter"></i>
-                            </a>
-                        </li>
-
-                        <li class="list-inline-item">
-                            <a class="btn btn-soft-secondary btn-xs btn-icon" href="#">
-                                <i class="bi-github"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- End Socials -->
-                </div>
-
-                <div class="col-sm-auto">
-                    <!-- List -->
-                    <ul class="list-inline list-separator">
-                        <li class="list-inline-item">
-                            <a class="link-sm link-secondary" href="/page-privacy.html">حریم خصوصی و خط مشی</a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a class="link-sm link-secondary" href="/page-terms.html">مقررات و شرایط</a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a class="link-sm link-secondary" href="/#">مشاغل</a>
-                        </li>
-                    </ul>
-                    <!-- End List -->
-                </div>
-            </div>
+          <!-- List -->
+          <ul class="list-unstyled list-py-1">
+            <li>
+              <a class="link-sm link-light" href="#"><i class="bi-geo-alt-fill me-1"></i> 153 ویلیامسون پلازا،
+                مگیبرگ</a>
+            </li>
+            <li>
+              <a class="link-sm link-light" href="tel:1-062-109-9222"><i class="bi-telephone-inbound-fill me-1"></i> +1
+                (062)
+                109-9222</a>
+            </li>
+          </ul>
+          <!-- End List -->
         </div>
-    </footer>
-    <!-- ========== END FOOTER ========== -->
+        <!-- End Col -->
 
-    <!-- ========== SECONDARY CONTENTS ========== -->
-    <!-- Sign Up -->
+        <div class="col-sm mb-7 mb-sm-0">
+          <h5 class="text-white mb-3">شرکت</h5>
 
-    <!-- Go To -->
-    <a class="js-go-to go-to position-fixed" href="javascript:;" style="visibility: hidden;" data-hs-go-to-options='{
+          <!-- List -->
+          <ul class="list-unstyled list-py-1 mb-0">
+            <li><a class="link-sm link-light" href="#">در باره</a></li>
+            <li>
+              <a class="link-sm link-light" href="#">مشاغل
+                <span class="badge bg-warning text-dark rounded-pill ms-1">استخدام می کنیم</span></a>
+            </li>
+            <li><a class="link-sm link-light" href="#">بلاگ</a></li>
+            <li>
+              <a class="link-sm link-light" href="#">مشتریان <i class="bi-box-arrow-up-right small ms-1"></i></a>
+            </li>
+            <li>
+              <a class="link-sm link-light" href="#">ما را استخدام کنید</a>
+            </li>
+          </ul>
+          <!-- End List -->
+        </div>
+        <!-- End Col -->
+
+        <div class="col-sm mb-7 mb-sm-0">
+          <h5 class="text-white mb-3">امکانات</h5>
+
+          <!-- List -->
+          <ul class="list-unstyled list-py-1 mb-0">
+            <li>
+              <a class="link-sm link-light" href="#">مطبوعات <i class="bi-box-arrow-up-right small ms-1"></i></a>
+            </li>
+            <li>
+              <a class="link-sm link-light" href="#">یادداشت های انتشار</a>
+            </li>
+            <li><a class="link-sm link-light" href="#">ادغام ها</a></li>
+            <li><a class="link-sm link-light" href="#">قیمت گذاری</a></li>
+          </ul>
+          <!-- End List -->
+        </div>
+        <!-- End Col -->
+
+        <div class="col-sm mb-7 mb-sm-0">
+          <h5 class="text-white mb-3">مستندات</h5>
+
+          <!-- List -->
+          <ul class="list-unstyled list-py-1 mb-0">
+            <li><a class="link-sm link-light" href="#">حمایت کردن</a></li>
+            <li><a class="link-sm link-light" href="#">اسناد</a></li>
+            <li><a class="link-sm link-light" href="#">وضعیت</a></li>
+            <li><a class="link-sm link-light" href="#">مرجع API</a></li>
+            <li><a class="link-sm link-light" href="#">الزامات فنی</a></li>
+          </ul>
+          <!-- End List -->
+        </div>
+        <!-- End Col -->
+
+        <div class="col-sm">
+          <h5 class="text-white mb-3">منابع</h5>
+
+          <!-- List -->
+          <ul class="list-unstyled list-py-1 mb-5">
+            <li>
+              <a class="link-sm link-light" href="#"><i class="bi-question-circle-fill me-1"></i> کمک</a>
+            </li>
+            <li>
+              <a class="link-sm link-light" href="#"><i class="bi-person-circle me-1"></i> حساب شما</a>
+            </li>
+          </ul>
+          <!-- End List -->
+        </div>
+        <!-- End Col -->
+      </div>
+      <!-- End Row -->
+
+      <div class="border-top border-white-10 my-7"></div>
+
+      <div class="row mb-7">
+        <div class="col-sm mb-3 mb-sm-0">
+          <!-- Socials -->
+          <ul class="list-inline list-separator list-separator-light mb-0">
+            <li class="list-inline-item">
+              <a class="link-sm link-light" href="#">حریم خصوصی &amp; خط مشی</a>
+            </li>
+            <li class="list-inline-item">
+              <a class="link-sm link-light" href="#">مقررات</a>
+            </li>
+            <li class="list-inline-item">
+              <a class="link-sm link-light" href="#">نقشه سایت</a>
+            </li>
+          </ul>
+          <!-- End Socials -->
+        </div>
+
+        <div class="col-sm-auto">
+          <!-- Socials -->
+          <ul class="list-inline mb-0">
+            <li class="list-inline-item">
+              <a class="btn btn-soft-light btn-xs btn-icon" href="#">
+                <i class="bi-facebook"></i>
+              </a>
+            </li>
+
+            <li class="list-inline-item">
+              <a class="btn btn-soft-light btn-xs btn-icon" href="#">
+                <i class="bi-google"></i>
+              </a>
+            </li>
+
+            <li class="list-inline-item">
+              <a class="btn btn-soft-light btn-xs btn-icon" href="#">
+                <i class="bi-twitter"></i>
+              </a>
+            </li>
+
+            <li class="list-inline-item">
+              <a class="btn btn-soft-light btn-xs btn-icon" href="#">
+                <i class="bi-github"></i>
+              </a>
+            </li>
+
+            <li class="list-inline-item">
+              <!-- Button Group -->
+              <div class="btn-group">
+                <button type="button" class="btn btn-soft-light btn-xs dropdown-toggle" id="footerSelectLanguage"
+                  data-bs-toggle="dropdown" aria-expanded="false" data-bs-dropdown-animation>
+                  <span class="d-flex align-items-center">
+                    <img class="avatar avatar-xss avatar-circle ms-2"
+                      src="{% static 'vendor/flag-icon-css/flags/1x1/us.svg' %}" alt="Image description" width="16" />
+                    <span>انگلیسی</span>
+                  </span>
+                </button>
+
+                <div class="dropdown-menu" aria-labelledby="footerSelectLanguage">
+                  <a class="dropdown-item d-flex align-items-center active" href="#">
+                    <img class="avatar avatar-xss avatar-circle ms-2"
+                      src="{% static 'vendor/flag-icon-css/flags/1x1/us.svg' %}" alt="Image description" width="16" />
+                    <span>انگلیسی</span>
+                  </a>
+                  <a class="dropdown-item d-flex align-items-center" href="#">
+                    <img class="avatar avatar-xss avatar-circle ms-2"
+                      src="{% static 'vendor/flag-icon-css/flags/1x1/de.svg' %}" alt="Image description" width="16" />
+                    <span>آلمانی</span>
+                  </a>
+                  <a class="dropdown-item d-flex align-items-center" href="#">
+                    <img class="avatar avatar-xss avatar-circle ms-2"
+                      src="{% static 'vendor/flag-icon-css/flags/1x1/es.svg' %}" alt="Image description" width="16" />
+                    <span>اسپانیا</span>
+                  </a>
+                  <a class="dropdown-item d-flex align-items-center" href="#">
+                    <img class="avatar avatar-xss avatar-circle ms-2"
+                      src="{% static 'vendor/flag-icon-css/flags/1x1/cn.svg' %}" alt="Image description" width="16" />
+                    <span>چینی</span>
+                  </a>
+                </div>
+              </div>
+              <!-- End Button Group -->
+            </li>
+          </ul>
+          <!-- End Socials -->
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="w-md-85 text-lg-center mx-lg-auto">
+        <p class="text-white-50 small">
+          &copy; جلو. Htmlstream 2021. تمامی حقوق محفوظ است.
+        </p>
+        <p class="text-white-50 small">
+          هنگامی که از سایت‌ها، سرویس‌ها یا ابزارهای ما بازدید می‌کنید یا با
+          آنها تعامل می‌کنید، ما یا ارائه‌دهندگان خدمات مجاز ما ممکن است از
+          کوکی‌ها برای ذخیره اطلاعات استفاده کنیم تا تجربه بهتر، سریع‌تر و
+          ایمن‌تری و برای اهداف بازاریابی به شما ارائه کنیم.
+        </p>
+      </div>
+      <!-- End Copyright -->
+    </div>
+  </footer>
+
+  <!-- ========== END FOOTER ========== -->
+
+  <!-- ========== SECONDARY CONTENTS ========== -->
+
+
+  <!-- Go To -->
+  <a class="js-go-to go-to position-fixed" href="javascript:;" style="visibility: hidden" data-hs-go-to-options='{
        "offsetTop": 700,
        "position": {
          "init": {
@@ -360,190 +470,112 @@
          }
        }
      }'>
-        <i class="bi-chevron-up"></i>
-    </a>
+    <i class="bi-chevron-up"></i>
+  </a>
 
-    <!-- Offcanvas Search -->
-    <div class="offcanvas offcanvas-top offcanvas-navbar-search bg-light" tabindex="-1" id="offcanvasNavbarSearch">
-        <div class="offcanvas-body">
-            <div class="container">
-                <div class="w-lg-75 mx-lg-auto">
-                    <div class="d-flex justify-content-end mb-3">
-                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                            aria-label="Close"></button>
-                    </div>
+  <!-- Offcanvas Search -->
+  <div class="offcanvas offcanvas-top offcanvas-navbar-search bg-light" tabindex="-1" id="offcanvasNavbarSearch">
+    <div class="offcanvas-body">
+      <div class="container">
+        <div class="w-lg-75 mx-lg-auto">
+          <div class="d-flex justify-content-end mb-3">
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
 
-                    <div class="mb-7">
-                        <!-- Form -->
-                        <form action="{% url 'shop:product-grid' %}">
-                            <!-- Input Card -->
-                            <div class="input-card">
-                                <div class="input-card-form">
-                                    <input type="text" class="form-control form-control-lg" placeholder="جستجو محصولات"
-                                        name="q" aria-label="جستجو محصولات">
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-lg">جستجو کردن</button>
-                            </div>
-                            <!-- End Input Card -->
-                        </form>
-                        <!-- End Form -->
-                    </div>
-
-
+          <div class="mb-7">
+            <!-- Form -->
+            <form>
+              <!-- Input Card -->
+              <div class="input-card">
+                <div class="input-card-form">
+                  <input type="text" class="form-control form-control-lg" placeholder="جستجو محصولات"
+                    aria-label="جستجو محصولات" />
                 </div>
-            </div>
+                <button type="button" class="btn btn-primary btn-lg">
+                  جستجو
+                </button>
+              </div>
+              <!-- End Input Card -->
+            </form>
+            <!-- End Form -->
+          </div>
+
         </div>
+      </div>
     </div>
+  </div>
 
 
-    <!-- ========== END SECONDARY CONTENTS ========== -->
-    <!-- JS Jquery-->
-    <script src="{% static 'js/jquery.min.js' %}"></script>
+  <!-- JS Implementing Plugins -->
+  <script src="{% static 'js/vendor.min.js' %}"></script>
 
-    <!-- JS Implementing Plugins -->
-    <script src="{% static 'js/vendor.min.js' %}"></script>
-
-    <!-- JS Front -->
-    <script src="{% static 'js/theme.min.js' %}"></script>
-
-    <!-- JS Toastify -->
-    <script src="{% static 'vendor/toastify/toastify.js' %}"></script>
-
-    <!-- JS Plugins Init. -->
-    <script>
-        (function () {
-            // INITIALIZATION OF HEADER
-            // =======================================================
-            new HSHeader('#header').init()
-
-            new HSMegaMenu('.js-mega-menu', {
-                desktop: {
-                    position: 'left'
-                }
-            })
+  <!-- JS Front -->
+  <script src="{% static 'js/theme.min.js' %}"></script>
+  <!-- JS Toastify -->
+  <script src="{% static 'vendor/toastify/toastify-es.js' %}"></script>
+  <script src="{% static 'vendor/toastify/toastify.js' %}"></script>
 
 
-            // INITIALIZATION OF SHOW ANIMATIONS
-            // =======================================================
-            new HSShowAnimation('.js-animation-link')
+  <!-- JS Plugins Init. -->
+  <script>
+    (function () {
+      // INITIALIZATION OF HEADER
+      // =======================================================
+      new HSHeader("#header").init();
 
+      // INITIALIZATION OF MEGA MENU
+      // =======================================================
+      new HSMegaMenu(".js-mega-menu", {
+        desktop: {
+          position: "left",
+        },
+      });
 
-            // INITIALIZATION OF BOOTSTRAP VALIDATION
-            // =======================================================
-            // HSBsValidation.init('.js-validate', {
-            //     onSubmit: data => {
-            //         data.event.preventDefault()
-            //         alert('Submited')
-            //     }
-            // })
+      // INITIALIZATION OF SHOW ANIMATIONS
+      // =======================================================
+      new HSShowAnimation(".js-animation-link");
 
+      // INITIALIZATION OF BOOTSTRAP VALIDATION
+      // =======================================================
+      HSBsValidation.init(".js-validate", {
+        onSubmit: (data) => {
+          data.event.preventDefault();
+          alert("Submited");
+        },
+      });
 
-            // INITIALIZATION OF BOOTSTRAP DROPDOWN
-            // =======================================================
-            HSBsDropdown.init()
+      // INITIALIZATION OF BOOTSTRAP DROPDOWN
+      // =======================================================
+      HSBsDropdown.init();
 
+      // INITIALIZATION OF GO TO
+      // =======================================================
+      new HSGoTo(".js-go-to");
 
-            // INITIALIZATION OF GO TO
-            // =======================================================
-            new HSGoTo('.js-go-to')
+      // INITIALIZATION OF INPUT MASK
+      // =======================================================
+      HSCore.components.HSMask.init(".js-input-mask");
 
+      // INITIALIZATION OF SELECT
+      // =======================================================
+      HSCore.components.HSTomSelect.init(".js-select", {
+        render: {
+          option: function (data, escape) {
+            return data.optionTemplate;
+          },
+          item: function (data, escape) {
+            return data.optionTemplate;
+          },
+        },
+      });
+    })();
 
-            // INITIALIZATION OF SWIPER
-            // =======================================================
-            var sliderThumbs = new Swiper('.js-swiper-shop-hero-thumbs', {
-                watchSlidesVisibility: true,
-                watchSlidesProgress: true,
-                history: false,
-                slidesPerView: 3,
-                spaceBetween: 15,
-                on: {
-                    beforeInit: (swiper) => {
-                        const css = `.swiper-slide-thumb-active .swiper-thumb-progress .swiper-thumb-progress-path {
-                  opacity: 1;
-                  -webkit-animation: ${swiper.originalParams.autoplay.delay}ms linear 0ms forwards swiperThumbProgressDash;
-                  animation: ${swiper.originalParams.autoplay.delay}ms linear 0ms forwards swiperThumbProgressDash;
-              }`
-                        style = document.createElement('style')
-                        document.head.appendChild(style)
-                        style.type = 'text/css'
-                        style.appendChild(document.createTextNode(css));
-
-                        swiper.el.querySelectorAll('.js-swiper-thumb-progress')
-                            .forEach(slide => {
-                                slide.insertAdjacentHTML('beforeend', '<span class="swiper-thumb-progress"><svg version="1.1" viewBox="0 0 160 160"><path class="swiper-thumb-progress-path" d="M 79.98452083651917 4.000001576345426 A 76 76 0 1 1 79.89443752470656 4.0000733121155605 Z"></path></svg></span>')
-                            })
-                    },
-                },
-            });
-
-            var swiper = new Swiper('.js-swiper-shop-classic-hero', {
-                autoplay: true,
-                loop: true,
-                navigation: {
-                    nextEl: '.js-swiper-shop-classic-hero-button-next',
-                    prevEl: '.js-swiper-shop-classic-hero-button-prev',
-                },
-                thumbs: {
-                    swiper: sliderThumbs
-                }
-            });
-
-
-            // INITIALIZATION OF COUNTDOWN
-            // =======================================================
-            const oneYearFromNow = new Date()
-
-            document.querySelectorAll('.js-countdown').forEach(item => {
-                const days = item.querySelector('.js-cd-days'),
-                    hours = item.querySelector('.js-cd-hours'),
-                    minutes = item.querySelector('.js-cd-minutes'),
-                    seconds = item.querySelector('.js-cd-seconds')
-
-                countdown(oneYearFromNow.setFullYear(
-                    oneYearFromNow.getFullYear() + 1),
-                    ts => {
-                        days.innerHTML = ts.days
-                        hours.innerHTML = ts.hours
-                        minutes.innerHTML = ts.minutes
-                        seconds.innerHTML = ts.seconds
-                    },
-                    countdown.DAYS | countdown.HOURS | countdown.MINUTES | countdown.SECONDS
-                )
-            })
-        })()
-
-        var swiper = new Swiper('.js-swiper-shop-product', {
-            effect: 'fade',
-            autoplay: true,
-            loop: true,
-            navigation: {
-                nextEl: '.js-swiper-shop-product-button-next',
-                prevEl: '.js-swiper-shop-product-button-prev',
-            },
-            thumbs: {
-                swiper: sliderThumbs
-            }
-        });
-
-        var sliderThumbs = new Swiper('.js-swiper-shop-product-thumb', {
-            slidesPerView: 3,
-            watchSlidesVisibility: true,
-            watchSlidesProgress: true,
-            history: false,
-        });
-        // INITIALIZATION OF  QUANTITY COUNTER
-        // =======================================================
-        new HSQuantityCounter('.js-quantity-counter')
-    </script>
-    <!-- JS Custom-->
-    <script src="{% static 'js/custom.js' %}"></script>
-    <!-- JS Cart-->
-
-    {% block extra_js %} {% endblock extra_js %}
-
-    {% block extra_js_no_compress %} {% endblock extra_js_no_compress %}
-
+  
+  </script>
+    {% block extra_js %}{% endblock %}
+    {% block extra_js_no_compress %}{% endblock %}
     {% include 'messages.html' %}
+
 </body>
 
 </html>

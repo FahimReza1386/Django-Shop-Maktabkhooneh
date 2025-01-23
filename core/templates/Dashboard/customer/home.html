@@ -1,6 +1,16 @@
 {% extends 'Dashboard/customer/base.html' %}
 {% load static %}
 
+
+{% block header %}
+{% endblock header %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block extra_css_no_compress %}
+{% endblock extra_css_no_compress %}
+
 {% block breadcrumb %}
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-light mb-0">
@@ -12,24 +22,35 @@
 </nav>
 {% endblock %}
 
+
 {% block content %}
-<!-- Card -->
-<div class="card">
-    <!-- Header -->
-    <div class="card-header border-bottom">
-        <h5 class="card-header-title">خلاصه داشبورد</h5>
-    </div>
-    <!-- End Header -->
 
-    <!-- Body -->
-    <div class="card-body">
-        <div class="row">
+            <!-- Card -->
+            <div class="card">
+                
+                <!-- Header -->
+                <div class="card-header border-bottom">
+                  <h5 class="card-header-title">خلاصه داشبورد</h5>
+                </div>
+                <!-- End Header -->
+    
+                <!-- Body -->
+                <div class="card-body">
+                  <div class="row">
+    
+                  </div>
+                  <!-- End Row -->
+    
+                </div>
+                <!-- End Body -->
+              </div>
+              <!-- End Card -->
+{% endblock content %}
 
-        </div>
-        <!-- End Row -->
 
-    </div>
-    <!-- End Body -->
-</div>
-<!-- End Card -->
-{% endblock %}
+
+{% block extra_js %}
+{% endblock extra_js %}
+
+{% block extra_js_no_compress %}
+{% endblock extra_js_no_compress %}
