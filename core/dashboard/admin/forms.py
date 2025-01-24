@@ -15,3 +15,8 @@ class AdminProfileEditForm(forms.ModelForm):
     class Meta:
         model= Profile
         fields= ["first_name","last_name","phone_number","gender"]
+
+
+
+class AdminProductListForm(forms.ModelForm):
+    pass
