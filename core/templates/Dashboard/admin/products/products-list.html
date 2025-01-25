@@ -147,7 +147,7 @@
                         {% endif %}
                         <td>%{{ item.discount_percent }}</td>
                         <td>
-                          <a class="btn btn-sm btn-icon btn-ghost-secondary" href="./admin-account-products-single.html"><i class="bi-pencil-square"></i></a>
+                          <a class="btn btn-sm btn-icon btn-ghost-secondary" href="{% url 'dashboard:dash_admin:product-edit' pk=item.id %}"><i class="bi-pencil-square"></i></a>
                             {% if item.is_published %}
                                 <a class="btn btn-sm btn-icon btn-ghost-primary" href="{% url 'shop:product-detail' slug=item.slug %}"><i class="bi-eye"></i></a>
                             {% endif %}

@@ -5,10 +5,10 @@ from django.contrib.messages.views import SuccessMessageMixin
 from dashboard.permissions import HasAdminAccessPermission
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
-from dashboard.admin.forms import AdminPasswordChangeForm, AdminProfileEditForm, AdminProductListForm
+from dashboard.admin.forms import AdminPasswordChangeForm, AdminProfileEditForm, AdminProductEditForm
 from django.contrib import messages
 from accounts.models import Profile
-from shop.models import ProductModel, ProductCategoryModel
+from shop.models import ProductModel, ProductCategoryModel, ProductStatusType
 from django.core.exceptions import FieldError
 # Create your views here.
 
@@ -94,5 +94,21 @@ class AdminProductListView(LoginRequiredMixin, HasAdminAccessPermission, ListVie
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['total_items'] = self.get_queryset().count()
+        context['categories'] = ProductCategoryModel.objects.all()
+        return context
+
+
+
+class AdminProductEditView(LoginRequiredMixin, HasAdminAccessPermission, SuccessMessageMixin, UpdateView):
+    template_name="Dashboard/admin/products/product-edit.html"
+    queryset = ProductModel.objects.all()
+    form_class = AdminProductEditForm
+    success_message="بروزرسانی محصول با موفقیت انجام شد ."
+
+    def get_success_url(self):
+        return reverse_lazy("dashboard:dash_admin:products-list")
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context['categories'] = ProductCategoryModel.objects.all()
         return context
