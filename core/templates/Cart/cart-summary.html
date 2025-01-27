@@ -40,7 +40,7 @@
                   <div class="flex-grow-1 ms-3">
                     <div class="row">
                       <div class="col-sm-7 mb-3 mb-sm-0">
-                        <h5><a class="text-dark m-3" href="#">{{ item.product_obj.title }}</a></h5>
+                        <h5><a class="text-dark m-3" href="{% url 'shop:product-detail' slug=item.product_obj.slug %}">{{ item.product_obj.title }}</a></h5>
 
                         <div class="d-block d-sm-none">
                           
@@ -86,13 +86,12 @@
 
                           <div class="col-auto">
                             <div class="d-grid gap-2">
-                              <a class="link-sm link-secondary small" href="javascript:;">
+                              <button class="btn btn-sm p-0" onclick="DeleteProduct('{{ item.product_id }}')">
                                 <i class="bi-trash me-1"></i> حذف
-                              </a>
-
-                              <a class="link-sm link-secondary small" href="javascript:;">
+                              </button>
+                              <button class="btn btn-sm p-0">
                                 <i class="bi-heart-fill ms-1 "></i>جزو علایق
-                              </a>
+                            </button>
                             </div>
                           </div>
                           <!-- End Col -->
@@ -122,10 +121,13 @@
             <!-- End List Group -->
 
             <div class="d-sm-flex justify-content-end">
-              <a class="link" href="{% url 'shop:product-grid' %}">
+
+              <a class="link flout-left" href="{% url 'shop:product-grid' %}">
                 به خرید ادامه دهید <i class="bi-chevron-left small ms-1"></i>
               </a>
+            
             </div>
+      
           </form>
           <!-- End Form -->
         </div>
@@ -180,10 +182,18 @@
               </div>
               <div class="flex-grow-1 ms-2">
                 <span class="small me-1">نیاز به پشتیبانی دارید؟</span>
-                <a class="link small" href="#">ارسال تیکت</a>
+                <a class="link small" href="{% url 'website:contact' %}">ارسال تیکت</a>
               </div>
+            
             </div>
             <!-- End Media -->
+            <div class="d-sm-flex justify-content-center">
+              <button class="btn btn-lg mt-4 btn-outline-danger p-2" onclick="DeleteAllCart()">
+               حذف سبد خرید
+              </button>
+
+            
+            </div>
           </div>
         </div>
       </div>
@@ -216,6 +226,48 @@
               }
             })
           }
+          function DeleteProduct(product_id){
+            $.ajax({
+              type: "POST",
+              url: "{% url 'cart:session-delete-product' %}",
+              data: {
+                csrfmiddlewaretoken:'{{ csrf_token }}',
+                product_id:product_id,                
+              },
+              success: function(response){
+                window.location.reload()
+              },
+              error: function (err,errmsg,xhr) {
+                console.log(err)
+              }
+            })
+          }
+          
+    </script>
+
+    <script>
+      function DeleteAllCart() {
+        var userConfirmed = window.confirm("آیا از حذف تمامی محصولات سبد خرید خود اطمینان دارید؟");
+        if(userConfirmed != false){
+          $.ajax({
+          type: "POST",
+          url: "{% url 'cart:session-delete-all-cart' %}",
+          data: {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+          },
+          success: function(response) {
+            window.location.reload();
+          },
+          error: function(err, errmsg, xhr) {
+            console.log(err);
+          }
+        });
+        }else{
+          window.location.reload();
+        }
+        
+      }
+
     </script>
 
 {% endblock %}
