@@ -77,18 +77,31 @@ class User(AbstractBaseUser,PermissionsMixin):
         return self.email
 
 
+class Gender(models.IntegerChoices):
+    male = 1 , _("male")
+    female = 2 , _("female")
+    other = 3 , _("other")
+
 
 class Profile(models.Model):
-    user = models.OneToOneField("User", on_delete=models.CASCADE)
+    user = models.OneToOneField("User", on_delete=models.CASCADE, related_name="user_profile")
     first_name = models.CharField(max_length=22)
     last_name = models.CharField(max_length=22)
     phone_number = models.CharField(max_length=12, validators=[validate_iranian_phone_number])
+    gender = models.IntegerField(choices=Gender.choices, default=Gender.other.value)
+    image = models.ImageField(upload_to="profile/", default='profile/default.jpg')
+  
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
 
+    def get_fullname(self):
+        if self.first_name or self.last_name:
+            return f"{self.first_name} {self.last_name}"
+        else:
+            return f"کاربر جدید - {self.id}"
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
-    if created and instance.type == UserType.customer.value:  
+    if created:  
         Profile.objects.create(user=instance, pk=instance.pk)

@@ -193,9 +193,12 @@ Product grid Page
                   <img class="card-img-top" src="{{ object.image.url }}" alt="Image Description">
 
                   <div class="card-pinned-top-end">
+                    {% if request.user.is_authenticated %}
+
                     <button type="button" class="btn btn-outline-secondary btn-xs btn-icon rounded-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="افزودن به علایق">
                       <i class="bi-heart"></i>
                     </button>
+                    {% endif %}
                   </div>
                 </div>
 
@@ -229,7 +232,7 @@ Product grid Page
                   </a>
                   <!-- End Rating -->
 
-                  <button type="button" class="btn btn-outline-primary btn-sm btn-transition rounded-pill" onclick="addCartItem('{{ object.id }}')">افزودن به سبد خرید</button>
+                  <button type="button" class="btn btn-outline-primary btn-sm btn-transition rounded-pill" onclick="AddProductToCart('{{ object.id }}',1)">افزودن به سبد خرید</button>
                 </div>
 
               </div>  

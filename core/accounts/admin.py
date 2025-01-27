@@ -46,7 +46,7 @@ class CustomUserAdmin(UserAdmin):
 
 class CustomProfileModel(admin.ModelAdmin):
     model=Profile
-    list_display=("id", "user", "first_name", "last_name", "phone_number")
+    list_display=("id", "user", "first_name", "last_name", "phone_number","gender")
     searching_fields = ('user', "first_name", "last_name", "phone_number")
 
 admin.site.register(Profile, CustomProfileModel)
