@@ -73,13 +73,8 @@
                     <span class="valid-feedback">Valid feedback</span>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="validationValidSelect1">دسته بندی</label>
-                    <select class="form-select is-valid" id="validationValidSelect1" name="category">
-                    {% for cat in categories %}
-                      <option name="category" value="{{ cat.id }}">{{ cat.title }}</option>
-                      
-                    {% endfor %}
-                    </select>
+                    <label for="validationValidSelect1">دسته بندی</label> 
+                    {{ form.category }}
                     <span class="valid-feedback">Valid feedback</span>
                   </div>
                   <div class="col-md-4 mb-3">
@@ -107,14 +102,22 @@
 
             </div>
           </div>
+       
           <div class="card-footer">
             <div class=" d-flex pt-5 justify-content-end">
-              <a class="btn btn-danger ms-3">حذف</a>
-              <a class="btn btn-secondary ms-3" href="./admin-account-products.html">بازگشت</a>
-              <button type="submit" class="btn btn-primary ms-3">ثبت تغییرات</button>
+              <a class="btn btn-secondary ms-3" href="{% url 'dashboard:dash_admin:products-list' %}">بازگشت</a>
+              <button type="submit"  class="btn btn-primary ms-3">ثبت تغییرات</button>
+            </form>
             </div>
+            <hr/>
+
+            <form method="post" style="float: left;" class="mt-2 " action="{% url 'dashboard:dash_admin:product-delete' pk=object.pk %}">
+              {% csrf_token %}
+              <button class="btn btn-danger ms-3 " type="submit">حذف محصول</button>
+            </form>
           </div>
-        </form>
+    
+        
 
           <!-- End Body -->
         </div>

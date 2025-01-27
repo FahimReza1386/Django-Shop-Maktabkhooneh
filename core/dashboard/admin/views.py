@@ -1,5 +1,5 @@
 from django.shortcuts import redirect
-from django.views.generic import TemplateView, UpdateView, ListView
+from django.views.generic import TemplateView, UpdateView, ListView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from dashboard.permissions import HasAdminAccessPermission
@@ -112,3 +112,11 @@ class AdminProductEditView(LoginRequiredMixin, HasAdminAccessPermission, Success
         context = super().get_context_data(**kwargs)
         context['categories'] = ProductCategoryModel.objects.all()
         return context
+
+
+class AdminProductDeleteView(LoginRequiredMixin, HasAdminAccessPermission, SuccessMessageMixin, DeleteView):
+    success_url = reverse_lazy("dashboard:dash_admin:products-list")
+    success_message = "حذف محصول مورد نظر با موفقیت انجام شد ."
+    model = ProductModel 
+    http_method_names = ["post"]
+

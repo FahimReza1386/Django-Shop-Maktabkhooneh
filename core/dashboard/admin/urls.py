@@ -14,4 +14,5 @@ urlpatterns = [
     # Product Urls
     path("profile/list/", views.AdminProductListView.as_view(), name="products-list"),
     path("profile/<int:pk>/edit/", views.AdminProductEditView.as_view(), name="product-edit"),
+    path("profile/<int:pk>/delete/", views.AdminProductDeleteView.as_view(), name="product-delete"),
 ]
