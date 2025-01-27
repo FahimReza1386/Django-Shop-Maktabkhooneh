@@ -7,15 +7,21 @@ class CartSession:
 
         
 
-    def add_product(self, product_id):
+    def add_product(self, product_id, qty):
+        quantity = int(qty)
         for item in self._cart["items"]:
-            if product_id == item["product_id"]:
-                item["quantity"] += 1
-                break
+           if product_id == item["product_id"]:
+                plus_qty = int(item["quantity"]) + quantity
+                if plus_qty <=10:
+                    item["quantity"] += quantity
+                    break
+                else:
+                    item["quantity"] = 10
+                    break
         else:
             new_item = {
                 "product_id":product_id,
-                "quantity":1,
+                "quantity":quantity,
             }
 
             self._cart["items"].append(new_item)
@@ -40,7 +46,16 @@ class CartSession:
 
     def get_cart_dict(self):
         return self._cart
-  
+    
+    def delete_product(self, product_id):
+        for item in self._cart["items"]:
+            if product_id == item["product_id"]:
+                self._cart["items"].remove(item)
+                break
+        else:
+            return
+
+        self.save()  
     
     def get_total_payment_price(self):
         return self.total_payment_price

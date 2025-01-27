@@ -494,7 +494,7 @@
     <!-- JS Front -->
     <script src="{% static 'js/theme.min.js' %}"></script>
     <!-- Jquery Link -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="{% static 'js/jquery.js' %}"></script>
   
     <!-- JS Toastify -->
     <script src="{% static 'vendor/toastify/toastify-es.js' %}"></script>
@@ -602,27 +602,28 @@
         })
       })()
     </script>
+
     <script>
-      function addCartItem(product_id){
-        $.ajax({
-            type: "POST",
-            url: "{% url 'cart:session-add-product' %}",
-            data: {
-              csrfmiddlewaretoken:'{{ csrf_token }}',
-              product_id:product_id,
-              
-            },
-            success: function(response){
-                $("#total-cart-item-count").html(response.total_quantity)
-                console.log(response)
-            },
-            error: function (err,errmsg,xhr) {
-              console.log(err)
-            }
-        });
+      function AddProductToCart(product_id,qty){
+          $.ajax({
+              type: "POST",
+              url: "{% url 'cart:session-add-product' %}",
+              data: {
+                csrfmiddlewaretoken:'{{ csrf_token }}',
+                product_id:product_id,
+                quantity:qty,
+              },
+              success: function(response){
+                  $("#count-cart").html(response.total_qty)
+                  window.location.reload()
+              },
+              error: function (err,errmsg,xhr) {
+                console.log(err)
+              }
+          });
     
+      }
     
-    }
     </script>
     
     {% block extra_js %}
