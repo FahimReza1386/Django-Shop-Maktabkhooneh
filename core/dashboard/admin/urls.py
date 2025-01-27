@@ -13,6 +13,7 @@ urlpatterns = [
     path("profile/image/edit/", views.AdminProfileImageEditView.as_view(), name="profile-image-edit"),
     # Product Urls
     path("profile/list/", views.AdminProductListView.as_view(), name="products-list"),
+    path("profile/create/", views.AdminProductCreateView.as_view(), name="product-create"),
     path("profile/<int:pk>/edit/", views.AdminProductEditView.as_view(), name="product-edit"),
     path("profile/<int:pk>/delete/", views.AdminProductDeleteView.as_view(), name="product-delete"),
 ]

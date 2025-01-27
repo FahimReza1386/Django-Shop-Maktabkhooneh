@@ -1,11 +1,11 @@
 from django.shortcuts import redirect
-from django.views.generic import TemplateView, UpdateView, ListView, DeleteView
+from django.views.generic import TemplateView, UpdateView, ListView, DeleteView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from dashboard.permissions import HasAdminAccessPermission
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
-from dashboard.admin.forms import AdminPasswordChangeForm, AdminProfileEditForm, AdminProductEditForm
+from dashboard.admin.forms import AdminPasswordChangeForm, AdminProfileEditForm, AdminProductEditForm, AdminProductCreateForm
 from django.contrib import messages
 from accounts.models import Profile
 from shop.models import ProductModel, ProductCategoryModel, ProductStatusType
@@ -96,6 +96,18 @@ class AdminProductListView(LoginRequiredMixin, HasAdminAccessPermission, ListVie
         context['total_items'] = self.get_queryset().count()
         context['categories'] = ProductCategoryModel.objects.all()
         return context
+
+
+class AdminProductCreateView(LoginRequiredMixin, HasAdminAccessPermission, SuccessMessageMixin, CreateView):
+    model=ProductModel
+    success_url = reverse_lazy("dashboard:dash_admin:products-list")
+    success_message = "ایجاد مخصول جدید شما با موفقیت انجام شد ."
+    form_class = AdminProductCreateForm
+    template_name = "Dashboard/admin/products/product-create.html"
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 

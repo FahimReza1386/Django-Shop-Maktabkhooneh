@@ -26,3 +26,14 @@ class AdminProductEditForm(forms.ModelForm):
         super(AdminProductEditForm, self).__init__(*args, **kwargs)
         self.fields["description"].widget.attrs["class"] = "form-control is-valid"
         self.fields["category"].widget.attrs["class"] = "form-control is-valid"
+
+
+class AdminProductCreateForm(forms.ModelForm):
+    class Meta:
+        model = ProductModel
+        fields = ["category","title", "slug", "image", "brief_description", "description", "stock", "status", "price", "discount_percent"]
+    
+    def __init__(self, *args, **kwargs):
+        super(AdminProductCreateForm, self).__init__(*args, **kwargs)
+        self.fields["description"].widget.attrs["class"] = "form-control is-valid"
+        self.fields["category"].widget.attrs["class"] = "form-control is-valid"
