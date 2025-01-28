@@ -55,6 +55,7 @@
   }
 </style>
 <div class="col-lg-12">
+ 
   <!-- Card -->
   <div class="card">
     <!-- Header -->
@@ -127,17 +128,12 @@
               <div id="editor" class="js-quill" style="height: 15rem;" 
                   data-hs-quill-options='{
                       "placeholder": "Type your message...",
-                      "modules": {
-                          "toolbar": [
-                              ["bold", "italic", "underline", "strike", "link", "image", "blockquote", "code", {"list": "bullet"}]
-                          ]
-                      }
                   }'>
                   <!-- محتوای ویرایش شده قبلی که نمایش داده می‌شود -->
               </div>
               <input type="hidden" name="description" id="description-input" value="">
           </div>
-        </div>
+          </div>
 
         <!-- اینجا div برای نمایش محتوای HTML است که باید قابل ویرایش باشد -->
         <div class="col-md-12 mb-3">
@@ -151,27 +147,53 @@
             <div class=" d-flex pt-5 justify-content-end">
               <a class="btn btn-secondary ms-3" href="{% url 'dashboard:dash_admin:products-list' %}">بازگشت</a>
               <button type="submit" class="btn btn-primary ms-3">ثبت تغییرات</button>
-      </form>
-    </div>
-    <hr />
+            </form>
+          </div>
+          <form method="post" style="float: left;" class="mt-2 "
+            action="{% url 'dashboard:dash_admin:product-delete' pk=object.pk %}">
+            {% csrf_token %}
+            <button class="btn btn-danger ms-3 " type="submit">حذف محصول</button>
+          </form>
+         </div>
+</div>
 
-    <form method="post" style="float: left;" class="mt-2 "
-      action="{% url 'dashboard:dash_admin:product-delete' pk=object.pk %}">
-      {% csrf_token %}
-      <button class="btn btn-danger ms-3 " type="submit">حذف محصول</button>
-    </form>
+</div>
+
+
+
+</div>
+</div>
+
+
+<div class="card mt-5 ">
+  <!-- Header -->
+  <div class="card-header border-bottom">
+    <h5 class="card-header-title ">ویرایش تصاویر محصول</h5>
+    <a class="btn btn-sm btn-icon btn-ghost-primary" style="float: left;margin-top: -2rem;"
+      href="{% url 'shop:product-detail' slug=object.slug %}"><i class="bi-eye"></i></a>
   </div>
+  <!-- End Header -->
+
+  <!-- Body -->
+  <div class="card-body">
+    <div class="d-flex flex-wrap">
+      {% for image in extra_picture %}
+        {% if image.product == object %}
+          <div class="swiper-slide col-md-2 mt-2">
+            <a class="avatar avatar-circle" href="javascript:;">
+              <img class="avatar-img"  src="{{ image.file.url }}" alt="Image Description">
+            </a>
+          </div>
+        {% endif %}
+      {% endfor %}
+      <a class="btn btn-ghost-primary  avatar-circle mt-2" style="padding-top: 14px;" href="{% url 'dashboard:dash_admin:product-image-add' pk=object.pk %}">
+        <i class="bi bi-folder-plus" style="font-size: 17px;"></i>       </a>
+    </div>
+  
+</div>
+</div>
 
 
-
-  <!-- End Body -->
-</div>
-<!-- End Card -->
-</div>
-<!-- End Col -->
-</div>
-<!-- End Row -->
-</div>
 
 {% endblock %}
 

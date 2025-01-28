@@ -1,0 +1,247 @@
+{% extends 'Dashboard/admin/base.html' %}
+{% load static %}
+{% load humanize %}
+
+
+{% block header %}
+{% endblock header %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block extra_css_no_compress %}
+{% endblock extra_css_no_compress %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb breadcrumb-light mb-0">
+    <li class="breadcrumb-item"> حساب </li>
+    <li class="breadcrumb-item active" aria-current="page">
+      داشبورد
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+      محصولات
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+      بروزرسانی تصویر های محصول
+    </li>
+  </ol>
+</nav>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="col-lg-12">
+
+<div class="card mt-5 ">
+  <!-- Header -->
+  <div class="card-header border-bottom">
+    <h5 class="card-header-title ">ویرایش تصاویر محصول</h5>
+    <a class="btn btn-sm btn-icon btn-ghost-primary" style="float: left;margin-top: -2rem;"
+      href=""></a>
+  </div>
+  <!-- End Header -->
+
+
+
+  <div class="card-body">
+    <form action="." method="post" class="mt-2" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- Form --> 
+        <div class="row mb-4">
+            <label class="col-sm-3 col-form-label form-label mt-4">عکس پروفایل :</label>
+
+            <div class="col-sm-9">
+                <!-- Media -->
+                <div class="d-flex align-items-center">
+                    <!-- Avatar -->
+                    <label class="avatar avatar-xl avatar-circle" for="avatarUploader">
+                        <img id="avatarImg" class="avatar-img" src="{% static 'img/160x160/img1.jpg'%}"
+                            alt="Image Description">
+                    </label>
+                    
+                    <div class="d-grid d-sm-flex gap-2 me-4">
+                        <div class="form-attachment-btn btn btn-white btn-sm">آپلود عکس
+                            <input type="file" name="file" class="js-file-attach form-attachment-btn-label"
+                                id="avatarUploader" data-hs-file-attach-options='{
+                          "textTarget": "#avatarImg",
+                          "mode": "image",
+                          "targetAttr": "src",
+                          "resetTarget": ".js-file-attach-reset-img",
+                          "resetImg": "{% static 'img/160x160/img1.jpg' %}", "allowTypes" :
+                                [".png", ".jpeg" , ".jpg" ] }'>
+                        </div>
+                        <!-- End Avatar -->
+                        <button type="submit" class="btn btn-primary btn-sm">بروزرسانی</button>
+                    </div>
+                </div>
+                <!-- End Media -->
+            </div>
+        </div>
+        <!-- End Form -->
+    </form>
+</div>
+  
+</div>
+
+</div>
+{% endblock %}
+
+
+
+{% block extra_js %}
+
+<!-- JS Implementing Plugins -->
+<script src="{% static 'js/vendor.min.js' %}"></script>
+
+<!-- JS Front -->
+<script src="{% static 'js/theme.min.js' %}"></script>
+
+<!-- JS Plugins Init. -->
+<script>
+    (function () {
+        // INITIALIZATION OF HEADER
+        // =======================================================
+        new HSHeader('#header').init()
+
+
+        // INITIALIZATION OF MEGA MENU
+        // =======================================================
+        new HSMegaMenu('.js-mega-menu', {
+            desktop: {
+                position: 'left'
+            }
+        })
+
+
+        // INITIALIZATION OF SHOW ANIMATIONS
+        // =======================================================
+        new HSShowAnimation('.js-animation-link')
+
+
+        // INITIALIZATION OF BOOTSTRAP VALIDATION
+        // =======================================================
+        HSBsValidation.init('.js-validate', {
+            onSubmit: data => {
+                data.event.preventDefault()
+                alert('Submited')
+            }
+        })
+
+
+        // INITIALIZATION OF BOOTSTRAP DROPDOWN
+        // =======================================================
+        HSBsDropdown.init()
+
+
+        // INITIALIZATION OF GO TO
+        // =======================================================
+        new HSGoTo('.js-go-to')
+
+
+        // INITIALIZATION OF FILE ATTACH
+        // =======================================================
+        new HSFileAttach('.js-file-attach')
+
+
+        // INITIALIZATION OF ADD FIELD
+        // =======================================================
+        new HSAddField('.js-add-field', {
+            addedField: el => {
+                el.querySelectorAll('.js-select-dynamic').forEach(item => {
+                    HSCore.components.HSTomSelect.init(item)
+                })
+
+                HSCore.components.HSMask.init('.js-input-mask-dynamic')
+            }
+        })
+
+
+        // INITIALIZATION OF INPUT MASK
+        // =======================================================
+        HSCore.components.HSMask.init('.js-input-mask')
+
+
+        // INITIALIZATION OF QUILLJS EDITOR
+        // =======================================================
+        HSCore.components.HSQuill.init('.js-quill')
+
+
+        // INITIALIZATION OF SELECT
+        // =======================================================
+        HSCore.components.HSTomSelect.init('.js-select', {
+            render: {
+                'option': function (data, escape) {
+                    return data.optionTemplate || `<div>${data.text}</div>>`
+                },
+                'item': function (data, escape) {
+                    return data.optionTemplate || `<div>${data.text}</div>>`
+                }
+            }
+        })
+    })()
+</script>
+
+
+  <!-- JS Plugins Init. -->
+  <script>
+    (function () {
+      // INITIALIZATION OF HEADER
+      // =======================================================
+      new HSHeader("#header").init();
+
+      // INITIALIZATION OF MEGA MENU
+      // =======================================================
+      new HSMegaMenu(".js-mega-menu", {
+        desktop: {
+          position: "left",
+        },
+      });
+
+      // INITIALIZATION OF SHOW ANIMATIONS
+      // =======================================================
+      new HSShowAnimation(".js-animation-link");
+
+      // INITIALIZATION OF BOOTSTRAP VALIDATION
+      // =======================================================
+      HSBsValidation.init(".js-validate", {
+        onSubmit: (data) => {
+          data.event.preventDefault();
+          alert("Submited");
+        },
+      });
+
+      // INITIALIZATION OF BOOTSTRAP DROPDOWN
+      // =======================================================
+      HSBsDropdown.init();
+
+      // INITIALIZATION OF GO TO
+      // =======================================================
+      new HSGoTo(".js-go-to");
+
+      // INITIALIZATION OF INPUT MASK
+      // =======================================================
+      HSCore.components.HSMask.init(".js-input-mask");
+
+      // INITIALIZATION OF SELECT
+      // =======================================================
+      HSCore.components.HSTomSelect.init(".js-select", {
+        render: {
+          option: function (data, escape) {
+            return data.optionTemplate;
+          },
+          item: function (data, escape) {
+            return data.optionTemplate;
+          },
+        },
+      });
+    })();
+    HSCore.components.HSQuill.init('.js-quill')
+  </script>
+
+{% endblock extra_js %}
+
+{% block extra_js_no_compress %}
+{% endblock extra_js_no_compress %}

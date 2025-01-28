@@ -2,7 +2,7 @@ from django.contrib.auth import forms as auth_forms
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from accounts.models import Profile
-from shop.models import ProductModel
+from shop.models import ProductModel, ProductImageModel
 
 class AdminPasswordChangeForm(auth_forms.PasswordChangeForm):
     error_messages = {
@@ -27,7 +27,6 @@ class AdminProductEditForm(forms.ModelForm):
         self.fields["description"].widget.attrs["class"] = "form-control is-valid"
         self.fields["category"].widget.attrs["class"] = "form-control is-valid"
 
-
 class AdminProductCreateForm(forms.ModelForm):
     class Meta:
         model = ProductModel
@@ -37,3 +36,13 @@ class AdminProductCreateForm(forms.ModelForm):
         super(AdminProductCreateForm, self).__init__(*args, **kwargs)
         self.fields["description"].widget.attrs["class"] = "form-control is-valid"
         self.fields["category"].widget.attrs["class"] = "form-control is-valid"
+
+
+
+
+# -----------------------------------ProductImage Form------------------------------------
+class AdminProductImageAddForm(forms.ModelForm):
+    class Meta:
+        model= ProductImageModel
+        fields = ["file"]
+        
