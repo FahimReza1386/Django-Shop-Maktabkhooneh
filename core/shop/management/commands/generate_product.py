@@ -1,7 +1,7 @@
 from faker import Faker
 from django.utils.text import slugify
 from django.core.management.base import BaseCommand
-from shop.models import ProductModel, ProductCategoryModel, ProductStatusType
+from shop.models import ProductModel, ProductCategoryModel, ProductStatusType, ProductImageModel
 from accounts.models import User
 from PIL import Image
 from django.core.files.base import ContentFile
@@ -58,11 +58,32 @@ class Command(BaseCommand):
                 price=price,
                 discount_percent=discount_percent,
             )
+
+            for _ in range(5):
+
+                image_url = f"https://picsum.photos/200/200?random={random.randint(1, 1000)}"
+                response = requests.get(image_url)
+
+                image = Image.open(BytesIO(response.content))
+
+                image_size = len(response.content)
+
+                if image_size > 1048576:  # 1MB
+                    image = self.resize_image(image)
+
+                image_file = self.save_image(image)
+                
+                ProductImageModel.objects.create(product=product, file=image_file)
+
+
             product.category.set(selected_categoreis)
+        
+        
+            
 
         self.stdout.write(self.style.SUCCESS('Successfully generated 10 fake products'))
 
-    
+
     def resize_image(self, image):
         image = image.resize((800, 800), Image.ANTIALIAS)
         return image
