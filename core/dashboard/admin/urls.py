@@ -12,8 +12,11 @@ urlpatterns = [
     path("profile/edit/", views.AdminProfileEditView.as_view(), name="profile-edit"),
     path("profile/image/edit/", views.AdminProfileImageEditView.as_view(), name="profile-image-edit"),
     # Product Urls
-    path("profile/list/", views.AdminProductListView.as_view(), name="products-list"),
-    path("profile/create/", views.AdminProductCreateView.as_view(), name="product-create"),
-    path("profile/<int:pk>/edit/", views.AdminProductEditView.as_view(), name="product-edit"),
-    path("profile/<int:pk>/delete/", views.AdminProductDeleteView.as_view(), name="product-delete"),
+    path("product/list/", views.AdminProductListView.as_view(), name="products-list"),
+    path("product/create/", views.AdminProductCreateView.as_view(), name="product-create"),
+    path("product/<int:pk>/edit/", views.AdminProductEditView.as_view(), name="product-edit"),
+    path("product/<int:pk>/delete/", views.AdminProductDeleteView.as_view(), name="product-delete"),
+    # Crud For ProductImage
+    path("product/image/<int:pk>/add/", views.AdminProductImageAddView.as_view(), name="product-image-add"),
+    
 ]

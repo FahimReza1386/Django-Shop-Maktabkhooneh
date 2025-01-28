@@ -1,14 +1,14 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView, UpdateView, ListView, DeleteView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from dashboard.permissions import HasAdminAccessPermission
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
-from dashboard.admin.forms import AdminPasswordChangeForm, AdminProfileEditForm, AdminProductEditForm, AdminProductCreateForm
+from dashboard.admin.forms import AdminPasswordChangeForm, AdminProfileEditForm, AdminProductEditForm, AdminProductCreateForm, AdminProductImageAddForm
 from django.contrib import messages
 from accounts.models import Profile
-from shop.models import ProductModel, ProductCategoryModel, ProductStatusType
+from shop.models import ProductModel, ProductCategoryModel, ProductStatusType, ProductImageModel
 from django.core.exceptions import FieldError
 # Create your views here.
 
@@ -109,8 +109,6 @@ class AdminProductCreateView(LoginRequiredMixin, HasAdminAccessPermission, Succe
         form.instance.user = self.request.user
         return super().form_valid(form)
 
-
-
 class AdminProductEditView(LoginRequiredMixin, HasAdminAccessPermission, SuccessMessageMixin, UpdateView):
     template_name="Dashboard/admin/products/product-edit.html"
     queryset = ProductModel.objects.all()
@@ -123,6 +121,7 @@ class AdminProductEditView(LoginRequiredMixin, HasAdminAccessPermission, Success
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = ProductCategoryModel.objects.all()
+        context['extra_picture'] = ProductImageModel.objects.all()
         return context
 
 
@@ -132,3 +131,23 @@ class AdminProductDeleteView(LoginRequiredMixin, HasAdminAccessPermission, Succe
     model = ProductModel 
     http_method_names = ["post"]
 
+
+#  ---------------------------------- Product Image View-------------------------------------
+
+class AdminProductImageAddView(LoginRequiredMixin, HasAdminAccessPermission,SuccessMessageMixin, CreateView):
+    model = ProductImageModel
+    success_url = reverse_lazy("dashboard:dash_admin:products-list")
+    success_message = "افزودن تصویر جدید به محصول شما با موفقیت انجام شد ."
+    template_name = "Dashboard/admin/products/product-image-add.html"
+    form_class = AdminProductImageAddForm
+
+
+    def get_object(self):
+
+        return get_object_or_404(ProductModel, pk=self.kwargs['pk'])
+
+
+    def form_valid(self, form):
+        form.instance.product = self.get_object()
+        return super().form_valid(form)
+    
