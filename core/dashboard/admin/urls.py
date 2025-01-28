@@ -18,5 +18,6 @@ urlpatterns = [
     path("product/<int:pk>/delete/", views.AdminProductDeleteView.as_view(), name="product-delete"),
     # Crud For ProductImage
     path("product/image/<int:pk>/add/", views.AdminProductImageAddView.as_view(), name="product-image-add"),
+    path("product/image/<int:pk>/delete/", views.AdminProductImageDeleteView.as_view(), name="product-image-delete"),
     
 ]

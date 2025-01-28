@@ -137,7 +137,7 @@ class AdminProductDeleteView(LoginRequiredMixin, HasAdminAccessPermission, Succe
 class AdminProductImageAddView(LoginRequiredMixin, HasAdminAccessPermission,SuccessMessageMixin, CreateView):
     model = ProductImageModel
     success_url = reverse_lazy("dashboard:dash_admin:products-list")
-    success_message = "افزودن تصویر جدید به محصول شما با موفقیت انجام شد ."
+    success_message = "افزودن تصویر جدید به محصول مورد نظر با موفقیت انجام شد ."
     template_name = "Dashboard/admin/products/product-image-add.html"
     form_class = AdminProductImageAddForm
 
@@ -151,3 +151,15 @@ class AdminProductImageAddView(LoginRequiredMixin, HasAdminAccessPermission,Succ
         form.instance.product = self.get_object()
         return super().form_valid(form)
     
+
+
+class AdminProductImageDeleteView(LoginRequiredMixin, HasAdminAccessPermission, SuccessMessageMixin, DeleteView):
+    success_message = "حذف تصویر محصول مورد نظر با موفقیت انجام شد ."
+    model = ProductImageModel
+    http_method_names = ["post"]
+
+    def get_object(self):
+        return ProductImageModel.objects.get(id = self.kwargs["pk"])
+
+    def get_success_url(self):
+        return reverse_lazy("dashboard:dash_admin:product-edit", kwargs={"pk":self.get_object().product.pk})
