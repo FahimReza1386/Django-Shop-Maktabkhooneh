@@ -15,18 +15,18 @@
 
 {% block breadcrumb %}
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb breadcrumb-light mb-0">
-        <li class="breadcrumb-item"> حساب </li>
-        <li class="breadcrumb-item active" aria-current="page">
-            داشبورد
-        </li>
-        <li class="breadcrumb-item active" aria-current="page">
-            محصولات
-        </li>
-        <li class="breadcrumb-item active" aria-current="page">
-          بروزرسانی محصول
-      </li>
-    </ol>
+  <ol class="breadcrumb breadcrumb-light mb-0">
+    <li class="breadcrumb-item"> حساب </li>
+    <li class="breadcrumb-item active" aria-current="page">
+      داشبورد
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+      محصولات
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+      بروزرسانی محصول
+    </li>
+  </ol>
 </nav>
 {% endblock %}
 
@@ -34,99 +34,144 @@
 {% block content %}
 
 
-        <div class="col-lg-12">
-          <!-- Card -->
-          <div class="card">
-            <!-- Header -->
-            <div class="card-header border-bottom">
-              <h5 class="card-header-title">ویرایش محصول</h5>
-            </div>
-            <!-- End Header -->
+<style>
+  /* اطمینان از اینکه تگ‌های <strong> و <p> به درستی نمایش داده شوند */
+  #description-output p {
+    font-size: 16px; /* یا سایز دلخواه خود */
+    line-height: 1.6;
+  }
+  
+  #description-output strong {
+    font-weight: bold;
+  }
 
-            <!-- Body -->
-            <div class="card-body">
-              <form action=".", method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="row d-flex ">
-                  <div class="col-md-6 mb-3">
-                    <label for="validationValidInput1">نام محصول</label>
-                    <input type="text" class="form-control is-valid" id="id_title" name="title" value="{{ form.title.value }}" placeholder="">
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label for="validationValidInput1">slug محصول</label>
-                    <input type="text" class="form-control is-valid" id="id_slug" name="slug" value="{{ form.slug.value }}" placeholder="">
-                  </div>
-                  <div class="col-md-2" >
-                    <button class="btn btn-md btn-primary p-2" style="margin-top: 25px;"  type="button" onclick="generateSlug()">ساخت slug</button>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="validationValidInput1">تعداد</label>
-                    <input type="text" class="form-control is-valid" id="validationValidInput1" name="stock" value="{{ form.stock.value }}" placeholder="">
-                  </div>
+  #description-output u {
+    text-decoration: underline;
+  }
 
-                  <div class="col-md-6 mb-3">
-                    <label for="validationValidSelect1">وضعیت</label>
-                    <select class="form-select is-valid" name="status">
-                      <option  value="1" {% if form.status.value == 1 %} selected {% endif %}>نمایش</option>
-                      <option  value="2" {% if form.status.value == 2 %} selected {% endif %}>عدم نمایش</option>
-                    </select>
-                    <span class="valid-feedback">Valid feedback</span>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="validationValidSelect1">دسته بندی</label> 
-                    {{ form.category }}
-                    <span class="valid-feedback">Valid feedback</span>
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label for="validationValidInput1">قیمت</label>
-                    <input type="text" class="form-control is-valid" id="validationValidInput1" name="price" value="{{ form.price.value }}"  placeholder="">
-                  </div>
-                  <div class="col-md-2 mb-3">
-                    <label for="validationValidInput1">درصد تخفیف</label>
-                    <input type="text" class="form-control is-valid" i126,000,365d="validationValidInput1" name="discount_percent" value="{{ form.discount_percent.value }}" placeholder="">
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="validationValidInput1">توضیحات مختصر</label>
-                    <input type="text" class="form-control is-valid" id="validationValidInput1" name="brief_description" value="{{ form.brief_description.value }}" placeholder="">
-                  </div>
+  /* برای اطمینان از اینکه متن‌های دیگر به درستی نمایش داده شوند */
+  #description-output {
+    font-family: Arial, sans-serif; /* تنظیم فونت */
+  }
+</style>
+<div class="col-lg-12">
+  <!-- Card -->
+  <div class="card">
+    <!-- Header -->
+    <div class="card-header border-bottom">
+      <h5 class="card-header-title ">ویرایش محصول</h5>
+      <a class="btn btn-sm btn-icon btn-ghost-primary" style="float: left;margin-top: -2rem;"
+        href="{% url 'shop:product-detail' slug=object.slug %}"><i class="bi-eye"></i></a>
 
-                  <div class="col-md-12 mb-3" >
-                    <label for="validationValidSelect1">توضیحات </label>
-                    {{ form.description }}
-                  </div>
+    </div>
+    <!-- End Header -->
 
-                  <div class="col-md-12 mb-3 ">
-                    <label for="validationValidFileInput1">تصویر محصول</label>
-                    <input type="file" id="validationValidFileInput1" class="form-control is-valid" name="image">
-                  </div>
-
-            </div>
+    <!-- Body -->
+    <div class="card-body">
+      <form action="." , method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row d-flex ">
+          <div class="col-md-6 mb-3">
+            <label for="validationValidInput1">نام محصول</label>
+            <input type="text" class="form-control is-valid" id="id_title" name="title" value="{{ form.title.value }}"
+              placeholder="">
           </div>
-       
+          <div class="col-md-4 mb-3">
+            <label for="validationValidInput1">slug محصول</label>
+            <input type="text" class="form-control is-valid" id="id_slug" name="slug" value="{{ form.slug.value }}"
+              placeholder="">
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-md btn-primary p-2" style="margin-top: 25px;" type="button"
+              onclick="generateSlug()">ساخت slug</button>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="validationValidInput1">تعداد</label>
+            <input type="text" class="form-control is-valid" id="validationValidInput1" name="stock"
+              value="{{ form.stock.value }}" placeholder="">
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="validationValidSelect1">وضعیت</label>
+            <select class="form-select is-valid" name="status">
+              <option value="1" {% if form.status.value == 1 %} selected {% endif %}>نمایش</option>
+              <option value="2" {% if form.status.value == 2 %} selected {% endif %}>عدم نمایش</option>
+            </select>
+            <span class="valid-feedback">Valid feedback</span>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="validationValidSelect1">دسته بندی</label>
+            {{ form.category }}
+            <span class="valid-feedback">Valid feedback</span>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="validationValidInput1">قیمت</label>
+            <input type="text" class="form-control is-valid" id="validationValidInput1" name="price"
+              value="{{ form.price.value }}" placeholder="">
+          </div>
+          <div class="col-md-2 mb-3">
+            <label for="validationValidInput1">درصد تخفیف</label>
+            <input type="text" class="form-control is-valid" i126,000,365d="validationValidInput1"
+              name="discount_percent" value="{{ form.discount_percent.value }}" placeholder="">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="validationValidInput1">توضیحات مختصر</label>
+            <input type="text" class="form-control is-valid" id="validationValidInput1" name="brief_description"
+              value="{{ form.brief_description.value }}" placeholder="">
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <label for="validationValidSelect1">توضیحات </label>
+            <!-- ویرایشگر Quill برای ویرایش -->
+            <div class="quill-custom">
+              <div id="editor" class="js-quill" style="height: 15rem;" 
+                  data-hs-quill-options='{
+                      "placeholder": "Type your message...",
+                      "modules": {
+                          "toolbar": [
+                              ["bold", "italic", "underline", "strike", "link", "image", "blockquote", "code", {"list": "bullet"}]
+                          ]
+                      }
+                  }'>
+                  <!-- محتوای ویرایش شده قبلی که نمایش داده می‌شود -->
+              </div>
+              <input type="hidden" name="description" id="description-input" value="">
+          </div>
+        </div>
+
+        <!-- اینجا div برای نمایش محتوای HTML است که باید قابل ویرایش باشد -->
+        <div class="col-md-12 mb-3">
+          <label for="validationValidSelect1">محتوای قبلی</label>
+          <div id="description-output" class="output-content">
+              <!-- محتوا از دیتابیس یا ورودی قبلی به اینجا منتقل می‌شود -->
+          </div>
+        </div>
+
           <div class="card-footer">
             <div class=" d-flex pt-5 justify-content-end">
               <a class="btn btn-secondary ms-3" href="{% url 'dashboard:dash_admin:products-list' %}">بازگشت</a>
-              <button type="submit"  class="btn btn-primary ms-3">ثبت تغییرات</button>
-            </form>
-            </div>
-            <hr/>
-
-            <form method="post" style="float: left;" class="mt-2 " action="{% url 'dashboard:dash_admin:product-delete' pk=object.pk %}">
-              {% csrf_token %}
-              <button class="btn btn-danger ms-3 " type="submit">حذف محصول</button>
-            </form>
-          </div>
-    
-        
-
-          <!-- End Body -->
-        </div>
-        <!-- End Card -->
-      </div>
-      <!-- End Col -->
+              <button type="submit" class="btn btn-primary ms-3">ثبت تغییرات</button>
+      </form>
     </div>
-    <!-- End Row -->
-    </div>
+    <hr />
+
+    <form method="post" style="float: left;" class="mt-2 "
+      action="{% url 'dashboard:dash_admin:product-delete' pk=object.pk %}">
+      {% csrf_token %}
+      <button class="btn btn-danger ms-3 " type="submit">حذف محصول</button>
+    </form>
+  </div>
+
+
+
+  <!-- End Body -->
+</div>
+<!-- End Card -->
+</div>
+<!-- End Col -->
+</div>
+<!-- End Row -->
+</div>
 
 {% endblock %}
 
@@ -142,83 +187,161 @@
 <script src="{% static 'js/theme.min.js' %}"></script>
 <script src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
 
-  <!-- JS Plugins Init. -->
-  <script>
-    (function () {
-      // INITIALIZATION OF HEADER
-      // =======================================================
-      new HSHeader("#header").init();
+<!-- JS Plugins Init. -->
+<script>
+  (function () {
+    // INITIALIZATION OF HEADER
+    // =======================================================
+    new HSHeader("#header").init();
 
-      // INITIALIZATION OF MEGA MENU
-      // =======================================================
-      new HSMegaMenu(".js-mega-menu", {
-        desktop: {
-          position: "left",
+    // INITIALIZATION OF MEGA MENU
+    // =======================================================
+    new HSMegaMenu(".js-mega-menu", {
+      desktop: {
+        position: "left",
+      },
+    });
+
+    // INITIALIZATION OF SHOW ANIMATIONS
+    // =======================================================
+    new HSShowAnimation(".js-animation-link");
+
+    // INITIALIZATION OF BOOTSTRAP VALIDATION
+    // =======================================================
+    HSBsValidation.init(".js-validate", {
+      onSubmit: (data) => {
+        data.event.preventDefault();
+        alert("Submited");
+      },
+    });
+
+    // INITIALIZATION OF BOOTSTRAP DROPDOWN
+    // =======================================================
+    HSBsDropdown.init();
+
+    // INITIALIZATION OF GO TO
+    // =======================================================
+    new HSGoTo(".js-go-to");
+
+    // INITIALIZATION OF INPUT MASK
+    // =======================================================
+    HSCore.components.HSMask.init(".js-input-mask");
+
+    // INITIALIZATION OF SELECT
+    // =======================================================
+    HSCore.components.HSTomSelect.init(".js-select", {
+      render: {
+        option: function (data, escape) {
+          return data.optionTemplate;
         },
-      });
-
-      // INITIALIZATION OF SHOW ANIMATIONS
-      // =======================================================
-      new HSShowAnimation(".js-animation-link");
-
-      // INITIALIZATION OF BOOTSTRAP VALIDATION
-      // =======================================================
-      HSBsValidation.init(".js-validate", {
-        onSubmit: (data) => {
-          data.event.preventDefault();
-          alert("Submited");
+        item: function (data, escape) {
+          return data.optionTemplate;
         },
-      });
+      },
+    });
+  })();
+  HSCore.components.HSQuill.init('.js-quill')
+</script>
+<script>
 
-      // INITIALIZATION OF BOOTSTRAP DROPDOWN
-      // =======================================================
-      HSBsDropdown.init();
+  function generateSlug() {
+    const title = $("#id_title").val();
+    const slug = slugify(title);
+    $("#id_slug").val(slug)
+  }
 
-      // INITIALIZATION OF GO TO
-      // =======================================================
-      new HSGoTo(".js-go-to");
-
-      // INITIALIZATION OF INPUT MASK
-      // =======================================================
-      HSCore.components.HSMask.init(".js-input-mask");
-
-      // INITIALIZATION OF SELECT
-      // =======================================================
-      HSCore.components.HSTomSelect.init(".js-select", {
-        render: {
-          option: function (data, escape) {
-            return data.optionTemplate;
-          },
-          item: function (data, escape) {
-            return data.optionTemplate;
-          },
-        },
-      });
-    })();
-    HSCore.components.HSQuill.init('.js-quill')
-  </script>
-  <script>
-
-    function generateSlug() {
-        const title = $("#id_title").val();
-        const slug = slugify(title);
-        $("#id_slug").val(slug)
-    }
-
-    function slugify(titleStr) {
-        titleStr = titleStr.replace(/^\s+|\s+$/g, '');
-        titleStr = titleStr.toLowerCase();
-        //persian support
-        titleStr = titleStr.replace(/[^a-z0-9_\s-ءاأإآؤئبتثجحخدذرزسشصضطظعغفقكلمنهويةى]#u/, '')
-            // Collapse whitespace and replace by -
-            .replace(/\s+/g, '-')
-            // Collapse dashes
-            .replace(/-+/g, '-');
-        slugStr = titleStr;
-        return slugStr;
-    }
+  function slugify(titleStr) {
+    titleStr = titleStr.replace(/^\s+|\s+$/g, '');
+    titleStr = titleStr.toLowerCase();
+    //persian support
+    titleStr = titleStr.replace(/[^a-z0-9_\s-ءاأإآؤئبتثجحخدذرزسشصضطظعغفقكلمنهويةى]#u/, '')
+      // Collapse whitespace and replace by -
+      .replace(/\s+/g, '-')
+      // Collapse dashes
+      .replace(/-+/g, '-');
+    slugStr = titleStr;
+    return slugStr;
+  }
 </script>
 
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
+
+<script>
+  // محتوای HTML شامل تگ‌های <strong> و <u>
+  var descriptionHTML = "<p>یا توسط دیگر سه دفتر. پا بزرگ ساحل. مدرسه معین منظور هنر. سن درست نیروی<strong> چه زور شیر شاد. کنید دلار توسعه ده روی انجیر. توافق حتی بود گفت: رفت زمین. تاریخ شاخه خط سهم رایگان سنگ. علم ساخت کار. علم بقیه استفاده. دقیقه سرعت مستقیم قطار پیش اصلی ترس. پوسته عمومی بخش روش فروشگاه چهار. کاپیتان روند اوایل مردم قرمز چند. گاز اقامت خوبی ایستگاه توسعه.</strong></p><a href='https://www.google.com'>www.google.com</a><div>text decoration</div>";
+
+  // پاکسازی HTML از کدهای مخرب
+  var sanitizedHTML = DOMPurify.sanitize(descriptionHTML, {
+    ALLOWED_TAGS: ['p', 'strong', 'u', 'a', 'div', 'br', 'ol', 'ul', 'li', 'blockquote', 'code'], // لیست تگ‌های مجاز
+    ALLOWED_ATTR: ['href', 'src', 'alt', 'title'], // ویژگی‌های مجاز
+    FORCE_BODY: true // اجبار به اضافه کردن <body> اگر وجود نداشته باشد
+  });
+
+  // نمایش محتوای HTML در div
+  document.getElementById('description-output').innerHTML = sanitizedHTML;
+
+  // راه‌اندازی ویرایشگر Quill
+  var quill = new Quill('#editor', {
+    theme: 'snow',
+    placeholder: 'Type your message...',
+    modules: {
+      toolbar: [
+        ['bold', 'italic', 'underline', 'strike', 'link', 'image', 'blockquote', 'code', { 'list': 'bullet' }]
+      ]
+    }
+  });
+
+  // تبدیل محتوای HTML به Delta و ارسال به ویرایشگر Quill
+  var delta = quill.clipboard.convert(sanitizedHTML); // تبدیل HTML به Delta
+  quill.setContents(delta); // ارسال Delta به ویرایشگر
+
+  // در هنگام ارسال فرم، محتوای HTML را به فیلد مخفی منتقل می‌کنیم
+  document.querySelector('form').addEventListener('submit', function() {
+    var description = quill.root.innerHTML; // دریافت محتوای ویرایشگر
+    document.getElementById('description-input').value = description; // قرار دادن محتوا در فیلد مخفی
+  });
+</script>
+
+<style>
+  /* اطمینان از اینکه تگ‌های <strong> و <p> به درستی نمایش داده شوند */
+  #description-output p {
+    font-size: 16px; /* یا سایز دلخواه خود */
+    line-height: 1.6;
+  }
+  
+  #description-output strong {
+    font-weight: bold;
+  }
+
+  #description-output u {
+    text-decoration: underline;
+  }
+
+  /* برای اطمینان از اینکه متن‌های دیگر به درستی نمایش داده شوند */
+  #description-output {
+    font-family: Arial, sans-serif; /* تنظیم فونت */
+    line-height: 1.6; /* فاصله بین خطوط */
+  }
+
+  #description-output em {
+    font-style: italic;
+  }
+
+  #description-output code {
+    font-family: 'Courier New', monospace;
+    background-color: #f5f5f5;
+    padding: 2px 4px;
+    border-radius: 4px;
+  }
+
+  #description-output blockquote {
+    margin: 1rem 0;
+    padding-left: 1rem;
+    border-left: 5px solid #ddd;
+    font-style: italic;
+  }
+</style>
 
 {% endblock extra_js %}
 
