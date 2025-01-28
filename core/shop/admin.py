@@ -12,4 +12,4 @@ class ProductCategoryModelAdmin(admin.ModelAdmin):
 
 @admin.register(ProductImageModel)
 class ProductImageModelAdmin(admin.ModelAdmin):
-    list_display=("id", "file", "created_date")
+    list_display=("id", "file", "product","created_date")

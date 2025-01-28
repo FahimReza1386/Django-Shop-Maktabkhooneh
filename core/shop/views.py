@@ -5,7 +5,7 @@ from django.views.generic import (
     DetailView,
 )
 from django.core.exceptions import FieldError
-from .models import ProductModel, ProductStatusType, ProductCategoryModel
+from .models import ProductModel, ProductStatusType, ProductCategoryModel, ProductImageModel
 from django.utils.translation import gettext_lazy as _
 from django.contrib import messages
 
@@ -56,7 +56,6 @@ class ShopProductGridView(ListView):
         context = super().get_context_data(**kwargs)
         context['total_items'] = self.get_queryset().count()
         context['categories'] = ProductCategoryModel.objects.all()
-        self.request.session["whats-your-age-?"] = 10
         return context
 
 
@@ -66,5 +65,5 @@ class ShopProductDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(self.request.session.get("whats-your-age-?"))
+        context["extra_picture"] = ProductImageModel.objects.all()
         return context
