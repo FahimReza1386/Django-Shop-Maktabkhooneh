@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, View, UpdateView, DeleteView
 from .cart import CartSession
 from django.http import JsonResponse
+
 # Create your views here.
 
 
@@ -18,7 +19,7 @@ class SessionAddProductView(View):
         return JsonResponse({"cart":cart.get_cart_dict(), "total_quantity":cart.get_total_quantity()})
 
 
-class SessionCartSummaryView(TemplateView):
+class CartSummaryView(TemplateView):
     template_name = "Cart/cart-summary.html"
 
     def get_context_data(self, **kwargs):
