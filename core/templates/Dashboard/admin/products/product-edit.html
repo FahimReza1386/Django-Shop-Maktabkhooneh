@@ -180,14 +180,20 @@
       {% for image in extra_picture %}
         {% if image.product == object %}
           <div class="swiper-slide col-md-2 mt-2">
-            <a class="avatar avatar-circle" href="javascript:;">
+            <a class="avatar avatar-circle" href="">
               <img class="avatar-img"  src="{{ image.file.url }}" alt="Image Description">
+
+              <form action="{% url 'dashboard:dash_admin:product-image-delete' pk=image.id %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-icon" type="submit"><i class="bi bi-trash3"></i></button>
+
+              </form>
             </a>
           </div>
         {% endif %}
       {% endfor %}
       <a class="btn btn-ghost-primary  avatar-circle mt-2" style="padding-top: 14px;" href="{% url 'dashboard:dash_admin:product-image-add' pk=object.pk %}">
-        <i class="bi bi-folder-plus" style="font-size: 17px;"></i>       </a>
+        <i class="bi bi-folder-plus" style="font-size: 17px;"></i></a>
     </div>
   
 </div>

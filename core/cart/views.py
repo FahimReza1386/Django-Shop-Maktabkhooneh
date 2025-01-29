@@ -13,6 +13,8 @@ class SessionAddProductView(View):
         qty = request.POST.get("quantity")
         if product_id and qty:
             cart.add_product(product_id,qty)
+        if request.user.is_authenticated:
+            cart.merge_session_cart_in_db(request.user)
         return JsonResponse({"cart":cart.get_cart_dict(), "total_quantity":cart.get_total_quantity()})
 
 
@@ -39,6 +41,8 @@ class SessionUpdateProductQtyView(UpdateView):
         quantity = request.POST.get("quantity")
         if product_id and quantity:
             cart.update_product_qty(product_id, quantity)
+        if request.user.is_authenticated:
+            cart.merge_session_cart_in_db(request.user)
 
         return JsonResponse({"cart":cart.get_cart_dict(), "total_quantity":cart.get_total_quantity()})
 
@@ -50,6 +54,8 @@ class SessionDeleteProductView(DeleteView):
         product_id = request.POST.get("product_id")
         if product_id:
             cart.delete_product(product_id)
+        if request.user.is_authenticated:
+            cart.merge_session_cart_in_db(request.user)
 
         return JsonResponse({"cart":cart.get_cart_dict(), "total_quantity":cart.get_total_quantity()})
  
@@ -59,7 +65,8 @@ class SessionDeleteAllCartView(DeleteView):
 
     def post(self, request, *args, **kwargs):
         cart = CartSession(request.session)
-        cart.clear()
-
+        cart.clear() 
+        if request.user.is_authenticated:
+            cart.merge_session_cart_in_db(request.user)   
         return JsonResponse({"cart":cart.get_cart_dict(), "total_quantity":cart.get_total_quantity()})
  
