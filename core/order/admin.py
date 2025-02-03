@@ -25,6 +25,7 @@ class OrderItemModelAdmin(admin.ModelAdmin):
 @admin.register(CouponModel)
 class CouponModelAdmin(admin.ModelAdmin):
     list_display=(
+        "code",
         "discount_percent",
         "max_limit_usage",
         "used_by_count",

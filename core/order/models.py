@@ -25,11 +25,14 @@ class CouponModel(models.Model):
     code = models.CharField(max_length=100)
     discount_percent = models.IntegerField()
     max_limit_usage = models.IntegerField(default=10)
-    used_by = models.ManyToManyField("accounts.User", related_name="coupon_users")
+    used_by = models.ManyToManyField("accounts.User", related_name="coupon_users", blank=True, null=True)
     expiration_date = models.DateTimeField(null=True, blank=True)
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.code}-{self.id}"
 
 class OrderModel(models.Model):
     user = models.ForeignKey("accounts.user", on_delete=models.PROTECT)
@@ -47,9 +50,16 @@ class OrderModel(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
+        
+    def calculate_total_price(self):
+        return sum(item.price * item.quantity for item in self.order_items.all())
+    
+    def __str__(self):
+        return f"{self.user.email}-{self.id}"
+
 
 class OrderItemModel(models.Model):
-    order= models.ForeignKey(OrderModel, on_delete=models.CASCADE)
+    order= models.ForeignKey(OrderModel, on_delete=models.CASCADE, related_name="order_items")
     product= models.ForeignKey("shop.ProductModel", on_delete=models.PROTECT)
     quantity = models.PositiveIntegerField(default=0)
     price = models.DecimalField(default=0, max_digits=10, decimal_places=0)
@@ -58,5 +68,5 @@ class OrderItemModel(models.Model):
     updated_date = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f"{self.product.title},{self.cart.id}"
+        return f"{self.product.title},{self.order.id}"
     
