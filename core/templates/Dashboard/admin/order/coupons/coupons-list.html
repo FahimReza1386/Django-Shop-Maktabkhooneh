@@ -1,0 +1,204 @@
+{% extends 'Dashboard/admin/base.html' %}
+{% load static %}
+{% load dashboard_tags %}
+
+{% block title %}
+{% endblock title %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light mb-0">
+        <li class="breadcrumb-item"> حساب </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            داشبورد
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            سفارشات
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            کد های تخفیف
+        </li>
+    </ol>
+</nav>
+{% endblock %}
+
+
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block extra_css_no_compress %}
+{% endblock extra_css_no_compress %}
+
+{% block content %}
+
+        <div class="col-lg-12">
+          <!-- Card -->
+          <div class="card">
+            <!-- Header -->
+            <div class="card-header border-bottom">
+              <h5 class="card-header-title">لیست سفارشات</h5>
+            </div>
+            <!-- End Header -->
+
+            <!-- Body -->
+            <div class="card-body">
+              <div class="container pb-5">
+                <form class="row" action=".">
+                  {% csrf_token  %}
+
+                  <!-- Input Card -->
+                  <div class="col-md-5 py-1">
+                    <input type="text" class="form-control" placeholder="جستجو" aria-label="جستجو " name="q" id="search-query-filter">
+
+                  </div>
+                  <!-- End Input Card -->
+                  <div class="col-md-3 py-1">
+                    <select class="form-select" id="order-by-filter" name="order_by">
+                      <option value="" selected="">بر اساس</option>
+                      <option value="-created_date" >جدید ترین</option>
+                      <option value="created_date" >قدیمی ترین</option>
+                      <option value="-discount_percent">بیشترین تخفیف</option>
+                      <option value="discount_percent">کمترین تخفیف</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3 py-1">
+                    <select class="form-select" id="page-size-filter" name="page_size">
+                      <option value="" selected="">تعداد در صفحه</option>
+                      <option value="5">5</option>
+                      <option value="10">10</option>
+                      <option value="15">15</option>
+                      <option value="20">20</option>
+                    </select>
+                  </div>
+                  <div class="col-md-1 py-1">
+                    <button type="submit" class="btn btn-primary btn-search"><i class="bi-search"></i></button>
+                  </div>
+                </form>
+
+              </div>
+
+              <div class="row">
+                <!-- Table -->
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead class="thead-light text-center">
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">کد تخفیف</th>
+                        <th scope="col">درصد تخفیف</th>
+                        <th scope="col">تعداد مجاز استفاده</th>
+                        <th scope="col">تعداد استفاده </th>
+                        <th scope="col">تاریخ انقضا</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for coupon in object_list%}
+                        <tr class="text-center" dir="rtl">
+                            <th scope="row">{{ coupon.id }}</th>
+                            <td>{{ coupon.code }}</td>
+                            <td>{{ coupon.discount_percent }}%</td>
+                            <td><span>{{ coupon.max_limit_usage }}</span></td>
+                            <td><span>{{ coupon.used_by.count }}</span></td> 
+                            {% if coupon.expiration_date == None %}    
+                              <td>تعریف نشده</td>
+                            {% else %}                  
+                              <td>{% formatted_date coupon.expiration_date %}</td>
+                            {% endif %}
+
+                        <tr>
+                    {% endfor %}
+
+
+
+                    </tbody>
+                  </table>
+                </div>
+                <!-- End Table -->
+
+
+                {% if is_paginated %}
+                <nav aria-label="Page navigation">
+                  <ul class="pagination justify-content-center">
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                    <button class="page-link" onclick="ChangePage(`{{ page_obj.next_page_number }}`)" aria-label="Next">
+                        <span aria-hidden="true">
+                          <i class="bi-chevron-double-left small"></i>
+                        </span>
+                      </button>
+                    </li>
+                  {% endif %} 
+      
+                    {% for i in page_obj.paginator.page_range %}
+                    {% if i == page_obj.number %}
+                      <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>
+                    {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                      <li class="page-item"><button class="page-link" onclick="ChangePage(`{{ i }}`)">{{ i }}</button></li>
+                    {% endif %} 
+                  {% endfor %}
+                  {% if page_obj.has_previous %}
+                  <li class="page-item">
+                    <button class="page-link" onclick="ChangePage(`{{ page_obj.previous_page_number }}`)" aria-label="Previous">
+                      <span aria-hidden="true">
+                        <i class="bi-chevron-double-right small"></i>
+                      </span>
+                    </button>
+                  </li>
+                {% endif %}
+                  
+                    
+              
+                    
+                    
+                    
+                  </ul>
+                </nav>
+              {% endif %}
+              
+
+
+
+              </div>
+              <!-- End Row -->
+
+            </div>
+            <!-- End Body -->
+          </div>
+          <!-- End Card -->
+
+
+{% endblock content %}
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+<script>
+
+  $(document).ready(function () {
+    let current_url_params = new URLSearchParams(window.location.search)
+    $("#order-by-filter").val(current_url_params.get("order_by") || "")
+    $("#page-size-filter").val(current_url_params.get("page_size") || "")
+    $("#search-query-filter").val(current_url_params.get("q") || "")
+  });
+  $('#page-size-filter').change(function () {
+      let current_url_params = new URLSearchParams(window.location.search)
+      var selectedOption = $(this).val();
+      current_url_params.set("page_size", selectedOption)
+      let new_url = window.location.pathname + "?" + current_url_params.toString()
+      window.location.href = new_url
+  });
+  $('#order-by-filter').change(function () {
+      let current_url_params = new URLSearchParams(window.location.search)
+      var selectedOption = $(this).val();
+      current_url_params.set("order_by", selectedOption)
+      let new_url = window.location.pathname + "?" + current_url_params.toString()
+      window.location.href = new_url
+  });
+
+</script>
+{% endblock extra_js %}
+
+{% block extra_js_no_compress %}
+{% endblock extra_js_no_compress %}

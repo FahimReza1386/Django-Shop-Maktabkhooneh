@@ -1,0 +1,119 @@
+{% extends 'Dashboard/customer/base.html' %}
+{% load static %}
+
+
+{% block header %}
+{% endblock header %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block extra_css_no_compress %}
+{% endblock extra_css_no_compress %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light mb-0">
+        <li class="breadcrumb-item"> حساب </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            داشبورد
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            نشانی
+        </li>
+    </ol>
+</nav>
+{% endblock %}
+
+
+{% block content %}
+
+        <div class="col-lg-12">
+          <!-- Card -->
+          <div class="card">
+            <!-- Header -->
+            <div class="card-header border-bottom">
+              <h5 class="card-header-title">آدرس های من</h5>
+            </div>
+            <!-- End Header -->
+
+            <!-- Body -->
+            <div class="card-body">
+              <div class="row">
+                {% for address in object_list %}
+                <div class="col-sm-6 mb-5 mb-sm-7">
+                  <!-- Radio Check -->
+                  <div class=" w-100 h-100">
+                    <label class="" for="billingRadio1">
+                      <span class="h5 d-block">آدرس {{ address.id }}</span>
+
+                      <span class="d-block mb-2">
+                        استان : {{ address.state }} <br>
+                        شهر : {{ address.city }} <br>
+                        کدپستی : {{ address.zip_code }} <br>
+                        آدرس : {{ address.address }}  <br>
+
+                    </span>
+                      <a class="btn btn-white btn-xs" href="{% url 'dashboard:dash_customer:address-edit' pk=address.id %}">
+                        <i class="bi-pencil-fill me-1"></i> آدرس را ویرایش
+                        کنید
+                      </a>
+                      <form action="{% url 'dashboard:dash_customer:address-delete' pk=address.id %}" method="post" class="m-2">
+                        {% csrf_token %}
+                      <button class="btn btn-ghost-danger btn-xs" href="{% url 'dashboard:dash_customer:address-delete' pk=address.id %}">
+                        <i class="bi bi-trash"></i> آدرس را حذف کنید
+                        
+                      </button>
+                    </form>
+                    </label>
+                  </div>
+                  <!-- End Radio Check -->
+                </div>
+                <!-- End Col -->
+                {% endfor %}
+
+
+     
+
+                <div class="col-sm-12 mb-5 mb-sm-7">
+                  <!-- Card -->
+                  <a class="card card-dashed card-centered" href="{% url 'dashboard:dash_customer:address-create' %}">
+                    <div class="card-body card-dashed-body py-8">
+                      <img class="avatar avatar-lg avatar-4x3 mb-2" src="{% static 'svg/illustrations/oc-address.svg' %}"
+                        alt="Image Description" />
+                      <span class="d-block"><i class="bi-plus"></i> یک آدرس جدید اضافه کنید</span>
+                    </div>
+                  </a>
+                  <!-- End Card -->
+                </div>
+                <!-- End Col -->
+              </div>
+              <!-- End Row -->
+
+
+            </div>
+            <!-- End Body -->
+          </div>
+          <!-- End Card -->
+        </div>
+
+
+{% endblock content %}
+
+
+
+{% block extra_js %}
+<!-- ========== END SECONDARY CONTENTS ========== -->
+
+<!-- JS Implementing Plugins -->
+<script src="{% static 'js/vendor.min.js' %}"></script>
+
+<!-- JS Front -->
+<script src="{% static 'js/theme.min.js' %}"></script>
+
+
+{% endblock extra_js %}
+
+{% block extra_js_no_compress %}
+{% endblock extra_js_no_compress %}
