@@ -589,6 +589,18 @@
 
 
     </script>
+    
+<script>
+  function ChangePage(page_number) {
+    let current_url_params = new URLSearchParams(window.location.search)
+    current_url_params.set("page", page_number)
+    let new_url = window.location.pathname + "?" + current_url_params.toString()
+    window.location.href = new_url
+  }
+</script>
+
+
+
     {% block extra_js %}
     {% endblock %}
     {% block extra_js_no_compress %}{% endblock %}

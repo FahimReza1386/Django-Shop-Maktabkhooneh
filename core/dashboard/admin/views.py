@@ -5,11 +5,14 @@ from django.contrib.messages.views import SuccessMessageMixin
 from dashboard.permissions import HasAdminAccessPermission
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
-from dashboard.admin.forms import AdminPasswordChangeForm, AdminProfileEditForm, AdminProductEditForm, AdminProductCreateForm, AdminProductImageAddForm
+from dashboard.admin.forms import AdminPasswordChangeForm, AdminProfileEditForm, AdminProductEditForm, AdminProductCreateForm, AdminProductImageAddForm, AdminOrderCouponsListForm
 from django.contrib import messages
 from accounts.models import Profile
-from shop.models import ProductModel, ProductCategoryModel, ProductStatusType, ProductImageModel
+from shop.models import ProductModel, ProductCategoryModel, ProductImageModel
 from django.core.exceptions import FieldError
+from order.models import CouponModel
+import jdatetime
+
 # Create your views here.
 
 # ------------------------------General View--------------------------------------
@@ -163,3 +166,37 @@ class AdminProductImageDeleteView(LoginRequiredMixin, HasAdminAccessPermission, 
 
     def get_success_url(self):
         return reverse_lazy("dashboard:dash_admin:product-edit", kwargs={"pk":self.get_object().product.pk})
+
+
+
+# ---------------------------------------Product-Coupon-Views-----------------------------------------------
+
+class AdminOrderCouponsListView(LoginRequiredMixin, HasAdminAccessPermission, ListView):
+    form_class = AdminOrderCouponsListForm
+    template_name = "Dashboard/admin/order/coupons/coupons-list.html"
+    queryset = CouponModel.objects.all().order_by("-created_date")
+    paginate_by = 5
+
+    def get_paginate_by(self, queryset):
+            valid_page_sizes = {5, 10, 15, 20}
+            page_size_param = self.request.GET.get('page_size')
+
+            try:
+                page_size = int(page_size_param)
+                if page_size > 0 or page_size in valid_page_sizes:
+                    return page_size
+                else:
+                    return self.paginate_by
+            except:
+                return self.paginate_by
+
+    def  get_queryset(self):
+        queryset = CouponModel.objects.all().order_by("-created_date")
+        if search_q := self.request.GET.get("q"):
+            queryset = queryset.filter(title_icontains = search_q)
+        if order_by := self.request.GET.get("order_by"):
+            try:
+                queryset = queryset.order_by(order_by)
+            except FieldError:
+                messages.error(self.request , ("خطا در وارد کردن فیلد"))
+        return queryset
