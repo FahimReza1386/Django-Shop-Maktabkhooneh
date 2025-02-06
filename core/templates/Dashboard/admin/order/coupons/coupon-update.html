@@ -72,7 +72,7 @@
                     <div class="col-md-6 mb-3">
                         <label for="validationValidInput1">محدودیت زمان</label>
                         <!-- فیلد input برای ذخیره تاریخ -->
-                        <input type="text" value="{{ form.expiration_date.value }}" id="date-picker"
+                        <input type="text" {% if form.expiration_date.value %} value="{{ form.expiration_date.value }}" {% else %} value="" {% endif %} id="date-picker"
                             class="form-control is-valid" name="expiration_date" placeholder="تاریخ شمسی" />
                         <br><br>
                     </div>
