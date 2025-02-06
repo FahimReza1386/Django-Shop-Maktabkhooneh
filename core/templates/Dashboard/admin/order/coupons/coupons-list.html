@@ -37,7 +37,12 @@
           <div class="card">
             <!-- Header -->
             <div class="card-header border-bottom">
-              <h5 class="card-header-title">لیست سفارشات</h5>
+              <div class="d-flex justify-content-between align-items-center">
+
+                <h5 class="card-header-title">لیست تخفیفات</h5>
+                <a class="btn btn-primary" href="{% url 'dashboard:dash_admin:order-coupon-create' %}">ایجاد تخفیف</a>
+              </div>
+
             </div>
             <!-- End Header -->
 

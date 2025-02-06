@@ -1,0 +1,44 @@
+body {
+    font-family: Tahoma, sans-serif;
+    direction: rtl;
+    text-align: center;
+    padding: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+.today {
+    background-color: #ffeb3b;
+}
+
+.header {
+    font-size: 1.5em;
+}
+
+.time {
+    font-size: 1.2em;
+    margin-top: 20px;
+    color: #00796b;
+}
+
+.date-input {
+    margin-top: 20px;
+    font-size: 1.2em;
+    padding: 10px;
+    width: 250px;
+}

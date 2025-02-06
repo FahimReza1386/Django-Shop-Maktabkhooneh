@@ -1,6 +1,7 @@
 from django import forms 
 from order.models import UserAddressModel, CouponModel
-from datetime import datetime
+from django.utils import timezone
+
 class CheckOutForm(forms.Form):
     address_id = forms.IntegerField(required=True)
     coupon = forms.CharField(required=False)
@@ -42,7 +43,7 @@ class CheckOutForm(forms.Form):
                 if coupon.used_by.count() >= coupon.max_limit_usage:
                     raise forms.ValidationError("محدودیت در تعداد استفاده کاربران ...")
 
-                if coupon.expiration_date and coupon.expiration_date < datetime.now():
+                if coupon.expiration_date and coupon.expiration_date < timezone.now():
                     raise forms.ValidationError("کد تخفیف منقضی شده است ...")
                 
                 if user in coupon.used_by.all():

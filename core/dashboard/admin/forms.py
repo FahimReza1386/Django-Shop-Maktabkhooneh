@@ -50,7 +50,15 @@ class AdminProductImageAddForm(forms.ModelForm):
 
 
 # ------------------------------OrderCoupons--------------------------------
-class AdminOrderCouponsListForm(forms.ModelForm):
+class AdminOrderCouponsForm(forms.ModelForm):
     class Meta:
         model = CouponModel
         fields = ["code", "discount_percent", "max_limit_usage", "used_by", "expiration_date"]
+
+
+# ------------------------------OrderCoupons--------------------------------
+class AdminOrderCouponCreateForm(forms.ModelForm):
+    class Meta:
+        model = CouponModel
+        fields = ["code", "discount_percent", "max_limit_usage", "expiration_date"]
+
