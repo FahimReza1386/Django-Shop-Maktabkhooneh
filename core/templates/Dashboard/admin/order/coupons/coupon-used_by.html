@@ -90,27 +90,21 @@
                     <thead class="thead-light text-center">
                       <tr>
                         <th scope="col">#</th>
-                        <th scope="col">کد تخفیف</th>
-                        <th scope="col">درصد تخفیف</th>
-                        <th scope="col">تعداد مجاز استفاده</th>
-                        <th scope="col">تعداد استفاده </th>
-                        <th scope="col">تاریخ انقضا</th>
+                        <th scope="col">نام</th>
+                        <th scope="col">نام خانوادگی</th>
+                        <th scope="col">شماره تلفن</th>
+                        <th scope="col">جنسیت</th>
                       </tr>
                     </thead>
                     <tbody>
 
-                    {% for coupon in object_list%}
+                    {% for item in object_list %}
                         <tr class="text-center" dir="rtl">
-                            <th scope="row"><a href="{% url 'dashboard:dash_admin:order-coupon-update' pk=coupon.id %}">{{ coupon.id }}</a></th>
-                            <td>{{ coupon.code }}</td>
-                            <td>{{ coupon.discount_percent }}%</td>
-                            <td><span>{{ coupon.max_limit_usage }}</span></td>
-                            <td><span><a href="{% url 'dashboard:dash_admin:order-coupon-used_by-list' pk=coupon.id %}">{{ coupon.used_by.count }}</a></span></td> 
-                            {% if coupon.expiration_date == None %}    
-                              <td>تعریف نشده</td>
-                            {% else %}                  
-                              <td>{% formatted_date coupon.expiration_date %}</td>
-                            {% endif %}
+                            <th scope="row">{{ item.id }}</th>
+                            <td>{{ item.first_name }}</td>
+                            <td>{{ item.last_name }}</td>
+                            <td><span>{{ item.phone_number }}</span></td>
+                            <td><span>{{ item.gender }}</span></td>
                         <tr>
                     {% endfor %}
 

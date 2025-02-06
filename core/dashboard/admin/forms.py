@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from accounts.models import Profile
 from shop.models import ProductModel, ProductImageModel
 from order.models import CouponModel
+from accounts.models import User
 
 class AdminPasswordChangeForm(auth_forms.PasswordChangeForm):
     error_messages = {
@@ -65,3 +66,7 @@ class AdminOrderCouponCreateForm(forms.ModelForm):
         model = CouponModel
         fields = ["code", "discount_percent", "max_limit_usage", "expiration_date"]
 
+class AdminOrderCouponUsed_byForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ["user", "first_name", "last_name", "phone_number", "gender"]

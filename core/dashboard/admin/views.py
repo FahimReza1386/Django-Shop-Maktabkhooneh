@@ -5,12 +5,13 @@ from django.contrib.messages.views import SuccessMessageMixin
 from dashboard.permissions import HasAdminAccessPermission
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
-from dashboard.admin.forms import AdminPasswordChangeForm, AdminProfileEditForm, AdminProductEditForm, AdminProductCreateForm, AdminProductImageAddForm, AdminOrderCouponsForm, AdminOrderCouponCreateForm
+from dashboard.admin.forms import AdminPasswordChangeForm, AdminProfileEditForm, AdminProductEditForm, AdminProductCreateForm, AdminProductImageAddForm, AdminOrderCouponsForm, AdminOrderCouponCreateForm, AdminOrderCouponUsed_byForm
 from django.contrib import messages
 from accounts.models import Profile
 from shop.models import ProductModel, ProductCategoryModel, ProductImageModel
 from django.core.exceptions import FieldError
 from order.models import CouponModel, OrderModel
+from accounts.models import User
 import jdatetime
 
 # Create your views here.
@@ -235,3 +236,34 @@ class AdminOrderCouponDeleteView(LoginRequiredMixin, HasAdminAccessPermission, S
             messages.error(self.request, "سلام ادمین گرامی . کد شما قبلا استفاده شده عملیات حذف این موارد تنها توسط بخش امنیت انجام میشود . .")
             return redirect(reverse_lazy("dashboard:dash_admin:order-coupons-list"))
         return super().form_valid(form)
+    
+
+class AdminOrderCouponUsed_ByListView(LoginRequiredMixin, HasAdminAccessPermission, ListView):
+    template_name = "Dashboard/admin/order/coupons/coupon-used_by.html"
+    form_class = AdminOrderCouponUsed_byForm
+    model = CouponModel
+    paginate_by = 10
+
+    def get_queryset(self):
+        user = User.objects.all()
+        test = CouponModel.objects.filter(id=self.kwargs["pk"], used_by__in=user)
+        queryset = Profile.objects.none()
+
+        for item in test:
+            used_by = item.used_by.all()
+            queryset = queryset | Profile.objects.filter(user__in=used_by)
+        return queryset
+
+
+    def get_paginate_by(self, queryset):
+            valid_page_sizes = {5, 10, 15, 20}
+            page_size_param = self.request.GET.get('page_size')
+
+            try:
+                page_size = int(page_size_param)
+                if page_size > 0 or page_size in valid_page_sizes:
+                    return page_size
+                else:
+                    return self.paginate_by
+            except:
+                return self.paginate_by
