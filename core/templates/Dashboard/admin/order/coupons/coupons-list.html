@@ -101,7 +101,7 @@
 
                     {% for coupon in object_list%}
                         <tr class="text-center" dir="rtl">
-                            <th scope="row">{{ coupon.id }}</th>
+                            <th scope="row"><a href="{% url 'dashboard:dash_admin:order-coupon-update' pk=coupon.id %}">{{ coupon.id }}</a></th>
                             <td>{{ coupon.code }}</td>
                             <td>{{ coupon.discount_percent }}%</td>
                             <td><span>{{ coupon.max_limit_usage }}</span></td>
@@ -111,7 +111,6 @@
                             {% else %}                  
                               <td>{% formatted_date coupon.expiration_date %}</td>
                             {% endif %}
-
                         <tr>
                     {% endfor %}
 

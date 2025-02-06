@@ -10,7 +10,7 @@ from django.contrib import messages
 from accounts.models import Profile
 from shop.models import ProductModel, ProductCategoryModel, ProductImageModel
 from django.core.exceptions import FieldError
-from order.models import CouponModel
+from order.models import CouponModel, OrderModel
 import jdatetime
 
 # Create your views here.
@@ -202,7 +202,7 @@ class AdminOrderCouponsListView(LoginRequiredMixin, HasAdminAccessPermission, Li
         return queryset
 
 
-class AdminOrderCouponCreate(LoginRequiredMixin, HasAdminAccessPermission, SuccessMessageMixin, CreateView):
+class AdminOrderCouponCreateView(LoginRequiredMixin, HasAdminAccessPermission, SuccessMessageMixin, CreateView):
     template_name = "Dashboard/admin/order/coupons/coupon-create.html"
     form_class = AdminOrderCouponCreateForm
     success_message = "کد تخفیف شما با موفقیت ایجاد شد ."
@@ -216,3 +216,22 @@ class AdminOrderCouponCreate(LoginRequiredMixin, HasAdminAccessPermission, Succe
                 return redirect(reverse_lazy("dashboard:dash_admin:order-coupon-create"))
         return super().form_valid(form)
 
+class AdminOrderCouponUpdateView(LoginRequiredMixin, HasAdminAccessPermission, SuccessMessageMixin, UpdateView):
+    template_name = "Dashboard/admin/order/coupons/coupon-update.html"
+    form_class = AdminOrderCouponsForm
+    success_message = "کد تخفیف شما با موفقیت بروزرسانی شد ."
+    success_url = reverse_lazy("dashboard:dash_admin:order-coupons-list")
+    queryset = CouponModel.objects.all()
+
+class AdminOrderCouponDeleteView(LoginRequiredMixin, HasAdminAccessPermission, SuccessMessageMixin, DeleteView):
+    http_method_names = ["post"]
+    success_message = "کد تخفیف شما با موفقیت حذف شد ."
+    success_url = reverse_lazy("dashboard:dash_admin:order-coupons-list")
+    model = CouponModel
+   
+    def form_valid(self, form):
+        orders = OrderModel.objects.filter(coupon=self.object)
+        if orders.exists():  # استفاده از self.object به جای form.instance
+            messages.error(self.request, "سلام ادمین گرامی . کد شما قبلا استفاده شده عملیات حذف این موارد تنها توسط بخش امنیت انجام میشود . .")
+            return redirect(reverse_lazy("dashboard:dash_admin:order-coupons-list"))
+        return super().form_valid(form)

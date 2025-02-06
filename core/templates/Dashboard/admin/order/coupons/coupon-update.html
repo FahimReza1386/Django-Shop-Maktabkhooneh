@@ -1,0 +1,134 @@
+{% extends 'Dashboard/admin/base.html' %}
+{% load static %}
+{% load dashboard_tags %}
+
+{% block title %}
+{% endblock title %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light mb-0">
+        <li class="breadcrumb-item"> حساب </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            داشبورد
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            کد تخفیف
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            بروزرسای کد تخفیف
+        </li>
+    </ol>
+</nav>
+{% endblock %}
+
+
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block extra_css_no_compress %}
+
+{% endblock extra_css_no_compress %}
+
+{% block content %}
+<div class="col-lg-12">
+
+    <!-- Card -->
+    <div class="card">
+        <!-- Header -->
+        <div class="card-header border-bottom">
+            <h5 class="card-header-title">بروزرسانی تخفیف</h5>
+        </div>
+        <!-- End Header -->
+
+        <!-- Body -->
+        <!-- Body -->
+        <div class="card-body">
+            <form action="." method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row d-flex ">
+                    <div class="col-md-6 mb-3">
+                        <label for="validationValidInput1">کد تخفیف</label>
+                        <input type="text" class="form-control is-valid" id="id_title" name="code"
+                            value="{{ form.code.value }}" placeholder="کد اختصاصی محصول را وارد کنید .">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="validationValidInput1">درصد تخفیف</label>
+                        <input type="text" class="form-control is-valid" i126,000,365d="validationValidInput1"
+                            value="{{ form.discount_percent.value }}" name="discount_percent" placeholder="۱ تا ۱۰۰">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="validationValidInput1">محدودیت استفاده</label>
+                        <input type="text" class="form-control is-valid" i126,000,365d="validationValidInput1"
+                            value="{{ form.max_limit_usage.value }}" name="max_limit_usage" placeholder="۱ تا ۱۰۰">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="validationValidInput1">استفاده کنندگان</label>
+                        {{ form.used_by }}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="validationValidInput1">محدودیت زمان</label>
+                        <!-- فیلد input برای ذخیره تاریخ -->
+                        <input type="text" value="{{ form.expiration_date.value }}" id="date-picker"
+                            class="form-control is-valid" name="expiration_date" placeholder="تاریخ شمسی" />
+                        <br><br>
+                    </div>
+                </div>
+
+
+
+
+                <button type="submit" class="btn btn-primary" style="float: left;margin-right: 10px;">بروزرسانی
+                    کد</button>
+            </form>
+            <form action="{% url 'dashboard:dash_admin:order-coupon-delete' pk=object.id %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-danger mb-2 " type="submit" style="float: left;">حذف کد</button>
+
+            </form>
+        </div>
+    </div>
+    <!-- End Body -->
+</div>
+<!-- End Card -->
+
+
+{% endblock content %}
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
+
+<script>
+    // تنظیمات Flatpickr برای تاریخ شمسی
+    flatpickr("#date-picker", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i", // فرمت تاریخ میلادی برای ذخیره
+        locale: {
+            firstDayOfWeek: 6, // شنبه شروع هفته
+            weekdays: {
+                shorthand: ["ش", "ی", "د", "س", "چ", "پ", "ج"],
+                longhand: ["شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنج‌شنبه", "جمعه"]
+            },
+            months: {
+                shorthand: ["فرو", "مرد", "اسف", "فر", "ارد", "خرد", "تیر", "مرد", "شه", "مهر", "آبان", "آذر"],
+                longhand: ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"]
+            }
+        },
+        onChange: function (selectedDates, dateStr, instance) {
+            // تبدیل تاریخ شمسی به میلادی و نمایش در اینپوت
+            var persianDate = new persianDate(dateStr);
+            var gregorianDate = persianDate.toGregorian();
+            document.getElementById('gregorian-input').value = gregorianDate.format("YYYY-MM-DD HH:mm");
+        }
+    });
+</script>
+
+
+{% endblock extra_js %}
+
+{% block extra_js_no_compress %}
+{% endblock extra_js_no_compress %}
