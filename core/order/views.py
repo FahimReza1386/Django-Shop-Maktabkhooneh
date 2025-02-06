@@ -13,9 +13,9 @@ from decimal import Decimal
  
 from datetime import timezone
 
-=======
+  
 from django.utils import timezone
->>>>>>> exercises
+  
 # Create your views here.
 
 class ValidationCouponView(LoginRequiredMixin, HasCustomerAccessPermission, SuccessMessageMixin, View):

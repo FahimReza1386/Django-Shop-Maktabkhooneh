@@ -5,7 +5,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from dashboard.permissions import HasAdminAccessPermission
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
-from dashboard.admin.forms import AdminPasswordChangeForm, AdminProfileEditForm, AdminProductEditForm, AdminProductCreateForm, AdminProductImageAddForm, AdminOrderCouponsListForm, AdminOrderCouponsCreateForm
+from dashboard.admin.forms import AdminPasswordChangeForm, AdminProfileEditForm, AdminProductEditForm, AdminProductCreateForm, AdminProductImageAddForm, AdminOrderCouponsListForm
 from django.contrib import messages
 from accounts.models import Profile
 from shop.models import ProductModel, ProductCategoryModel, ProductImageModel

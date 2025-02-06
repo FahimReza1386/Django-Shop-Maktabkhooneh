@@ -2,10 +2,10 @@ from django import forms
 from order.models import UserAddressModel, CouponModel
  
 from datetime import timezone
-=======
+  
 from django.utils import timezone
 
->>>>>>> exercises
+  
 class CheckOutForm(forms.Form):
     address_id = forms.IntegerField(required=True)
     coupon = forms.CharField(required=False)

@@ -23,9 +23,9 @@ urlpatterns = [
     path("order/coupons/list/", views.AdminOrderCouponsListView.as_view(), name="order-coupons-list"),
  
     # path("order/coupon/create/", views.AdminOrderCouponCreate.as_view(), name="order-create-coupon"),
-=======
+  
     path("order/coupon/create/", views.AdminOrderCouponCreate.as_view(), name="order-coupon-create"),
->>>>>>> exercises
+  
     # path("order/coupon/update/", views.AdminOrderCouponUpdate.as_view(), name="order-update-coupon"),
     # path("order/coupon/delete/", views.AdminOrderCouponDelete.as_view(), name="order-delete-coupon"),
     
