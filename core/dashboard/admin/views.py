@@ -5,11 +5,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from dashboard.permissions import HasAdminAccessPermission
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
-<<<<<<< HEAD
-from dashboard.admin.forms import AdminPasswordChangeForm, AdminProfileEditForm, AdminProductEditForm, AdminProductCreateForm, AdminProductImageAddForm, AdminOrderCouponsListForm
-=======
-from dashboard.admin.forms import AdminPasswordChangeForm, AdminProfileEditForm, AdminProductEditForm, AdminProductCreateForm, AdminProductImageAddForm, AdminOrderCouponsForm, AdminOrderCouponCreateForm
->>>>>>> exercises
+from dashboard.admin.forms import AdminPasswordChangeForm, AdminProfileEditForm, AdminProductEditForm, AdminProductCreateForm, AdminProductImageAddForm, AdminOrderCouponsListForm, AdminOrderCouponsCreateForm
 from django.contrib import messages
 from accounts.models import Profile
 from shop.models import ProductModel, ProductCategoryModel, ProductImageModel
@@ -176,11 +172,7 @@ class AdminProductImageDeleteView(LoginRequiredMixin, HasAdminAccessPermission, 
 # ---------------------------------------Product-Coupon-Views-----------------------------------------------
 
 class AdminOrderCouponsListView(LoginRequiredMixin, HasAdminAccessPermission, ListView):
-<<<<<<< HEAD
     form_class = AdminOrderCouponsListForm
-=======
-    form_class = AdminOrderCouponsForm
->>>>>>> exercises
     template_name = "Dashboard/admin/order/coupons/coupons-list.html"
     queryset = CouponModel.objects.all().order_by("-created_date")
     paginate_by = 5
@@ -208,9 +200,7 @@ class AdminOrderCouponsListView(LoginRequiredMixin, HasAdminAccessPermission, Li
             except FieldError:
                 messages.error(self.request , ("خطا در وارد کردن فیلد"))
         return queryset
-<<<<<<< HEAD
-=======
-
+ 
 
 class AdminOrderCouponCreate(LoginRequiredMixin, HasAdminAccessPermission, SuccessMessageMixin, CreateView):
     template_name = "Dashboard/admin/order/coupons/coupon-create.html"
@@ -225,5 +215,3 @@ class AdminOrderCouponCreate(LoginRequiredMixin, HasAdminAccessPermission, Succe
                 messages.error(self.request, "سلام ادمین گرامی . کد شما قبلا تعریف شده .")
                 return redirect(reverse_lazy("dashboard:dash_admin:order-coupon-create"))
         return super().form_valid(form)
-
->>>>>>> exercises

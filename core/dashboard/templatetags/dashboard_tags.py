@@ -8,10 +8,7 @@ register = template.Library()
 def formatted_date(datetimes):
     if not datetime or not isinstance(datetimes, datetime):  
         return "تاریخ نامعتبر"  
-<<<<<<< HEAD
 
-=======
->>>>>>> exercises
     jalali_date = jdatetime.datetime.fromgregorian(datetime=datetimes)  
     formatted_jalali_date = jalali_date.strftime('%H:%M:%S : %Y/%m/%d')  # اضافه کردن ساعت  
     return formatted_jalali_date  

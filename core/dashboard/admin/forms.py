@@ -50,7 +50,7 @@ class AdminProductImageAddForm(forms.ModelForm):
 
 
 # ------------------------------OrderCoupons--------------------------------
-<<<<<<< HEAD
+ 
 class AdminOrderCouponsListForm(forms.ModelForm):
     class Meta:
         model = CouponModel

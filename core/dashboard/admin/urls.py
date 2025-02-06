@@ -21,7 +21,7 @@ urlpatterns = [
     path("product/image/<int:pk>/delete/", views.AdminProductImageDeleteView.as_view(), name="product-image-delete"),
     # Crun For CouponModel
     path("order/coupons/list/", views.AdminOrderCouponsListView.as_view(), name="order-coupons-list"),
-<<<<<<< HEAD
+ 
     # path("order/coupon/create/", views.AdminOrderCouponCreate.as_view(), name="order-create-coupon"),
 =======
     path("order/coupon/create/", views.AdminOrderCouponCreate.as_view(), name="order-coupon-create"),

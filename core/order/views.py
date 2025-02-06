@@ -10,7 +10,7 @@ from cart.models import CartModel
 from order.forms import CheckOutForm
 from cart.cart import CartSession
 from decimal import Decimal
-<<<<<<< HEAD
+ 
 from datetime import timezone
 
 =======

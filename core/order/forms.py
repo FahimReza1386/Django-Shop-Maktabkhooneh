@@ -1,6 +1,6 @@
 from django import forms 
 from order.models import UserAddressModel, CouponModel
-<<<<<<< HEAD
+ 
 from datetime import timezone
 =======
 from django.utils import timezone
