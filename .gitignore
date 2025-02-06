@@ -1,1 +1,4 @@
 core/media/product/
+__pycache__/  
+*.pyc  
+*.pyo  
