@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -10,12 +10,10 @@ from cart.models import CartModel
 from order.forms import CheckOutForm
 from cart.cart import CartSession
 from decimal import Decimal
- 
 from datetime import timezone
-
-  
 from django.utils import timezone
-  
+from payment.zarinpal_client import ZarinPalSandBox
+from payment.models import PaymentModel, PaymentStatusTypeModel
 # Create your views here.
 
 class ValidationCouponView(LoginRequiredMixin, HasCustomerAccessPermission, SuccessMessageMixin, View):
@@ -84,7 +82,8 @@ class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, Success
         total_price = order.calculate_total_price()
         self.apply_coupon(coupon, order, user, total_price)
         order.save()
-        return super().form_valid(form)
+        print(order)
+        return redirect(self.create_payment_url(order))
 
     def create_order(self, address):
         return OrderModel.objects.create(
@@ -94,7 +93,21 @@ class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, Success
             city=address.city,
             zip_code=address.zip_code,
         )
+    
+    def create_payment_url(self, order):
+        zarinpal = ZarinPalSandBox()
+        response = zarinpal.payment_request(amount=float(order.total_price))
+        data  = response["data"]
+        authority = data["authority"]
 
+        payment_obj = PaymentModel.objects.create(
+            authority_id =authority,
+            amount=order.total_price,
+        )
+        order.payment = payment_obj
+        order.save()
+        return zarinpal.generate_payment_url(authority=authority)
+    
     def create_order_items(self, order, cart):
         for item in cart.cart_items.all():
             OrderItemModel.objects.create(
@@ -110,10 +123,10 @@ class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, Success
 
     def apply_coupon(self, coupon, order, user, total_price):
         if coupon:
-            # discount_amount = round(
-            #     (total_price * Decimal(coupon.discount_percent / 100)))
-            # total_price -= discount_amount
-
+            discount_amount = round(
+                (total_price * Decimal(coupon.discount_percent / 100)))
+            total_price -= discount_amount
+            
             order.coupon = coupon
             coupon.used_by.add(user)
             coupon.save()

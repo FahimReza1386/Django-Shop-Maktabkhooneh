@@ -1,7 +1,6 @@
 import requests
 import json
-from core import settings
-from django.http import HttpResponseRedirect
+
 class ZarinPalSandBox:
 
     _payment_request_url = "https://sandbox.zarinpal.com/pg/v4/payment/request.json"
@@ -27,9 +26,10 @@ class ZarinPalSandBox:
             "Content-Type": "application/json"      
         }
 
-        response = requests.post(url=self._payment_request_url, headers=headers, json=payload)
-        return response.json()
+        start_payment_request = requests.post(url=self._payment_request_url, headers=headers, json=payload)
     
+        return start_payment_request
+
 
     def payment_verify(self, amount, authority):
         
@@ -43,9 +43,20 @@ class ZarinPalSandBox:
             'Content-Type': 'application/json',
         }
 
-        start_payment_request = requests.post(url=self._payment_request_url, headers=headers, json=payload)
-        return start_payment_request.json()
+        response = requests.post(self._payment_verify_url, headers=headers, data=json.dumps(payload))
+        return response.json()
 
     def generate_payment_url(self, authority):
 
         return f"{self._payment_page_url}{authority}" 
+
+
+
+if __name__ == "__main__":
+    zarinpal= ZarinPalSandBox()
+    response = zarinpal.payment_request(140000)
+    tt = response.json()
+    data = tt["data"]
+    authority = data["authority"]
+    print(authority)
+  

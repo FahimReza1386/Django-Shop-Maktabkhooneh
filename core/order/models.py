@@ -40,6 +40,8 @@ class OrderModel(models.Model):
     coupon = models.ForeignKey(CouponModel, on_delete=models.PROTECT, null=True, blank=True)
     status = models.IntegerField(choices=OrderStatusType.choices, default=OrderStatusType.pending.value)
 
+    payment = models.ForeignKey("payment.PaymentModel", on_delete=models.SET_NULL, null=True, blank=True)
+
     # order address information
     address = models.CharField(max_length=250)
     state = models.CharField(max_length=50)
