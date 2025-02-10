@@ -5,9 +5,9 @@ from django.http import HttpResponseRedirect
 class ZarinPalSandBox:
 
     _payment_request_url = "https://sandbox.zarinpal.com/pg/v4/payment/request.json"
-    _payment_verify_url = "https://sandbox.zarinpal.com/pg/rest/WebGate/PaymentVerification.json"
+    _payment_verify_url = "https://sandbox.zarinpal.com/pg/v4/payment/verify.json"
     _payment_page_url = "https://sandbox.zarinpal.com/pg/StartPay/"
-    _callback_url = "https://www.redreseller.com/verify"
+    _callback_url = "http://127.0.0.1:8000/payment/verify"
 
 
     def __init__(self, merchant_id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"):
@@ -18,7 +18,7 @@ class ZarinPalSandBox:
         payload ={
             "merchant_id": self.merchant_id,
             "amount": amount,
-            "callback_url": "http://127.0.0.1:8000/",
+            "callback_url": self._callback_url,
             "description": "This is a test .",
             "metadata": {"mobile": "09309195958", "email": "info.test@gmail.com"}
         }
@@ -34,17 +34,18 @@ class ZarinPalSandBox:
     def payment_verify(self, amount, authority):
         
         payload = {
-            "MerchantID": self.merchant_id,
-            "Amount": amount,
-            "Authority": authority,
+            "merchant_id": self.merchant_id,
+            "amount": amount,
+            "authority": authority
         }
+
         headers = {
             "Accept": "application/json",
             'Content-Type': 'application/json',
         }
 
-        start_payment_request = requests.post(url=self._payment_request_url, headers=headers, json=payload)
-        return start_payment_request.json()
+        response = requests.post(url=self._payment_verify_url, headers=headers, json=payload)
+        return response.json()
 
     def generate_payment_url(self, authority):
 

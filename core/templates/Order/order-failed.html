@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+{% block title %}
+{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block extra_css_no_compress %}
+{% endblock %}
+
+{% block content %}
+
+    <div class="container content-space-2 content-space-lg-3">
+      <div class="w-md-75 w-lg-50 text-center mx-md-auto">
+        <div class="mb-5">
+          <img class="img-fluid" src="{% static 'svg/illustrations/oc-hi-five.svg' %}" alt="Image Description" style="width: 15rem;">
+        </div>
+
+        <div class="mb-5">
+          <h1 class="h2">پرداخت شما شکست خورد!</h1>
+          <p>از سفارش شما متشکریم! سفارش شما با شکست مواجه شده است و تا نهایت 24 ساعت دیگر امکان پرداخت دوباره برای این سفارش را دارید. پس از پرداخت سفارش مجددا شما یک ایمیل تاییدیه دریافت خواهید کرد.</p>
+        </div>
+
+        <a class="btn btn-primary btn-transition rounded-pill px-6" href="{% url 'website:index' %}">به خرید ادامه دهید</a>
+      </div>
+    </div>
+    <!-- End Content -->
+
+    <!-- Subscribe -->
+    <div class="bg-light">
+      <div class="container content-space-2">
+        <div class="w-md-75 w-lg-50 text-center mx-md-auto">
+          <div class="row justify-content-lg-between">
+            <!-- Heading -->
+            <div class="mb-5">
+              <span class="text-cap">ثبت نام</span>
+              <h2>اخبار جدید را دریافت کنید</h2>
+            </div>
+            <!-- End Heading -->
+            <form>
+              <!-- Input Card -->
+              <div class="input-card input-card-pill input-card-sm border mb-3">
+                <div class="input-card-form">
+                  <label for="subscribeForm" class="form-label visually-hidden">ایمیل را وارد کنید</label>
+                  <input type="text" class="form-control form-control-lg" id="subscribeForm" placeholder="ایمیل خود را وارد نمایید" aria-label="ایمیل خود را وارد کنید">
+                </div>
+                <button type="button" class="btn btn-primary btn-lg rounded-pill">ثبت نام</button>
+              </div>
+              <!-- End Input Card -->
+            </form>
+            <p class="small">می توانید در هر زمانی اشتراک خود را لغو کنید <a href="#">سیاست حفظ حریم خصوصی</a> ما را بخوانید</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Subscribe -->
+
+    <!-- Clients -->
+    <div class="container content-space-2">
+      <div class="row">
+        <div class="col text-center py-3">
+          <img class="avatar avatar-lg avatar-4x3" src="{% static 'svg/brands/hollister-dark.svg' %}" alt="Logo">
+        </div>
+        <!-- End Col -->
+
+        <div class="col text-center py-3">
+          <img class="avatar avatar-lg avatar-4x3" src="{% static 'svg/brands/levis-dark.svg' %}" alt="Logo">
+        </div>
+        <!-- End Col -->
+
+        <div class="col text-center py-3">
+          <img class="avatar avatar-lg avatar-4x3" src="{% static 'svg/brands/new-balance-dark.svg' %}" alt="Logo">
+        </div>
+        <!-- End Col -->
+
+        <div class="col text-center py-3">
+          <img class="avatar avatar-lg avatar-4x3" src="{% static 'svg/brands/puma-dark.svg' %}" alt="Logo">
+        </div>
+        <!-- End Col -->
+
+        <div class="col text-center py-3">
+          <img class="avatar avatar-lg avatar-4x3" src="{% static 'svg/brands/nike-dark.svg' %}" alt="Logo">
+        </div>
+        <!-- End Col -->
+
+        <div class="col text-center py-3">
+          <img class="avatar avatar-lg avatar-4x3" src="{% static 'svg/brands/tnf-dark.svg' %}" alt="Logo">
+        </div>
+        <!-- End Col -->
+      </div>
+      <!-- End Row -->
+    </div>
+    <!-- End Clients -->
+
+
+{% endblock %}
+
+{% block extra_js %}
+
+
+
+  <!-- JS Implementing Plugins -->
+  <script src="{% static 'js/vendor.min.js' %}"></script>
+
+  <!-- JS Front -->
+  <script src="{% static 'js/theme.min.js' %}"></script>
+
+  <!-- JS Plugins Init. -->
+  <script>
+    (function () {
+      // INITIALIZATION OF MEGA MENU
+      // =======================================================
+      new HSMegaMenu('.js-mega-menu', {
+        desktop: {
+          position: 'left'
+        }
+      })
+
+
+      // INITIALIZATION OF SHOW ANIMATIONS
+      // =======================================================
+      new HSShowAnimation('.js-animation-link')
+
+
+      // INITIALIZATION OF BOOTSTRAP VALIDATION
+      // =======================================================
+      HSBsValidation.init('.js-validate', {
+        onSubmit: data => {
+          data.event.preventDefault()
+          alert('Submited')
+        }
+      })
+
+
+      // INITIALIZATION OF BOOTSTRAP DROPDOWN
+      // =======================================================
+      HSBsDropdown.init()
+
+
+      // INITIALIZATION OF GO TO
+      // =======================================================
+      new HSGoTo('.js-go-to')
+    })()
+  </script>
+
+
+{% endblock %}
+
+{% block extra_js_no_compress %}
+{% endblock %}
+

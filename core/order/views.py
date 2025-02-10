@@ -13,7 +13,7 @@ from decimal import Decimal
 from datetime import timezone
 from django.utils import timezone
 from payment.zarinpal_client import ZarinPalSandBox
-from payment.models import PaymentModel, PaymentStatusTypeModel
+from payment.models import PaymentModel
 # Create your views here.
 
 class ValidationCouponView(LoginRequiredMixin, HasCustomerAccessPermission, SuccessMessageMixin, View):
@@ -143,5 +143,10 @@ class OrderCheckOutView(LoginRequiredMixin, HasCustomerAccessPermission, Success
         return context
     
 
-class OrderCompletedView(LoginRequiredMixin, HasCustomerAccessPermission, SuccessMessageMixin, TemplateView):
+class OrderCompletedView(LoginRequiredMixin, HasCustomerAccessPermission, TemplateView):
     template_name = "Order/order-completed.html"
+
+class OrderFailedView(LoginRequiredMixin, HasCustomerAccessPermission, TemplateView):
+    template_name = "Order/order-failed.html"
+
+
