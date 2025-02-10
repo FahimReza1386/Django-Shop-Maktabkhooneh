@@ -150,3 +150,17 @@ class CustomerOrderDetailView(LoginRequiredMixin, HasCustomerAccessPermission, D
         context = super().get_context_data(**kwargs)
         context["order_items"] = OrderItemModel.objects.filter(order__id=self.kwargs["pk"])
         return context
+    
+
+class CustomerOrderInvoiceView(LoginRequiredMixin, HasCustomerAccessPermission, DetailView):
+    template_name = "Dashboard/customer/orders/order-invoice.html"
+    
+    def get_queryset(self):
+        queryset = OrderModel.objects.filter(id=self.kwargs["pk"])
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["order_items"] = OrderItemModel.objects.filter(order__id=self.kwargs["pk"])
+        context["total_tax"] = 190000
+        return context
