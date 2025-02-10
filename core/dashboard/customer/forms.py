@@ -32,7 +32,7 @@ class CustomerAddressForm(forms.ModelForm):
         self.fields["zip_code"].widget.attrs["class"] = "form-control is-valid text-center"
 
 
-class OrdersProcessingForm(forms.ModelForm):
+class CustomerOrderDetailForm(forms.ModelForm):
     class Meta:
         model = OrderModel
         fields = ["total_price", "coupon", "status", "address", "state", "city", "zip_code"]

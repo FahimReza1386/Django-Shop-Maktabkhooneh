@@ -2,19 +2,19 @@ from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from dashboard.permissions import HasCustomerAccessPermission
 from django.shortcuts import redirect, get_object_or_404
-from django.views.generic import TemplateView, UpdateView, ListView, DeleteView, CreateView
+from django.views.generic import TemplateView, UpdateView, ListView, DeleteView, CreateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from dashboard.permissions import HasCustomerAccessPermission
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
-from dashboard.customer.forms import CustomerPasswordChangeForm, CustomerProfileEditForm, CustomerAddressForm, OrdersProcessingForm
+from dashboard.customer.forms import CustomerPasswordChangeForm, CustomerProfileEditForm, CustomerAddressForm, CustomerOrderDetailForm
 from accounts.models import Profile
 from django.contrib import messages
 from order.models import UserAddressModel
 from django.core.exceptions import FieldError
-from order.models import OrderModel, OrderStatusType
-from shop.models import ProductImageModel
+from order.models import OrderModel, OrderStatusType, OrderItemModel
+from shop.models import ProductImageModel, ProductModel
 # Create your views here.
 
 class CustomerDashBoardHomeView(LoginRequiredMixin, HasCustomerAccessPermission, TemplateView):
@@ -107,17 +107,46 @@ class CustomerAddressCreateView(LoginRequiredMixin, HasCustomerAccessPermission,
 
 class CustomerOrderListView(LoginRequiredMixin, HasCustomerAccessPermission, ListView):
     model = OrderModel
-    form_class = OrdersProcessingForm
-    template_name = "Dashboard/customer/orders/orders-processing.html"
-    
+    template_name = "Dashboard/customer/orders/order-list.html"
+    paginate_by = 5
+
     def get_queryset(self):
-        queryset = self.model.objects.filter(user = self.request.user)
+        queryset = self.model.objects.filter(user = self.request.user).order_by("-created_date")
         return queryset
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["extra_picture"] = ProductImageModel.objects.all()
+        context["total_orders"] = OrderModel.objects.all().count()
+        context["total_order_delivered"] = OrderModel.objects.filter(status=OrderStatusType.delivered).count()
+        context["total_order_canceled"] = OrderModel.objects.filter(status=OrderStatusType.canceled).count()
         return context
     
 
-class CustomerOrderDetailView(LoginRequiredMixin, HasCustomerAccessPermission, DeleteView):
-    pass
+    def get_paginate_by(self, queryset):
+            valid_page_sizes = {5, 10, 15, 20}
+            page_size_param = self.request.GET.get('page_size')
+
+            try:
+                page_size = int(page_size_param)
+                if page_size > 0 or page_size in valid_page_sizes:
+                    return page_size
+                else:
+                    return self.paginate_by
+            except:
+                return self.paginate_by
+
+    
+
+class CustomerOrderDetailView(LoginRequiredMixin, HasCustomerAccessPermission, DetailView):
+    template_name = "Dashboard/customer/orders/order-detail.html"
+    form_class = CustomerOrderDetailForm
+    
+    def get_queryset(self):
+        queryset = OrderModel.objects.filter(id=self.kwargs["pk"])
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["order_items"] = OrderItemModel.objects.filter(order__id=self.kwargs["pk"])
+        return context
