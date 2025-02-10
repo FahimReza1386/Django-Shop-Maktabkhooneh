@@ -8,11 +8,13 @@ from django.contrib.messages.views import SuccessMessageMixin
 from dashboard.permissions import HasCustomerAccessPermission
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
-from dashboard.customer.forms import CustomerPasswordChangeForm, CustomerProfileEditForm, CustomerAddressForm
+from dashboard.customer.forms import CustomerPasswordChangeForm, CustomerProfileEditForm, CustomerAddressForm, OrdersProcessingForm
 from accounts.models import Profile
 from django.contrib import messages
 from order.models import UserAddressModel
 from django.core.exceptions import FieldError
+from order.models import OrderModel, OrderStatusType
+from shop.models import ProductImageModel
 # Create your views here.
 
 class CustomerDashBoardHomeView(LoginRequiredMixin, HasCustomerAccessPermission, TemplateView):
@@ -99,3 +101,23 @@ class CustomerAddressCreateView(LoginRequiredMixin, HasCustomerAccessPermission,
         form.instance.user = self.request.user
         return super().form_valid(form)
     
+
+
+# ------------------------------------order Urls-------------------------------------------
+
+class CustomerOrderListView(LoginRequiredMixin, HasCustomerAccessPermission, ListView):
+    model = OrderModel
+    form_class = OrdersProcessingForm
+    template_name = "Dashboard/customer/orders/orders-processing.html"
+    
+    def get_queryset(self):
+        queryset = self.model.objects.filter(user = self.request.user)
+        return queryset
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["extra_picture"] = ProductImageModel.objects.all()
+        return context
+    
+
+class CustomerOrderDetailView(LoginRequiredMixin, HasCustomerAccessPermission, DeleteView):
+    pass

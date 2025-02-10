@@ -2,7 +2,7 @@ from django.contrib.auth import forms as auth_forms
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from accounts.models import Profile
-from order.models import UserAddressModel
+from order.models import UserAddressModel, OrderModel
 
 class CustomerPasswordChangeForm(auth_forms.PasswordChangeForm):
     error_messages = {
@@ -30,3 +30,9 @@ class CustomerAddressForm(forms.ModelForm):
         self.fields["state"].widget.attrs["class"] = "form-control is-valid text-center"
         self.fields["city"].widget.attrs["class"] = "form-control is-valid text-center"
         self.fields["zip_code"].widget.attrs["class"] = "form-control is-valid text-center"
+
+
+class OrdersProcessingForm(forms.ModelForm):
+    class Meta:
+        model = OrderModel
+        fields = ["total_price", "coupon", "status", "address", "state", "city", "zip_code"]
