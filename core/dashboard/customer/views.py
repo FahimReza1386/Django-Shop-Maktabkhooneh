@@ -108,10 +108,14 @@ class CustomerAddressCreateView(LoginRequiredMixin, HasCustomerAccessPermission,
 class CustomerOrderListView(LoginRequiredMixin, HasCustomerAccessPermission, ListView):
     model = OrderModel
     template_name = "Dashboard/customer/orders/order-list.html"
-    paginate_by = 5
 
     def get_queryset(self):
         queryset = self.model.objects.filter(user = self.request.user).order_by("-created_date")
+        queryset_product = OrderItemModel.objects.filter(order=self.queryset)
+        if search_q := self.request.GET.get("q"):
+            queryset = queryset_product.filter(product__title = search_q)
+        if order_by := self.request.GET.get("order_by"):
+            queryset = queryset.order_by(order_by)
         return queryset
     
     def get_context_data(self, **kwargs):
@@ -149,6 +153,9 @@ class CustomerOrderDetailView(LoginRequiredMixin, HasCustomerAccessPermission, D
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["order_items"] = OrderItemModel.objects.filter(order__id=self.kwargs["pk"])
+        order =self.get_queryset().first()
+        context["total_tax"] = round((order.total_price * 10 )/100)
+        
         return context
     
 
@@ -162,5 +169,7 @@ class CustomerOrderInvoiceView(LoginRequiredMixin, HasCustomerAccessPermission, 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["order_items"] = OrderItemModel.objects.filter(order__id=self.kwargs["pk"])
-        context["total_tax"] = 190000
+        order =self.get_queryset().first()
+        context["total_tax"] = round((order.total_price * 10 )/100)
+        
         return context

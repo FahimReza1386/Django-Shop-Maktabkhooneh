@@ -52,6 +52,9 @@ class OrderModel(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ["-created_date"]
+
         
     def calculate_total_price(self):
         return sum(item.price * item.quantity for item in self.order_items.all())

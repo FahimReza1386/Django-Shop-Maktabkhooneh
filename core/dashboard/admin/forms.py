@@ -61,9 +61,19 @@ class AdminOrderCouponsForm(forms.ModelForm):
         model = CouponModel
         fields = ["code", "discount_percent", "max_limit_usage", "used_by", "expiration_date"]
 
+        def __init__(self, *args, **kwargs):
+            super(AdminOrderCouponsForm, self).__init__(*args, **kwargs)
+            self.fields["used_by"].widget.attrs["class"] = "form-control is-valid"
+
 
 # ------------------------------OrderCoupons--------------------------------
 class AdminOrderCouponCreateForm(forms.ModelForm):
     class Meta:
         model = CouponModel
-        fields = ["code", "discount_percent", "max_limit_usage", "expiration_date"]
+        fields = ["code", "discount_percent", "max_limit_usage", "expiration_date"] 
+
+
+class AdminOrderCouponUsed_byForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ["user", "first_name", "last_name", "phone_number", "gender"]

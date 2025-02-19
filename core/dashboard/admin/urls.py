@@ -19,14 +19,13 @@ urlpatterns = [
     # Crud For ProductImage
     path("product/image/<int:pk>/add/", views.AdminProductImageAddView.as_view(), name="product-image-add"),
     path("product/image/<int:pk>/delete/", views.AdminProductImageDeleteView.as_view(), name="product-image-delete"),
-    # Crun For CouponModel
+    # Crud For CouponModel
     path("order/coupons/list/", views.AdminOrderCouponsListView.as_view(), name="order-coupons-list"),
- 
-    # path("order/coupon/create/", views.AdminOrderCouponCreate.as_view(), name="order-create-coupon"),
-  
-    path("order/coupon/create/", views.AdminOrderCouponCreate.as_view(), name="order-coupon-create"),
-  
-    # path("order/coupon/update/", views.AdminOrderCouponUpdate.as_view(), name="order-update-coupon"),
-    # path("order/coupon/delete/", views.AdminOrderCouponDelete.as_view(), name="order-delete-coupon"),
-    
+
+    path("order/coupon/create/", views.AdminOrderCouponCreateView.as_view(), name="order-coupon-create"),
+    path("order/coupon/<int:pk>/update/", views.AdminOrderCouponUpdateView.as_view(), name="order-coupon-update"),
+    path("order/coupon/<int:pk>/delete/", views.AdminOrderCouponDeleteView.as_view(), name="order-coupon-delete"),
+    path("order/coupon/<int:pk>/used_by/list/", views.AdminOrderCouponUsed_ByListView.as_view(), name="order-coupon-used_by-list"),
+
+
 ]

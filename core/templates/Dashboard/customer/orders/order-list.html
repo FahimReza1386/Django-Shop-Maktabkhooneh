@@ -36,13 +36,35 @@
   <!-- Card -->
   <div class="card">
     <!-- Header -->
-    <div class="card-header border-bottom">
-      <form class="input-group input-group-merge">
-        <div class="input-group-prepend input-group-text">
-          <i class="bi-search"></i>
-        </div>
-        <input type="search" class="form-control" placeholder="جستجو کنید" aria-label="Search orders">
-      </form>
+    <div class="card-header border-bottom d-flex">
+      <div class="mb-2 mb-sm-0 me-sm-2 col-md-6">
+        <form class="input-group input-group-merge" action=".">
+          {% csrf_token %}
+          <div class="input-group-prepend input-group-text">
+            <i class="bi-search"></i>
+          </div>
+          <input type="search" class="form-control" id="search-query-filter" name="q" placeholder="جستجو کنید" aria-label="Search orders">
+  
+        </form>
+      </div>
+      <div class="mb-2 mb-sm-0 me-sm-2 col-md-3">
+        <select class="form-select form-select-sm" id="order-by-filter">
+            <option value="" selected>مرتب سازی</option>
+            <option value="-created_date">جدیدترین</option>
+            <option value="created_date">قدیمی ترین</option>
+            <option value="-price">بیشترین قیمت</option>
+            <option value="price">کمترین قیمت</option>
+        </select>
+    </div>
+    <div class="mb-2 mb-sm-0 me-sm-2 col-md-3">
+      <select class="form-select form-select-sm" id="page-size-filter">
+          <option value="" selected>تعداد در صفحه</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+      </select>
+  </div>
     </div>
     <!-- End Header -->
 
@@ -140,14 +162,14 @@
                     <div class="row gx-2">
 
                       {% for picture in extra_picture %}
-                      {% if picture.product.id == item.id %}
+                        {% if picture.product.id == item.id %}
 
-                      <div class="col">
-                        <img class="img-fluid" src="{{ picture.file.url }}" alt="Image Description">
-                      </div>
-                      {% endif %}
+                            <div class="col">
+                              <img class="img-fluid" src="{{ picture.file.url }}" alt="Image Description">
+                            </div>
+                        {% endif %}
 
-                      {% endfor %}
+                        {% endfor %}
                       <!-- Slide -->
 
                     </div>
@@ -156,14 +178,14 @@
 
                   <div class="col-md-4">
                     <div class="d-grid gap-2">
-                      <a class="btn btn-white btn-sm" href="{% url 'dashboard:dash_customer:order-detail' pk=item.pk %}">
-                        <i class="bi-basket small me-2"></i> دیدن سفارش
-                      </a>
-                      <a class="btn btn-white btn-sm" href="#">
+                     
+                      <a class="btn btn-white btn-sm" href="{% url 'dashboard:dash_customer:order-invoice' pk=item.pk   %}">
                         <i class="bi-receipt small me-2"></i> مشاهده فاکتور
                       </a>
-                      <a class="btn btn-primary btn-sm" href="#">پیگیری سفارش</a>
-                    </div>
+                      <a class="btn btn-primary btn-sm" href="{% url 'dashboard:dash_customer:order-detail' pk=item.pk %}">
+                        <i class="bi-basket small me-2"></i> جزئیات سفارش
+                      </a>
+                     </div>
                   </div>
                 </div>
               </div>
@@ -500,11 +522,19 @@
 
     $(document).ready(function () {
       let current_url_params = new URLSearchParams(window.location.search)
+      $("#search-query-filter").val(current_url_params.get("q") || "")
       $("#order-by-filter").val(current_url_params.get("order_by") || "")
       $("#page-size-filter").val(current_url_params.get("page_size") || "")
-      $("#search-query-filter").val(current_url_params.get("q") || "")
-      $("#category-id-filter").val(current_url_params.get("category_id") || "")
 
+
+    });
+
+    $('#order-by-filter').change(function () {
+        let current_url_params = new URLSearchParams(window.location.search)
+        var selectedOption = $(this).val();
+        current_url_params.set("order_by", selectedOption)
+        let new_url = window.location.pathname + "?" + current_url_params.toString()
+        window.location.href = new_url
     });
     $('#page-size-filter').change(function () {
         let current_url_params = new URLSearchParams(window.location.search)
@@ -513,21 +543,6 @@
         let new_url = window.location.pathname + "?" + current_url_params.toString()
         window.location.href = new_url
     });
-    $('#order-by-filter').change(function () {
-        let current_url_params = new URLSearchParams(window.location.search)
-        var selectedOption = $(this).val();
-        current_url_params.set("order_by", selectedOption)
-        let new_url = window.location.pathname + "?" + current_url_params.toString()
-        window.location.href = new_url
-    });
-    $('#category-id-filter').change(function () {
-        let current_url_params = new URLSearchParams(window.location.search)
-        var selectedOption = $(this).val();
-        current_url_params.set("category_id", selectedOption)
-        let new_url = window.location.pathname + "?" + current_url_params.toString()
-        window.location.href = new_url
-    });
-
   </script>
 
 

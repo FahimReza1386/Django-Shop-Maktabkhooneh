@@ -91,7 +91,7 @@
               <form>
                 <div class="row mb-3 align-items-center">
                   <dt class="col-md-3">سفارش دهنده:</dt>
-                  <dl class="col-md-3">{{ request.user.user_profile.first_name }} {{ request.user.user_profile.last_name }}</dl>
+                  <dl class="col-md-3">{{ object.user.user_profile.first_name }} {{ object.user.user_profile.last_name }}</dl>
                   <dt class="col-md-3">وضعیت سفارش:</dt>
                   <dl class="col-md-3 "> {{ object.get_status_display }}</dl>
                 </div>
@@ -108,6 +108,26 @@
                   <dt class="col-md-3"> کد پستی:</dt>
                   <dl class="col-md-3">{{ object.zip_code }}</dl>
                 </div>
+                <div class="row mb-3">
+                  <dt class="col-md-3">هزینه ارسال:</dt>
+                  <dl class="col-md-3">35000 تومان</dl>
+                  <dt class="col-md-3">مالیات :</dt>
+                  <dl class="col-md-3">10% مبلغ نهایی- {{ total_tax|intcomma }}</dl>
+                </div>
+                <div class="row mb-3">
+                  <dt class="col-md-3">مبلغ نهایی:</dt>
+                  <dl class="col-md-3">{{ object.total_price|intcomma }} تومان</dl>
+                  <dt class="col-md-3"> تخفیف:</dt>
+  
+                  {% if object.coupon %}
+                  <dl class="col-md-3">{{ object.coupon.discount_percent }}%</dl>
+                  {% else %}
+                  <dl class="col-md-3">0%</dl>
+                  {% endif %}
+  
+         
+                </div>
+                <!-- End Row -->
                 <div class=" d-flex pt-5 justify-content-end">
                   <a class="btn btn-secondary ms-3" href="{% url 'dashboard:dash_customer:order-list' %}">بازگشت</a>
                 </div>

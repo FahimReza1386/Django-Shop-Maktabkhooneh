@@ -1,10 +1,8 @@
 {% extends 'Dashboard/admin/base.html' %}
 {% load static %}
 {% load dashboard_tags %}
-
 {% block title %}
 {% endblock title %}
-
 {% block breadcrumb %}
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-light mb-0">
@@ -21,43 +19,29 @@
     </ol>
 </nav>
 {% endblock %}
-
-
-
 {% block extra_css %}
 {% endblock extra_css %}
-
 {% block extra_css_no_compress %}
 {% endblock extra_css_no_compress %}
-
 {% block content %}
-
         <div class="col-lg-12">
           <!-- Card -->
           <div class="card">
             <!-- Header -->
             <div class="card-header border-bottom">
- 
               <div class="d-flex justify-content-between align-items-center">
-
-                <h5 class="card-header-title">لیست تخفیفات</h5>
-                <a class="btn btn-primary" href="{% url 'dashboard:dash_admin:order-coupon-create' %}">ایجاد تخفیف</a>
+                <h5 class="card-header-title">استفاده کنندگان از تخفیف</h5>
               </div>
-
-  
             </div>
             <!-- End Header -->
-
             <!-- Body -->
             <div class="card-body">
               <div class="container pb-5">
                 <form class="row" action=".">
                   {% csrf_token  %}
-
                   <!-- Input Card -->
                   <div class="col-md-5 py-1">
                     <input type="text" class="form-control" placeholder="جستجو" aria-label="جستجو " name="q" id="search-query-filter">
-
                   </div>
                   <!-- End Input Card -->
                   <div class="col-md-3 py-1">
@@ -65,8 +49,6 @@
                       <option value="" selected="">بر اساس</option>
                       <option value="-created_date" >جدید ترین</option>
                       <option value="created_date" >قدیمی ترین</option>
-                      <option value="-discount_percent">بیشترین تخفیف</option>
-                      <option value="discount_percent">کمترین تخفیف</option>
                     </select>
                   </div>
                   <div class="col-md-3 py-1">
@@ -82,9 +64,7 @@
                     <button type="submit" class="btn btn-primary btn-search"><i class="bi-search"></i></button>
                   </div>
                 </form>
-
               </div>
-
               <div class="row">
                 <!-- Table -->
                 <div class="table-responsive">
@@ -92,39 +72,26 @@
                     <thead class="thead-light text-center">
                       <tr>
                         <th scope="col">#</th>
-                        <th scope="col">کد تخفیف</th>
-                        <th scope="col">درصد تخفیف</th>
-                        <th scope="col">تعداد مجاز استفاده</th>
-                        <th scope="col">تعداد استفاده </th>
-                        <th scope="col">تاریخ انقضا</th>
+                        <th scope="col">نام</th>
+                        <th scope="col">نام خانوادگی</th>
+                        <th scope="col">شماره تلفن</th>
+                        <th scope="col">جنسیت</th>
                       </tr>
                     </thead>
                     <tbody>
-
-                    {% for coupon in object_list%}
+                    {% for item in object_list %}
                         <tr class="text-center" dir="rtl">
-                            <th scope="row"><a href="{% url 'dashboard:dash_admin:order-coupon-update' pk=coupon.id %}">{{ coupon.id }}</a></th>
-                            <td>{{ coupon.code }}</td>
-                            <td>{{ coupon.discount_percent }}%</td>
-                            <td><span>{{ coupon.max_limit_usage }}</span></td>
-                            <td><span><a href="{% url 'dashboard:dash_admin:order-coupon-used_by-list' pk=coupon.id %}">{{ coupon.used_by.count }}</a></span></td> 
-                            {% if coupon.expiration_date == None %}    
-                              <td>تعریف نشده</td>
-                            {% else %}                  
-                              <td>{% formatted_date coupon.expiration_date %}</td>
-                            {% endif %}
-
+                            <th scope="row">{{ item.id }}</th>
+                            <td>{{ item.first_name }}</td>
+                            <td>{{ item.last_name }}</td>
+                            <td><span>{{ item.phone_number }}</span></td>
+                            <td><span>{{ item.gender }}</span></td>
                         <tr>
                     {% endfor %}
-
-
-
                     </tbody>
                   </table>
                 </div>
                 <!-- End Table -->
-
-
                 {% if is_paginated %}
                 <nav aria-label="Page navigation">
                   <ul class="pagination justify-content-center">
@@ -164,25 +131,16 @@
                 </nav>
               {% endif %}
               
-
-
-
               </div>
               <!-- End Row -->
-
             </div>
             <!-- End Body -->
           </div>
           <!-- End Card -->
-
-
 {% endblock content %}
-
 {% block extra_js %}
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-
 <script>
-
   $(document).ready(function () {
     let current_url_params = new URLSearchParams(window.location.search)
     $("#order-by-filter").val(current_url_params.get("order_by") || "")
@@ -203,9 +161,7 @@
       let new_url = window.location.pathname + "?" + current_url_params.toString()
       window.location.href = new_url
   });
-
 </script>
 {% endblock extra_js %}
-
 {% block extra_js_no_compress %}
 {% endblock extra_js_no_compress %}
