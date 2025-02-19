@@ -1,0 +1,306 @@
+{% extends 'Dashboard/customer/base.html' %}
+{% load static %}
+{% load humanize %}
+{% load dashboard_tags %}
+
+
+{% block header %}
+{% endblock header %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block extra_css_no_compress %}
+{% endblock extra_css_no_compress %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb breadcrumb-light mb-0">
+    <li class="breadcrumb-item"> حساب </li>
+    <li class="breadcrumb-item active" aria-current="page">
+      داشبورد
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+      لیست علاقه مندی ها
+    </li>
+  </ol>
+</nav>
+{% endblock %}
+
+
+{% block content %}
+
+        <div class="col-lg-12">
+          <!-- Card -->
+          <div class="card">
+            <div class="card-header d-sm-flex justify-content-sm-between align-items-sm-center border-bottom">
+              <h5 class="card-header-title">محصولات مورد علاقه</h5>
+              <span>{{ Favorites_Counts }} مورد</span>
+            </div>
+
+            <!-- Body -->
+            <div class="card-body">
+              <div class="row align-items-center mb-5">
+                <div class="col-sm mb-3 mb-sm-0">
+                </div>
+                <form action="." class="w-100">
+
+                  <div class="border-bottom pb-4 mb-4">
+                    <label class="form-label d-flex" for="search-query-filter">جستجو کالا</label>
+
+                      <div class="d-flex gap-2 " style="margin-right: 3rem;">
+                          <div class="form-group col-md-10">
+                              <input class="form-control col-md-8" placeholder="واژه مورد نظر را وارد نمایید" type="text"
+                                  name="q" id="search-query-filter">
+                          </div>
+                          <button type="submit" class="btn btn-secondary h-50"><i class="bi-search"></i></button>
+                      </div>
+                      <div class="col-sm-auto mt-5"  style="justify-items: center;">
+                        <div class="d-sm-flex justify-content-sm-end align-items-center" >
+                            <!-- Select -->
+                            <div class="mb-2 mb-sm-0 me-sm-2">
+                                <select class="form-select form-select-sm" id="order-by-filter">
+                                    <option value="" selected>مرتب سازی</option>
+                                    <option value="-created_date">جدیدترین</option>
+                                    <option value="created_date">قدیمی ترین</option>
+                                    <option value="-product__price">بیشترین قیمت</option>
+                                    <option value="product__price">کمترین قیمت</option>
+                                </select>
+                            </div>
+                            <!-- End Select -->
+                            <!-- Select -->
+                            <div class="mb-2 mb-sm-0 me-sm-2">
+                                <select class="form-select form-select-sm" id="page-size-filter">
+                                    <option value="" selected>تعداد در صفحه</option>
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                </select>
+                            </div>
+                            <!-- End Select -->
+    
+                        </div>
+                    </div>
+                    </div>
+
+                  </form>
+            
+            </div>
+
+              <!-- List Group -->
+              <ul class="list-group list-group-flush list-group-no-gutters">
+                <!-- Item -->
+    
+                {% for object in object_list %}
+                <li class="list-group-item">
+                  <div class="d-flex">
+                    <div class="flex-shrink-0">
+                      <img class="avatar avatar-xl avatar-4x3" src="{{ object.product.image.url }}"
+                        alt="Image Description">
+                    </div>
+
+                    <div class="flex-grow-1 ms-3 m-3">
+                      <div class="row">
+                        <div class="col-sm-7  mb-3 mb-sm-0">
+                          <h5><a class="text-dark" href="{% url 'shop:product-detail' slug=object.product.slug %}">{{ object.product.title }}</a></h5>
+                          <div class="d-grid gap-1">
+                            <div class="text-body">
+                              <span class="small">توضیحات :</span>
+                              <br>
+
+                              <span class="fw-semibold small">{{ object.product.brief_description }}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- End Col -->
+                        <div class="col-sm-3">
+                          <div class="col-auto">
+                            <div class="d-grid gap-2">
+                              <a class="link-sm link-danger small" href="javascript:;">
+                                <i class="bi-trash me-1"></i> حذف
+                              </a>
+                            </div>
+                          </div>
+                          <!-- End Col -->
+                        </div>
+                        <!-- End Row -->
+                      </div>
+                    </div>
+                    <!-- End Row -->
+                  </div>
+                </li>
+                {% endfor %}
+                <!-- End Item -->
+              </ul>
+              <!-- End List Group -->
+
+
+
+        {% if is_paginated %}
+        <nav aria-label="Page navigation">
+          <ul class="pagination justify-content-center">
+            {% if page_obj.has_next %}
+            <li class="page-item">
+            <button class="page-link" onclick="ChangePage(`{{ page_obj.next_page_number }}`)" aria-label="Next">
+                <span aria-hidden="true">
+                  <i class="bi-chevron-double-left small"></i>
+                </span>
+              </button>
+            </li>
+          {% endif %} 
+
+            {% for i in page_obj.paginator.page_range %}
+            {% if i == page_obj.number %}
+              <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>
+            {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+              <li class="page-item"><button class="page-link" onclick="ChangePage(`{{ i }}`)">{{ i }}</button></li>
+            {% endif %} 
+          {% endfor %}
+          {% if page_obj.has_previous %}
+          <li class="page-item">
+            <button class="page-link" onclick="ChangePage(`{{ page_obj.previous_page_number }}`)" aria-label="Previous">
+              <span aria-hidden="true">
+                <i class="bi-chevron-double-right small"></i>
+              </span>
+            </button>
+          </li>
+        {% endif %}
+          
+            
+          </ul>
+        </nav>
+      {% endif %}
+    </div>
+    <!-- End Body -->
+
+    <a class="card-footer card-link text-center border-top" href="{% url 'shop:product-grid' %}">به خرید ادامه دهید</a>
+
+      
+        </div>
+      </div>
+      <!-- End Card -->
+
+        <!-- End Col -->
+
+{% endblock content %}
+
+
+
+{% block extra_js %}
+<!-- ========== END SECONDARY CONTENTS ========== -->
+
+<!-- JS Implementing Plugins -->
+<script src="{% static 'js/vendor.min.js' %}"></script>
+
+<!-- JS Front -->
+<script src="{% static 'js/theme.min.js' %}"></script>
+<script>
+  (function () {
+    // INITIALIZATION OF HEADER
+    // =======================================================
+    new HSHeader('#header').init()
+
+
+    // INITIALIZATION OF MEGA MENU
+    // =======================================================
+    new HSMegaMenu('.js-mega-menu', {
+      desktop: {
+        position: 'left'
+      }
+    })
+
+
+    // INITIALIZATION OF SHOW ANIMATIONS
+    // =======================================================
+    new HSShowAnimation('.js-animation-link')
+
+
+    // INITIALIZATION OF BOOTSTRAP VALIDATION
+    // =======================================================
+    HSBsValidation.init('.js-validate', {
+      onSubmit: data => {
+        data.event.preventDefault()
+        alert('Submited')
+      }
+    })
+
+
+    // INITIALIZATION OF BOOTSTRAP DROPDOWN
+    // =======================================================
+    HSBsDropdown.init()
+
+
+    // INITIALIZATION OF GO TO
+    // =======================================================
+    new HSGoTo('.js-go-to')
+
+
+    // INITIALIZATION OF NAV SCROLLER
+    // =======================================================
+    new HsNavScroller('.js-nav-scroller')
+
+
+    // INITIALIZATION OF SELECT
+    // =======================================================
+    HSCore.components.HSTomSelect.init('.js-select', {
+      render: {
+        'option': function (data, escape) {
+          return data.optionTemplate || `<div>${data.text}</div>>`
+        },
+        'item': function (data, escape) {
+          return data.optionTemplate || `<div>${data.text}</div>>`
+        }
+      }
+    })
+  })()
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+
+<script>
+    function ChangePage(page_number) {
+      let current_url_params = new URLSearchParams(window.location.search)
+      current_url_params.set("page", page_number)
+      let new_url = window.location.pathname + "?" + current_url_params.toString()
+      window.location.href = new_url
+    }
+  </script>
+
+<script>
+
+
+$(document).ready(function () {
+        let current_url_params = new URLSearchParams(window.location.search)
+        $("#page-size-filter").val(current_url_params.get("page_size") || "")
+        $("#order-by-filter").val(current_url_params.get("order_by") || "")
+        $("#search-query-filter").val(current_url_params.get("q") || "")
+        $("#min-price-filter").val(current_url_params.get("min_price") || "")
+        $("#max-price-filter").val(current_url_params.get("max_price") || "")
+        $("#category-id-filter").val(current_url_params.get("category_id") || "")
+
+    });
+    $('#page-size-filter').change(function () {
+        let current_url_params = new URLSearchParams(window.location.search)
+        var selectedOption = $(this).val();
+        current_url_params.set("page_size", selectedOption)
+        let new_url = window.location.pathname + "?" + current_url_params.toString()
+        window.location.href = new_url
+    });
+    $('#order-by-filter').change(function () {
+        let current_url_params = new URLSearchParams(window.location.search)
+        var selectedOption = $(this).val();
+        current_url_params.set("order_by", selectedOption)
+        let new_url = window.location.pathname + "?" + current_url_params.toString()
+        window.location.href = new_url
+    });
+  </script>
+
+
+{% endblock extra_js %}
+
+{% block extra_js_no_compress %}
+{% endblock extra_js_no_compress %}

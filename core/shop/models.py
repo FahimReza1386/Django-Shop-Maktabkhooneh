@@ -65,3 +65,18 @@ class ProductImageModel(models.Model):
 
     def __str__(self):
         return f"{self.product.title}"
+    
+
+class FavoritesProductModel(models.Model):
+    user = models.ForeignKey("accounts.User", on_delete=models.PROTECT)
+    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE)
+
+
+    created_date= models.DateTimeField(auto_now_add=True, null=True)
+    updated_date= models.DateTimeField(auto_now=True, null=True)
+
+    class Meta:
+        ordering = ["-created_date"]
+
+    def __str__(self):
+        return f"{self.product}"

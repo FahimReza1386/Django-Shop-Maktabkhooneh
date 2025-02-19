@@ -21,4 +21,9 @@ urlpatterns = [
     path("order/<int:pk>/detail/", views.CustomerOrderDetailView.as_view(), name="order-detail"),
     path("order/<int:pk>/invoice/", views.CustomerOrderInvoiceView.as_view(), name="order-invoice"),
 
+    # Favorites urls
+    path("favorites/list/", views.CustomerFavoritesListView.as_view(), name="favorites-list"),
+
+
+
 ]

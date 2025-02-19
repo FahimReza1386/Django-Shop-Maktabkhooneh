@@ -3,6 +3,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from accounts.models import Profile
 from order.models import UserAddressModel, OrderModel
+from shop.models import FavoritesProductModel
 
 class CustomerPasswordChangeForm(auth_forms.PasswordChangeForm):
     error_messages = {
@@ -36,3 +37,11 @@ class CustomerOrderDetailForm(forms.ModelForm):
     class Meta:
         model = OrderModel
         fields = ["total_price", "coupon", "status", "address", "state", "city", "zip_code"]
+
+
+
+#  ---------------------------------------- Favorites Forms------------------------------------------
+class CustomerFavoritesForm(forms.ModelForm):
+    class Meta:
+        model = FavoritesProductModel
+        fields = ["product"]

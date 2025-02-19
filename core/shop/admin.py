@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ProductModel, ProductImageModel, ProductCategoryModel
+from .models import ProductModel, ProductImageModel, ProductCategoryModel, FavoritesProductModel
 # Register your models here.
 
 @admin.register(ProductModel)
@@ -13,3 +13,7 @@ class ProductCategoryModelAdmin(admin.ModelAdmin):
 @admin.register(ProductImageModel)
 class ProductImageModelAdmin(admin.ModelAdmin):
     list_display=("id", "file", "product","created_date")
+
+@admin.register(FavoritesProductModel)
+class FavoritesProductModelAdmin(admin.ModelAdmin):
+    list_display=("id", "user", "product")

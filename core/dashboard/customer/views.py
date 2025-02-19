@@ -8,13 +8,13 @@ from django.contrib.messages.views import SuccessMessageMixin
 from dashboard.permissions import HasCustomerAccessPermission
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
-from dashboard.customer.forms import CustomerPasswordChangeForm, CustomerProfileEditForm, CustomerAddressForm, CustomerOrderDetailForm
+from dashboard.customer.forms import CustomerPasswordChangeForm, CustomerProfileEditForm, CustomerAddressForm, CustomerOrderDetailForm, CustomerFavoritesForm
 from accounts.models import Profile
 from django.contrib import messages
 from order.models import UserAddressModel
 from django.core.exceptions import FieldError
 from order.models import OrderModel, OrderStatusType, OrderItemModel
-from shop.models import ProductImageModel, ProductModel
+from shop.models import ProductImageModel, FavoritesProductModel
 # Create your views here.
 
 class CustomerDashBoardHomeView(LoginRequiredMixin, HasCustomerAccessPermission, TemplateView):
@@ -112,8 +112,6 @@ class CustomerOrderListView(LoginRequiredMixin, HasCustomerAccessPermission, Lis
     def get_queryset(self):
         queryset = self.model.objects.filter(user = self.request.user).order_by("-created_date")
         queryset_product = OrderItemModel.objects.filter(order=self.queryset)
-        if search_q := self.request.GET.get("q"):
-            queryset = queryset_product.filter(product__title = search_q)
         if order_by := self.request.GET.get("order_by"):
             queryset = queryset.order_by(order_by)
         return queryset
@@ -172,4 +170,45 @@ class CustomerOrderInvoiceView(LoginRequiredMixin, HasCustomerAccessPermission, 
         order =self.get_queryset().first()
         context["total_tax"] = round((order.total_price * 10 )/100)
         
+        return context
+    
+
+#  -------------------------------------------- Favorites Views---------------------------------------------------------
+
+
+class CustomerFavoritesListView(LoginRequiredMixin, HasCustomerAccessPermission, ListView):
+    template_name = "Dashboard/customer/Favorites/favorites-list.html"
+    form_class = CustomerFavoritesForm
+    model = FavoritesProductModel
+    paginate_by = 5
+    
+    def get_paginate_by(self, queryset):
+            valid_page_sizes = {5, 10, 15, 20}
+            page_size_param = self.request.GET.get('page_size')
+
+            try:
+                page_size = int(page_size_param)
+                if page_size > 0 or page_size in valid_page_sizes:
+                    return page_size
+                else:
+                    return self.paginate_by
+            except:
+                return self.paginate_by
+
+
+    def get_queryset(self):
+            queryset = self.model.objects.filter(user=self.request.user)
+            if search_q := self.request.GET.get("q"):
+                queryset = queryset.filter(product__title__icontains=search_q)
+            if order_by := self.request.GET.get("order_by"):
+                try:
+                    queryset = queryset.order_by(order_by)
+                except FieldError:
+                    messages.error(self.request , ("خطا در وارد کردن فیلد"))
+
+            return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["Favorites_Counts"] = int(self.get_queryset().count())
         return context
