@@ -23,6 +23,7 @@ urlpatterns = [
 
     # Favorites urls
     path("favorites/list/", views.CustomerFavoritesListView.as_view(), name="favorites-list"),
+    path("favorites/<int:pk>/delete/", views.CustomerFavoritesDeleteView.as_view(), name="favorites-delete"),
 
 
 

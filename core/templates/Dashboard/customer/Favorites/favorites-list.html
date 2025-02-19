@@ -118,9 +118,11 @@
                         <div class="col-sm-3">
                           <div class="col-auto">
                             <div class="d-grid gap-2">
-                              <a class="link-sm link-danger small" href="javascript:;">
-                                <i class="bi-trash me-1"></i> حذف
-                              </a>
+                              <form action="{% url 'dashboard:dash_customer:favorites-delete' pk=object.pk %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn"><i class="bi-trash me-1 text-danger"></i></button>
+                              </form>
+                             
                             </div>
                           </div>
                           <!-- End Col -->

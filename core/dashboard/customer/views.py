@@ -212,3 +212,13 @@ class CustomerFavoritesListView(LoginRequiredMixin, HasCustomerAccessPermission,
         context = super().get_context_data(**kwargs)
         context["Favorites_Counts"] = int(self.get_queryset().count())
         return context
+    
+
+class CustomerFavoritesDeleteView(LoginRequiredMixin, HasCustomerAccessPermission, SuccessMessageMixin, DeleteView):
+    http_method_names = "post"
+    success_message = "محصول انتخابی با موفقیت از لیست دلخواه شما حذف گردید ."
+    success_url = reverse_lazy("dashboard:dash_customer:favorites-list")
+
+    def get_queryset(self):
+        queryset = FavoritesProductModel.objects.filter(pk=self.kwargs["pk"])
+        return queryset
