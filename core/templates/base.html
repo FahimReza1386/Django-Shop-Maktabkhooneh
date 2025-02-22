@@ -625,6 +625,26 @@
       }
     
     </script>
+    <script>
+      function AddOrRemoveFavorites(product_id){
+          $.ajax({
+              type: "POST",
+              url: "{% url 'shop:add-or-remove-favorites' %}",
+              data: {
+                csrfmiddlewaretoken:'{{ csrf_token }}',
+                product_id:product_id,
+              },
+              success: function(response){
+                  window.location.reload()
+              },
+              error: function (err,errmsg,xhr) {
+                console.log(err)
+              }
+          });
+    
+      }
+    
+    </script>
     
     {% block extra_js %}
     {% endblock extra_js %}
