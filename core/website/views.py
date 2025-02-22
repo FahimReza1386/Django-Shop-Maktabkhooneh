@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, CreateView, UpdateView
 from website.models import Contact, NewsletterSubscriber
 from django.contrib import messages
+from shop.models import FavoritesProductModel
 # Create your views here.
 
 

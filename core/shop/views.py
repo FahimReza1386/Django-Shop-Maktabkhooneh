@@ -5,7 +5,7 @@ from django.views.generic import (
     DetailView,
 )
 from django.core.exceptions import FieldError
-from .models import ProductModel, ProductStatusType, ProductCategoryModel, ProductImageModel
+from .models import ProductModel, ProductStatusType, ProductCategoryModel, ProductImageModel, FavoritesProductModel
 from django.utils.translation import gettext_lazy as _
 from django.contrib import messages
 
@@ -56,6 +56,7 @@ class ShopProductGridView(ListView):
         context = super().get_context_data(**kwargs)
         context['total_items'] = self.get_queryset().count()
         context['categories'] = ProductCategoryModel.objects.all()
+        context['Favorites_product'] = FavoritesProductModel.objects.filter(user=self.request.user).values_list('product__id', flat=True)
         return context
 
 
