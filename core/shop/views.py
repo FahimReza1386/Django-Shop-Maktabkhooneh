@@ -11,7 +11,8 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http.response import JsonResponse
-from accounts.models import User
+from review.models import ReviewModel, ReviewStatusType
+
 # Create your views here.
 class ShopProductGridView(ListView):
     template_name = "Shop/product-grid.html"
@@ -69,9 +70,10 @@ class ShopProductDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        product= self.get_object()
         context["extra_picture"] = ProductImageModel.objects.all()
         context['Favorites_product'] = FavoritesProductModel.objects.filter(user=self.request.user).values_list('product__id', flat=True)  if self.request.user.is_authenticated else []
-
+        context['reviews'] = ReviewModel.objects.filter(product=product, status=ReviewStatusType.accepted.value).order_by('-created_date')
         return context
     
 

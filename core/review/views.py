@@ -5,7 +5,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.urls import reverse_lazy
 from .forms import SubmitReviewForm
-from .models import ReviewModel
+from .models import ReviewModel, ReviewStatusType
+from order.models import OrderModel, OrderItemModel, OrderStatusType
 
 # Create your views here.
 
@@ -16,9 +17,16 @@ class SubmitReviewView(LoginRequiredMixin,CreateView):
     model = ReviewModel
 
     def form_valid(self, form):
+        product = form.cleaned_data["product"]
+        orders = OrderModel.objects.filter(user=self.request.user, status=OrderStatusType.delivered.value)
+        order = list(orders)
+        is_buy = OrderItemModel.objects.filter(order__in=order, product=product).exists()
+        if is_buy != True:
+            form.instance.status = ReviewStatusType.rejected.value
+        else :
+            form.instance.status = ReviewStatusType.accepted.value
         form.instance.user = self.request.user
         form.save()
-        product = form.cleaned_data["product"]
         messages.success(self.request, "دیدگاه شما با موفقیت ثبت شد ، پس از بررسی نمایش داده خواهد شد .")
         return redirect(reverse_lazy("shop:product-detail", kwargs={"slug":product.slug}))
     

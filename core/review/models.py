@@ -4,9 +4,9 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 # Create your models here.
 
 class ReviewStatusType(models.IntegerChoices):
-    pending = 1, "در انتظار تایید"
-    accepted = 2, "تایید شده"
-    rejected = 3, "رد شده"
+    pending = 1, "در انتظار تایید خرید"
+    accepted = 2, "خرید تایید شده"
+    rejected = 3, "خرید رد شده"
 
 class ReviewModel(models.Model):
     user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
