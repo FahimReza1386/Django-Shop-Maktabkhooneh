@@ -478,6 +478,51 @@
 
           <h4 class="display-4 text-primary">77%</h4>
           <p class="small">مشتریان این محصول را توصیه می کنند</p>
+
+          <!-- Modal -->
+          <div class="modal fade" id="SubmitReviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">ارسال دیدگاه</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form id="SubmitReviewForm" action="{% url 'review:submit-review' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row d-flex ">
+                      <div class="col-md-6 mb-3">
+                        <input type="text" class="form-control is-valid" id="validationValidInput1" name="product"
+                         value="{{ object.id }}" hidden>
+                      </div>
+                      <div class="col-md-12 mb-3">
+                        <!-- Select -->
+                        <label for="SubmitReviewRate">تعداد ستاره :</label>
+                        <select class="form-select form-select-sm is-valid " id="SubmitReviewRate" required name="rate"> 
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                        </select>
+          
+                        <!-- End Select -->
+                      </div>
+
+                      <div class="col-md-12 mb-3">
+                        <label for="SubmitReviewDescription">توضیحات مختصر :</label>
+                        <textarea type="text" class="form-control is-valid" placeholder="نظر خود را وارد کنید ..." id="SubmitReviewDescription" name="description"></textarea>
+                      </div>
+                    </div>            
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بازگشت</button>
+                  <button type="submit" form="SubmitReviewForm" class="btn btn-primary">ارسال دیدگاه</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <!-- End Col -->
 
@@ -488,8 +533,11 @@
               <div class="row align-items-center">
                 <div class="col-sm mb-2 mb-sm-0">
                   <h4 class="mb-0">مرتب سازی کنید</h4>
-                </div>
+                </div>       
                 <!-- End Col -->
+                <div class="col-sm-7 text-center justify-content-center">
+                  <button type="button" class="btn btn-outline-primary btn-transition " data-bs-toggle="modal" data-bs-target="#SubmitReviewModal">نظر خود را بنویسید</button>
+                </div>
 
                 <div class="col-sm-auto">
                   <!-- Select -->
@@ -499,8 +547,10 @@
                     <option value="helpful">مفید است</option>
                     <option value="newest">جدیدترین</option>
                   </select>
+    
                   <!-- End Select -->
                 </div>
+        
                 <!-- End Col -->
               </div>
               <!-- End Row -->
@@ -663,11 +713,9 @@
               <!-- End Item -->
             </ul>
             <!-- End Comment -->
-
-            <div class="d-sm-flex justify-content-sm-end gap-2">
-              <a class="btn btn-link" href="#">ادامه مطلب <i class="bi-chevron-left small me-1"></i></a>
-              <button type="button" class="btn btn-primary btn-transition rounded-pill">یک بررسی بنویسید</button>
-            </div>
+          </div>
+          <div class=" text-center justify-content-center">
+            <button type="button" class="btn  btn-transition btn-white ">ادامه نظرات</button>
           </div>
         </div>
         <!-- End Col -->
