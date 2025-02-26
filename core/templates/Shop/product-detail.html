@@ -557,12 +557,14 @@
               <!-- Item -->
               <li class="list-comment-item">
                 <div class="d-flex gap-1 mb-3">
-                  {% with ''|center:review.rate as range %}
-                    {% for _ in range %}
-                      <img src="{% static 'svg/illustrations/star.svg' %}" alt="Review rating" width="16">  
+                    {% for i in "12345" %}
+                      {% if i|add:0 <= review.rate %}
+                          <i class="bi bi-star-fill" style="color: yellow;"></i>
+                      {% else %}  
+                      <i class="bi bi-star" style="color: rgb(148, 148, 26);"></i>
+                      {% endif %}  
                     {% endfor %}
-                  {% endwith %}
-
+                
                 </div>
 
                 <!-- Media -->

@@ -36,3 +36,5 @@ class SubmitReviewView(LoginRequiredMixin,CreateView):
             for error in errors:
                 messages.error(self.request, error)
         return redirect(self.request.META.get("HTTP_REFERER"))
+
+    
