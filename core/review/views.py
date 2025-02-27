@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.urls import reverse_lazy
@@ -38,3 +38,13 @@ class SubmitReviewView(LoginRequiredMixin,CreateView):
         return redirect(self.request.META.get("HTTP_REFERER"))
 
     
+
+
+class DeleteReviewView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+    http_method_names = "post"
+    success_message = "نظر و بررسی شما با موفقیت حذف شد ."
+    model = ReviewModel
+
+    def get_success_url(self):
+        obj = self.model.objects.get(id=self.kwargs["pk"])
+        return reverse_lazy("shop:product-detail", kwargs={"slug": obj.product.slug })

@@ -40,5 +40,4 @@ def review_post_save(sender, instance, **kwargs):
 
 @receiver(post_delete, sender=ReviewModel)
 def review_post_delete(sender, instance, **kwargs):
-    if instance.status == ReviewStatusType.rejected.value:
         update_product_average_rate(instance.product)
