@@ -169,8 +169,10 @@
   <!-- Header -->
   <div class="card-header border-bottom">
     <h5 class="card-header-title ">ویرایش تصاویر محصول</h5>
-    <a class="btn btn-sm btn-icon btn-ghost-primary" style="float: left;margin-top: -2rem;"
-      href="{% url 'shop:product-detail' slug=object.slug %}"><i class="bi-eye"></i></a>
+    {% if object.status == 1%}
+      <a class="btn btn-sm btn-icon btn-ghost-primary" style="float: left;margin-top: -2rem;"
+        href="{% url 'shop:product-detail' slug=object.slug %}"><i class="bi-eye"></i></a>
+    {% endif %}
   </div>
   <!-- End Header -->
 

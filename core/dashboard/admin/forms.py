@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from accounts.models import Profile
 from shop.models import ProductModel, ProductImageModel
 from order.models import CouponModel
+from review.models import ReviewModel
 
 class AdminPasswordChangeForm(auth_forms.PasswordChangeForm):
     error_messages = {
@@ -77,3 +78,19 @@ class AdminOrderCouponUsed_byForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ["user", "first_name", "last_name", "phone_number", "gender"]
+
+
+#  ---------------------------Review Forms -----------------------------------
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = ReviewModel
+        fields = ["user", "product", "description", "rate", "status"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["user"].widget.attrs["class"] = "form-control is-valid"
+        self.fields["product"].widget.attrs["class"] = "form-control is-valid"
+        self.fields["description"].widget.attrs["class"] = "form-control is-valid"
+        self.fields["description"].widget.attrs["readonly"] = True
+        self.fields["rate"].widget.attrs["class"] = "form-control is-valid"
+        self.fields["rate"].widget.attrs["readonly"] = True

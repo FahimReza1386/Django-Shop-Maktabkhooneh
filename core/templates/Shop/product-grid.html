@@ -227,7 +227,7 @@ Product grid Page
                       <img src="{% static 'svg/illustrations/star.svg' %}" alt="Review rating" width="16">
                       <img src="{% static 'svg/illustrations/star-muted.svg' %}" alt="Review rating" width="16">
                     </div>
-                    <span class="small">40</span>
+                    <span class="small">{{ object.avg_rate }}/5</span>
                   </a>
                   <!-- End Rating -->
 
@@ -238,7 +238,7 @@ Product grid Page
              
             </div>
             {% empty %}
-            <span style="color: #473f36;text-align: center;font-size: 21px;margin: 1rem auto;">کالایی برای نمایش وجود ندارد ..
+            <span style="color: #f88c10;text-align: center;font-size: 21px;margin: 1rem auto;">کالایی برای نمایش وجود ندارد ..
             <!-- End Card -->
               </span>
 

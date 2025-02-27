@@ -1,0 +1,113 @@
+{% extends 'Dashboard/admin/base.html' %}
+{% load static %}
+{% load dashboard_tags %}
+{% block title %}
+{% endblock title %}
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light mb-0">
+        <li class="breadcrumb-item"> حساب </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            داشبورد
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            محصولات 
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            بررسی ها 
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            بروزرسانی بررسی
+        </li>
+    </ol>
+</nav>
+{% endblock %}
+{% block extra_css %}
+{% endblock extra_css %}
+{% block extra_css_no_compress %}
+{% endblock extra_css_no_compress %}
+{% block content %}
+<div class="col-lg-12">
+    <!-- Card -->
+    <div class="card">
+        <!-- Header -->
+        <div class="card-header border-bottom">
+            <h5 class="card-header-title">بروزرسانی بررسی شماره {{ object.id }}</h5>
+        </div>
+        <!-- End Header -->
+        <!-- Body -->
+        <!-- Body -->
+        <div class="card-body">
+            <form action="." method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row d-flex ">
+                    <div class="col-md-3 mb-3">
+                        <label for="ReviewOwner">صاحب نظر </label>
+                        {{ form.user }}
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="Reviewrate">تعداد ستاره</label>
+                        {{ form.rate }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="ReviewProduct" >محصول</label>
+                        {{ form.product }}
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="ReviewDescription">توضیحات بررسی</label>
+                   
+                        {{ form.description }}
+                    </div>
+                    <div class="row mb-4">
+                        <label class="col-sm-3 col-form-label form-label">وضعیت :</label>
+
+                        <div class="col-sm-9">
+                            <div class="input-group input-group-md-down-break">
+                                <!-- Radio Check -->
+                                <label class="form-control" for="id_pending_status">
+                                    <span class="form-check">
+                                        <input type="radio" class="form-check-input" name="status"
+                                            id="id_pending_status" value="1" {% if form.status.value == 1 %} checked {% endif %}>
+                                        <span class="form-check-label">درحال بررسی</span>
+                                    </span>
+                                </label>
+                                <!-- End Radio Check -->
+                                <!-- Radio Check -->
+                                <label class="form-control" for="id_accepted_status">
+                                    <span class="form-check">
+                                        <input type="radio" class="form-check-input" name="status"
+                                            id="id_accepted_status" value="2" {% if form.status.value == 2 %} checked {% endif %}>
+                                        <span class="form-check-label">تایید شده</span>
+                                    </span>
+                                </label>
+                                <!-- End Radio Check -->
+
+                                <!-- Radio Check -->
+                                <label class="form-control" for="id_rejected_status">
+                                    <span class="form-check">
+                                        <input type="radio" class="form-check-input" name="status"
+                                            id="id_rejected_status" value="3" {% if form.status.value == 3 %} checked {% endif %}>
+                                        <span class="form-check-label">تایید نشده</span>
+                                    </span>
+                                </label>
+                                <!-- End Radio Check -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="float: left;margin-right: 10px;">بروزرسانی
+                    بررسی</button>
+            </form>
+            <a class="btn btn-secondary mb-2 " style="float: left;" href="{% url 'dashboard:dash_admin:review-list' %}">بازگشت</a>
+        </div>
+    </div>
+    <!-- End Body -->
+</div>
+<!-- End Card -->
+{% endblock content %}
+
+{% block extra_js %}
+{% endblock extra_js %}
+
+{% block extra_js_no_compress %}
+{% endblock extra_js_no_compress %}

@@ -1,0 +1,228 @@
+{% extends 'Dashboard/admin/base.html' %}
+{% load static %}
+{% load humanize %}
+
+
+{% block header %}
+{% endblock header %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block extra_css_no_compress %}
+{% endblock extra_css_no_compress %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light mb-0">
+        <li class="breadcrumb-item"> حساب </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            داشبورد
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            محصولات
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            بررسی ها
+        </li>
+    </ol>
+</nav>
+{% endblock %}
+
+
+{% block content %}
+<div class="col-lg-12">
+    <!-- Card -->
+    <div class="card">
+      <!-- Header -->
+      <div class="card-header border-bottom">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="">لیست بررسی ها</h5>
+        </div>
+      </div>
+      <!-- End Header -->
+
+      <!-- Body -->
+      <div class="card-body">
+        <div class="container pb-5">
+          <form class="row" action=".">
+
+            <!-- Input Card -->
+            <div class="col-md-5 py-1">
+              <input type="text" class="form-control" placeholder="جستجوی" aria-label="جستجوی ایمیل" name="q" id="search-query-filter">
+
+            </div>
+            <!-- End Input Card -->
+            <div class="col-md-3 py-1">
+              <select class="form-select"  id="order-by-filter" name="order_by">
+                <option value="" selected>بر اساس</option>
+                <option value="-created_date">جدید ترین ها</option>
+                <option value="created_date">قدیمی ترین ها</option>
+                <option value="-product__price">گران ترین ها</option>
+                <option value="product__price">ارزان ترین ها</option>
+              </select>
+            </div>
+            <div class="col-md-3 py-1">
+              <select class="form-select"  id="page-size-filter" name="page_size">
+                <option value="" selected>تعداد در صفحه</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+              </select>
+            </div>
+            <div class="col-md-1 py-1">
+              <button type="submit" class="btn btn-primary btn-search"><i class="bi-search"></i></button>
+            </div>
+          </form>
+
+        </div>
+
+        <div class="row">
+          <!-- Table -->
+          <div class="table-responsive">
+            <table class="table">
+              <thead class="thead-light text-center">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">نام و نام خانوادگی</th>
+                  <th scope="col">محصول</th>
+                  <th scope="col">وضعیت</th>
+                  <th scope="col">عملیات</th>
+                </tr>
+              </thead>
+              <tbody class="text-center">
+                {% for item in object_list %}
+                <tr>
+                  <th scope="row">{{ forloop.counter }}</th>
+                  <td>{{ item.user.user_profile.first_name }} {{ item.user.user_profile.last_name }}</td>
+                  <td>{{ item.product }}</td>
+                  {% if item.status == 1 %}
+                  <td><span class="badge bg-secondary">در انتظار تایید</span></td>
+                  {% elif item.status == 2 %}
+                  <td><span class="badge bg-success">خرید تایید شده</span></td>
+                  {% else %}
+                  <td><span class="badge bg-danger"> خرید تایید نشده</span></td>
+                  {% endif %}
+                  <td><a href="{% url 'dashboard:dash_admin:review-edit' pk=item.id %}"><i class="bi-pencil-square"></i></a></td>
+ 
+                </tr>
+                {% endfor %}
+
+              </tbody>
+            </table>
+          </div>
+          <!-- End Table -->
+
+          {% if is_paginated %}
+          <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+              {% if page_obj.has_next %}
+              <li class="page-item">
+              <button class="page-link" onclick="ChangePage(`{{ page_obj.next_page_number }}`)" aria-label="Next">
+                  <span aria-hidden="true">
+                    <i class="bi-chevron-double-left small"></i>
+                  </span>
+                </button>
+              </li>
+            {% endif %} 
+
+              {% for i in page_obj.paginator.page_range %}
+              {% if i == page_obj.number %}
+                <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>
+              {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                <li class="page-item"><button class="page-link" onclick="ChangePage(`{{ i }}`)">{{ i }}</button></li>
+              {% endif %} 
+            {% endfor %}
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+              <button class="page-link" onclick="ChangePage(`{{ page_obj.previous_page_number }}`)" aria-label="Previous">
+                <span aria-hidden="true">
+                  <i class="bi-chevron-double-right small"></i>
+                </span>
+              </button>
+            </li>
+          {% endif %}
+        
+            </ul>
+          </nav>
+        {% endif %}
+
+        </div>
+        <!-- End Row -->
+
+      </div>
+      <!-- End Body -->
+    </div>
+    <!-- End Card -->
+  </div>
+  <!-- End Col -->
+</div>
+<!-- End Row -->
+</div>
+{% endblock %}
+
+
+
+{% block extra_js %}
+<!-- ========== END SECONDARY CONTENTS ========== -->
+
+<!-- JS Implementing Plugins -->
+<script src="{% static 'js/vendor.min.js' %}"></script>
+
+<!-- JS Front -->
+<script src="{% static 'js/theme.min.js' %}"></script>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+
+<script>
+    function ChangePage(page_number) {
+      let current_url_params = new URLSearchParams(window.location.search)
+      current_url_params.set("page", page_number)
+      let new_url = window.location.pathname + "?" + current_url_params.toString()
+      window.location.href = new_url
+    }
+  </script>
+
+<script>
+
+    $(document).ready(function () {
+      let current_url_params = new URLSearchParams(window.location.search)
+      $("#order-by-filter").val(current_url_params.get("order_by") || "")
+      $("#page-size-filter").val(current_url_params.get("page_size") || "")
+      $("#search-query-filter").val(current_url_params.get("q") || "")
+      $("#category-id-filter").val(current_url_params.get("category_id") || "")
+
+    });
+    $('#page-size-filter').change(function () {
+        let current_url_params = new URLSearchParams(window.location.search)
+        var selectedOption = $(this).val();
+        current_url_params.set("page_size", selectedOption)
+        let new_url = window.location.pathname + "?" + current_url_params.toString()
+        window.location.href = new_url
+    });
+    $('#order-by-filter').change(function () {
+        let current_url_params = new URLSearchParams(window.location.search)
+        var selectedOption = $(this).val();
+        current_url_params.set("order_by", selectedOption)
+        let new_url = window.location.pathname + "?" + current_url_params.toString()
+        window.location.href = new_url
+    });
+    $('#category-id-filter').change(function () {
+        let current_url_params = new URLSearchParams(window.location.search)
+        var selectedOption = $(this).val();
+        current_url_params.set("category_id", selectedOption)
+        let new_url = window.location.pathname + "?" + current_url_params.toString()
+        window.location.href = new_url
+    });
+
+  </script>
+
+{% endblock extra_js %}
+
+{% block extra_js_no_compress %}
+{% endblock extra_js_no_compress %}
+
+
