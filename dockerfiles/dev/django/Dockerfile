@@ -9,6 +9,6 @@ WORKDIR /usr/src/app
 
 COPY ./requirements.txt .
 
-RUN pip3 install --upgrade pip && pip install -r requirements.txt
+RUN pip3 install --upgrade pip && pip install -r requirements.txt && pip install gunicorn
 
 COPY ./core .

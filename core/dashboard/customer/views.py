@@ -3,9 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from dashboard.permissions import HasCustomerAccessPermission
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView, UpdateView, ListView, DeleteView, CreateView, DetailView
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from dashboard.permissions import HasCustomerAccessPermission
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 from dashboard.customer.forms import CustomerPasswordChangeForm, CustomerProfileEditForm, CustomerAddressForm, CustomerOrderDetailForm, CustomerFavoritesForm
